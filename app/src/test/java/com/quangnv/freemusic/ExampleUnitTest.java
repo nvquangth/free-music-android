@@ -1,4 +1,4 @@
-package com.quangnv.feemusic;
+package com.quangnv.freemusic;
 
 import org.junit.Test;
 
