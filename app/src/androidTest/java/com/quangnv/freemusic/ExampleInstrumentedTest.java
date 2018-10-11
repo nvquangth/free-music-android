@@ -1,4 +1,4 @@
-package com.quangnv.feemusic;
+package com.quangnv.freemusic;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

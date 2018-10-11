@@ -1,7 +1,9 @@
-package com.quangnv.feemusic;
+package com.quangnv.freemusic.screen.main;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.quangnv.freemusic.R;
 
 public class MainActivity extends AppCompatActivity {
 
