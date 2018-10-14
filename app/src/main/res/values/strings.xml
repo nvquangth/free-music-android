@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Free Music</string>
+    <string name="title_home">Home</string>
+    <string name="title_my_music">My music</string>
+    <string name="title_more">More</string>
+    <string name="hint_search">Search for songs...</string>
 </resources>
