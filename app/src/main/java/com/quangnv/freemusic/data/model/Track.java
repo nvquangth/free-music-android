@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.quangnv.freemusic.util.StringUtils;
 
 /**
  * Created by quangnv on 12/10/2018
@@ -42,7 +43,11 @@ public class Track extends BaseModel implements Parcelable {
     @SerializedName("publisher_metadata")
     @Expose
     private Publisher mPublisher;
+    @SerializedName("stream_url")
+    @Expose
     private String mStreamUrl;
+    @SerializedName("download_url")
+    @Expose
     private String mDownloadUrl;
 
     private Track(Builder builder) {
@@ -233,10 +238,16 @@ public class Track extends BaseModel implements Parcelable {
     }
 
     public String getStreamUrl() {
-        return mStreamUrl;
+        if (mStreamable) {
+            return StringUtils.generateLinkStreamTrack(mId);
+        }
+        return null;
     }
 
     public String getDownloadUrl() {
-        return mDownloadUrl;
+        if (mDownloadable) {
+            return StringUtils.generateLinkDownloadTrack(mId);
+        }
+        return null;
     }
 }

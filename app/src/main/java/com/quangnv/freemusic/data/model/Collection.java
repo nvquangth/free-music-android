@@ -79,7 +79,7 @@ public class Collection extends BaseModel implements Parcelable {
         return mScore;
     }
 
-    public void setScore(long score) {
-        mScore = score;
+    public Track getTrack() {
+        return mTrack;
     }
 }

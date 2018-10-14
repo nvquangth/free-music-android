@@ -12,7 +12,7 @@ import java.util.List;
  * Created by quangnv on 12/10/2018
  */
 
-public class GenreResponse extends BaseModel implements Parcelable {
+public class GetTrackResponse extends BaseModel implements Parcelable {
 
     @SerializedName("genre")
     @Expose
@@ -27,29 +27,29 @@ public class GenreResponse extends BaseModel implements Parcelable {
     @Expose
     private List<Collection> mCollections;
 
-    private GenreResponse(Builder builder) {
+    private GetTrackResponse(Builder builder) {
         mGenre = builder.mGenre;
         mKind = builder.mKind;
         mLastUpdated = builder.mLastUpdated;
         mCollections = builder.mCollections;
     }
 
-    protected GenreResponse(Parcel in) {
+    protected GetTrackResponse(Parcel in) {
         mGenre = in.readString();
         mKind = in.readString();
         mLastUpdated = in.readString();
         mCollections = in.createTypedArrayList(Collection.CREATOR);
     }
 
-    public static final Creator<GenreResponse> CREATOR = new Creator<GenreResponse>() {
+    public static final Creator<GetTrackResponse> CREATOR = new Creator<GetTrackResponse>() {
         @Override
-        public GenreResponse createFromParcel(Parcel in) {
-            return new GenreResponse(in);
+        public GetTrackResponse createFromParcel(Parcel in) {
+            return new GetTrackResponse(in);
         }
 
         @Override
-        public GenreResponse[] newArray(int size) {
-            return new GenreResponse[size];
+        public GetTrackResponse[] newArray(int size) {
+            return new GetTrackResponse[size];
         }
     };
 
@@ -76,8 +76,8 @@ public class GenreResponse extends BaseModel implements Parcelable {
         public Builder() {
         }
 
-        public GenreResponse build() {
-            return new GenreResponse(this);
+        public GetTrackResponse build() {
+            return new GetTrackResponse(this);
         }
 
         public Builder setGenre(String genre) {
