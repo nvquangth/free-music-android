@@ -4,6 +4,7 @@
     <color name="color_primary_dark">#00574B</color>
     <color name="color_accent">#D81B60</color>
     <color name="color_grey_50">#FAFAFA</color>
+    <color name="color_grey_300">#E0E0E0</color>
     <color name="color_transparent_80">#80000000</color>
     <color name="color_transparent_30">#30000000</color>
 </resources>
