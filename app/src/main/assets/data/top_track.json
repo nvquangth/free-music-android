@@ -1,0 +1,82 @@
+[
+  {
+    "artwork_url": "mytam",
+    "downloadable": false,
+    "download_url": null,
+    "duration": 262006,
+    "genre": "Nhạc Trẻ",
+    "id": 345871613,
+    "playback_count": 5960895,
+    "publisher_metadata": {
+      "artist": "Mỹ Tâm"
+    },
+    "streamable": true,
+    "title": "Người Hãy Quên Em Đi",
+    "stream_url": "",
+    "description": ""
+  },
+  {
+    "artwork_url": "huongtram",
+    "downloadable": false,
+    "download_url": null,
+    "duration": 262006,
+    "genre": "Nhạc Trẻ",
+    "id": 345871613,
+    "playback_count": 5960895,
+    "publisher_metadata": {
+      "artist": "Hương Tràm"
+    },
+    "streamable": true,
+    "title": "Ngốc",
+    "stream_url": "",
+    "description": ""
+  },
+  {
+    "artwork_url": "jangmi",
+    "downloadable": false,
+    "download_url": null,
+    "duration": 262006,
+    "genre": "Bolero",
+    "id": 345871613,
+    "playback_count": 5960895,
+    "publisher_metadata": {
+      "artist": "Jang Mi"
+    },
+    "streamable": true,
+    "title": "Trả Lại Thời Gian",
+    "stream_url": "",
+    "description": ""
+  },
+  {
+    "artwork_url": "themen",
+    "downloadable": false,
+    "download_url": null,
+    "duration": 262006,
+    "genre": "Nhạc Trẻ",
+    "id": 345871613,
+    "playback_count": 5960895,
+    "publisher_metadata": {
+      "artist": "The Men"
+    },
+    "streamable": true,
+    "title": "Phai Dấu Cuộc Tình",
+    "stream_url": "",
+    "description": ""
+  },
+  {
+    "artwork_url": "haanhtuan",
+    "downloadable": false,
+    "download_url": null,
+    "duration": 262006,
+    "genre": "Nhạc Trẻ",
+    "id": 345871613,
+    "playback_count": 5960895,
+    "publisher_metadata": {
+      "artist": "Hà Anh Tuấn"
+    },
+    "streamable": true,
+    "title": "Người Tình Mùa Đông",
+    "stream_url": "",
+    "description": ""
+  }
+]

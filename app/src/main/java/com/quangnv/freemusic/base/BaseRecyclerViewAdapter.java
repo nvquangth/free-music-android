@@ -2,6 +2,7 @@ package com.quangnv.freemusic.base;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +15,13 @@ public abstract class BaseRecyclerViewAdapter<T, VH extends RecyclerView.ViewHol
         extends RecyclerView.Adapter<VH> {
     private Context mContext;
     private ItemRecyclerViewListener<T> mItemRecyclerViewListener;
-    protected List<T> mData = new ArrayList<>();
+    protected LayoutInflater mInflater;
+    protected List<T> mData;
 
     public BaseRecyclerViewAdapter(Context context) {
         mContext = context;
+        mInflater = LayoutInflater.from(context);
+        mData = new ArrayList<>();
     }
 
     public void setItemRecyclerViewListener(ItemRecyclerViewListener<T> itemRecyclerViewListener) {

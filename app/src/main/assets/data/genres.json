@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Rock",
+    "image_url": "rock"
+  },
+  {
+    "name": "Audio",
+    "image_url": "audio"
+  },
+  {
+    "name": "Music",
+    "image_url": "music"
+  },
+  {
+    "name": "Country",
+    "image_url": "rock"
+  },
+  {
+    "name": "Ambient",
+    "image_url": "audio"
+  },
+  {
+    "name": "Classical",
+    "image_url": "music"
+  }
+]

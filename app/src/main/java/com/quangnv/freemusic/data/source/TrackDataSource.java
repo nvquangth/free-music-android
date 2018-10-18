@@ -18,6 +18,8 @@ public interface TrackDataSource {
 
         Observable<List<Track>> getTracks();
 
+        Observable<List<Track>> getTopTracks();
+
         Observable<Track> getTrack();
 
         Completable insertTrack(Track track);

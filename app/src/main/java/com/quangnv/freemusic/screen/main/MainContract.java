@@ -12,14 +12,8 @@ import java.util.List;
 public interface MainContract {
 
     interface View {
-
-        void showTracks(List<Track> tracks);
-
-        void showError();
     }
 
     interface Presenter extends BasePresenter<View> {
-
-        void getTrack(String genre, int offset);
     }
 }

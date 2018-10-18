@@ -3,56 +3,147 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
 
-    <com.rd.PageIndicatorView
-        android:id="@+id/page_indicator_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_8"
-        android:layout_marginEnd="@dimen/dp_8"
-        android:layout_marginRight="@dimen/dp_8"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:piv_animationType="scale"
-        app:piv_dynamicCount="true"
-        app:piv_interactiveAnimation="true"
-        app:piv_radius="@dimen/dp_8"
-        app:piv_selectedColor="@color/color_grey_50"
-        app:piv_unselectedColor="@color/color_grey_300"
-        app:piv_viewPager="@id/view_pager" />
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager"
+    <View
+        android:id="@+id/view_search"
         android:layout_width="0dp"
-        android:layout_height="@dimen/dp_200"
+        android:layout_height="@dimen/dp_50"
+        android:background="@color/color_grey_50"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/text_title_genre"
+    <android.support.v7.widget.AppCompatImageButton
+        android:id="@+id/button_search"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:padding="@dimen/dp_13"
+        android:src="@drawable/ic_search_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/view_search"
+        app:layout_constraintStart_toStartOf="@+id/view_search"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_8"
         android:layout_marginLeft="@dimen/dp_8"
-        android:layout_marginTop="@dimen/dp_16"
-        android:text="@string/title_genres"
-        android:textAllCaps="true"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/sp_16"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view_pager" />
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginRight="@dimen/dp_8"
+        android:text="@string/hint_search"
+        app:layout_constraintBottom_toBottomOf="@+id/view_search"
+        app:layout_constraintEnd_toStartOf="@+id/button_search_voice"
+        app:layout_constraintStart_toEndOf="@+id/button_search"
+        app:layout_constraintTop_toTopOf="@+id/view_search" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_genre"
+    <android.support.v7.widget.AppCompatImageButton
+        android:id="@+id/button_search_voice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:padding="@dimen/dp_13"
+        android:src="@drawable/ic_keyboard_voice_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/view_search"
+        app:layout_constraintEnd_toEndOf="@+id/view_search"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/dp_8"
-        android:layout_marginBottom="@dimen/dp_8"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_title_genre"
-        tools:listitem="@layout/item_genre" />
+        app:layout_constraintTop_toBottomOf="@+id/view_search">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:descendantFocusability="blocksDescendants"
+            android:orientation="vertical">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_200" />
+
+                <com.rd.PageIndicatorView
+                    android:id="@+id/page_indicator_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginEnd="@dimen/dp_8"
+                    android:layout_marginRight="@dimen/dp_8"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:piv_animationType="worm"
+                    app:piv_dynamicCount="true"
+                    app:piv_interactiveAnimation="true"
+                    app:piv_radius="@dimen/dp_4"
+                    app:piv_selectedColor="@color/color_grey_50"
+                    app:piv_unselectedColor="@color/color_grey_300"
+                    app:piv_viewPager="@id/view_pager" />
+
+                <ProgressBar
+                    android:id="@+id/progress_bar_loading_track"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/view_pager"
+                    app:layout_constraintEnd_toEndOf="@+id/view_pager"
+                    app:layout_constraintStart_toStartOf="@+id/view_pager"
+                    app:layout_constraintTop_toTopOf="@+id/view_pager" />
+
+                <TextView
+                    android:id="@+id/text_title_genre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_8"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:text="@string/title_genres"
+                    android:textAllCaps="true"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/sp_16"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_pager" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_genre"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginBottom="@dimen/dp_8"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_title_genre"
+                    tools:listitem="@layout/item_genre" />
+
+                <ProgressBar
+                    android:id="@+id/progress_bar_loading_genre"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:layout_marginRight="@dimen/dp_8"
+                    android:layout_marginBottom="@dimen/dp_8"
+                    app:layout_constraintBottom_toBottomOf="@+id/recycler_genre"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/recycler_genre"
+                    app:layout_constraintTop_toTopOf="@+id/recycler_genre" />
+            </android.support.constraint.ConstraintLayout>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 </android.support.constraint.ConstraintLayout>
