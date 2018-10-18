@@ -7,24 +7,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import javax.inject.Inject;
+
 /**
  * Created by quangnv on 12/10/2018
  */
 
 public class AssetsHelper {
 
-    private static AssetsHelper sInstance;
     private Context mContext;
 
-    private AssetsHelper(Context context) {
+    public AssetsHelper(Context context) {
         mContext = context;
-    }
-
-    public static synchronized AssetsHelper getInstance(@NonNull Context context) {
-        if (sInstance == null) {
-            sInstance = new AssetsHelper(context);
-        }
-        return sInstance;
     }
 
     public String read(String path) {

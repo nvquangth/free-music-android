@@ -12,9 +12,15 @@ public final class Constants {
 
     public static String BASE_URL_TRACK = "http://api.soundcloud.com/tracks";
 
+    public static String GENRE_ASSETS_PATH = "data/genres.json";
+
+    public static String TOP_TRACK_ASSETS_PATH = "data/top_track.json";
+
     public static String CLIENT_ID = BuildConfig.API_KEY;
 
     public static String KIND = "top";
 
     public static int LOAD_LIMIT = 20;
+
+    public static String ARGUMENT_TRACK = "TRACK";
 }

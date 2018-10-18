@@ -2,6 +2,7 @@ package com.quangnv.freemusic;
 
 import android.content.Context;
 
+import com.quangnv.freemusic.data.source.local.asset.AssetsHelper;
 import com.quangnv.freemusic.data.source.remote.service.Api;
 import com.quangnv.freemusic.data.source.remote.service.NetworkModule;
 import com.quangnv.freemusic.util.dagger.AppScope;
@@ -20,6 +21,8 @@ import dagger.Component;
 public interface AppComponent {
 
     Api api();
+
+    AssetsHelper assetsHelper();
 
     @ApplicationContext
     Context applicationContext();
