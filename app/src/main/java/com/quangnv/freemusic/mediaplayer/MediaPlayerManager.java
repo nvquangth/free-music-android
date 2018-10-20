@@ -353,38 +353,38 @@ public final class MediaPlayerManager extends MediaPlayerSetting implements Base
     }
 
     private void notifyPlayChanged() {
-        for (MediaPlayerListener.OnPlayingListener listener: mPlayingListeners) {
+        for (MediaPlayerListener.OnPlayingListener listener : mPlayingListeners) {
             listener.onPlayChanged(getPlay());
         }
     }
 
     private void notifyLoopChanged() {
-        for (MediaPlayerListener.OnLoopingListener listener: mLoopingListeners) {
+        for (MediaPlayerListener.OnLoopingListener listener : mLoopingListeners) {
             listener.onLoopChanged(getLoop());
         }
     }
 
     private void notifyShuffleChanged() {
-        for (MediaPlayerListener.OnShufflingListener listener: mShufflingListeners) {
+        for (MediaPlayerListener.OnShufflingListener listener : mShufflingListeners) {
             listener.onShuffleChanged(getShuffle());
         }
     }
 
     private void notifyCurrentTimeChanged() {
-        for (MediaPlayerListener.OnCurrentTimeListener listener: mCurrentTimeListeners) {
+        for (MediaPlayerListener.OnCurrentTimeListener listener : mCurrentTimeListeners) {
             listener.onCurrentTimeChanged(getCurrentPosition());
         }
     }
 
     private void notifyTotalTimeChanged() {
-        for (MediaPlayerListener.OnTotalTimeListener listener: mTotalTimeListeners) {
+        for (MediaPlayerListener.OnTotalTimeListener listener : mTotalTimeListeners) {
             listener.onTotalTimeChanged(getDuration());
         }
     }
 
     private void notifyTrackChanged() {
-        for (MediaPlayerListener.OnTrackListener listener: mTrackListeners) {
-            listener.onTrackChanged(getTracks().get(getCurrentPosition()));
+        for (MediaPlayerListener.OnTrackListener listener : mTrackListeners) {
+            listener.onTrackChanged(getTracks().get(getCurrentTrack()));
         }
     }
 

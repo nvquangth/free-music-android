@@ -1,5 +1,6 @@
 package com.quangnv.freemusic.screen.home;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -13,6 +14,7 @@ import com.quangnv.freemusic.R;
 import com.quangnv.freemusic.base.BaseFragment;
 import com.quangnv.freemusic.data.model.Genre;
 import com.quangnv.freemusic.data.model.Track;
+import com.quangnv.freemusic.screen.OnItemTrackListener;
 import com.quangnv.freemusic.screen.home.adapter.GenreAdapter;
 import com.quangnv.freemusic.screen.home.adapter.TrackPagerAdapter;
 
@@ -24,7 +26,8 @@ import javax.inject.Inject;
  * Created by quangnv on 15/10/2018
  */
 
-public class HomeFragment extends BaseFragment implements HomeContract.View, View.OnClickListener {
+public class HomeFragment extends BaseFragment implements HomeContract.View,
+        View.OnClickListener, OnItemTrackListener {
 
     private static final int SPAN_COUNT = 2;
     private static final int SPLIT_NUM = 3;
@@ -37,6 +40,9 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Vie
     TrackPagerAdapter mTrackPagerAdapter;
     @Inject
     GenreAdapter mGenreAdapter;
+
+    private List<Track> mTracks;
+    private OnItemTrackListener mOnItemTrackListener;
 
     private View mViewSearch;
     private ViewPager mTrackPager;
@@ -53,10 +59,26 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Vie
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getActivity() instanceof OnItemTrackListener) {
+            mOnItemTrackListener = (OnItemTrackListener) getActivity();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mOnItemTrackListener != null) {
+            mOnItemTrackListener = null;
+        }
+        super.onDestroy();
+    }
+
+    @Override
     protected void initComponentsOnCreate(@Nullable Bundle savedInstanceState) {
         DaggerHomeComponent.builder()
                 .appComponent(((MainApplication) getActivity().getApplication()).getAppComponent())
-                .homeModule(new HomeModule(getFragmentManager()))
+                .homeModule(new HomeModule(getChildFragmentManager()))
                 .build()
                 .inject(this);
         mPresenter.setView(this);
@@ -65,7 +87,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Vie
     @Override
     protected void initComponentsOnCreateView(View view, @Nullable Bundle savedInstanceState) {
         initView(view);
-        resigerListener();
+        registerListener();
         setupGenreRecycler();
         mPresenter.getTopTracks();
         mPresenter.getGenres();
@@ -98,6 +120,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Vie
 
     @Override
     public void showTopTrack(List<Track> tracks) {
+        mTracks = tracks;
         mTrackPagerAdapter.setTracks(tracks);
         mTrackPager.setAdapter(mTrackPagerAdapter);
     }
@@ -115,6 +138,11 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Vie
         }
     }
 
+    @Override
+    public void onItemTrackClick(List<Track> tracks, int position) {
+        mOnItemTrackListener.onItemTrackClick(mTracks, mTrackPager.getCurrentItem());
+    }
+
     private void initView(View view) {
         mViewSearch = view.findViewById(R.id.view_search);
         mTrackPager = view.findViewById(R.id.view_pager);
@@ -123,7 +151,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View, Vie
         mProgressBarLoadingGenre = view.findViewById(R.id.progress_bar_loading_genre);
     }
 
-    private void resigerListener() {
+    private void registerListener() {
         mViewSearch.setOnClickListener(this);
     }
 

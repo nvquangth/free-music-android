@@ -11,6 +11,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.quangnv.freemusic.R;
 import com.quangnv.freemusic.base.BaseFragment;
 import com.quangnv.freemusic.data.model.Track;
+import com.quangnv.freemusic.screen.home.HomeFragment;
 import com.quangnv.freemusic.util.Constants;
 import com.quangnv.freemusic.util.DrawableUtils;
 
@@ -20,7 +21,7 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
  * Created by quangnv on 15/10/2018
  */
 
-public class TopTrackFragment extends BaseFragment {
+public class TopTrackFragment extends BaseFragment implements View.OnClickListener {
 
     private static final int RADIUS_IMAGE = 15;
 
@@ -51,6 +52,7 @@ public class TopTrackFragment extends BaseFragment {
     @Override
     protected void initComponentsOnCreateView(View view, @Nullable Bundle savedInstanceState) {
         initView(view);
+        registerListener(view);
         bindData(mTrack);
     }
 
@@ -59,11 +61,20 @@ public class TopTrackFragment extends BaseFragment {
         return R.layout.fragment_top_track;
     }
 
+    @Override
+    public void onClick(View view) {
+        ((HomeFragment) getParentFragment()).onItemTrackClick(null, -1);
+    }
+
     private void initView(View view) {
         mBigImageTrack = view.findViewById(R.id.image_big_track);
         mSmallImageTrack = view.findViewById(R.id.image_small_track);
         mTextTrackTitle = view.findViewById(R.id.text_track_title);
         mTextTrackArtist = view.findViewById(R.id.text_track_artist);
+    }
+
+    private void registerListener(View view) {
+        view.setOnClickListener(this);
     }
 
     private void bindData(Track track) {
@@ -80,5 +91,4 @@ public class TopTrackFragment extends BaseFragment {
         mTextTrackTitle.setText(track.getTitle());
         mTextTrackArtist.setText(track.getPublisher().getArtist());
     }
-
 }

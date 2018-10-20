@@ -6,7 +6,7 @@ import com.quangnv.freemusic.data.model.Track;
  * Created by quangnv on 20/10/2018
  */
 
-public class MediaPlayerListener {
+public interface MediaPlayerListener {
 
     /**
      * setting
