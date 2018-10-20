@@ -5,14 +5,14 @@
     "download_url": null,
     "duration": 262006,
     "genre": "Nhạc Trẻ",
-    "id": 345871613,
+    "id": -1,
     "playback_count": 5960895,
     "publisher_metadata": {
       "artist": "Mỹ Tâm"
     },
     "streamable": true,
     "title": "Người Hãy Quên Em Đi",
-    "stream_url": "",
+    "stream_url": "android.resource://com.quangnv.feemusic/raw/nguoi_hay_quen_em_di",
     "description": ""
   },
   {
@@ -21,14 +21,14 @@
     "download_url": null,
     "duration": 262006,
     "genre": "Nhạc Trẻ",
-    "id": 345871613,
+    "id": -1,
     "playback_count": 5960895,
     "publisher_metadata": {
       "artist": "Hương Tràm"
     },
     "streamable": true,
     "title": "Ngốc",
-    "stream_url": "",
+    "stream_url": "android.resource://com.quangnv.feemusic/raw/ngoc",
     "description": ""
   },
   {
@@ -37,14 +37,14 @@
     "download_url": null,
     "duration": 262006,
     "genre": "Bolero",
-    "id": 345871613,
+    "id": -1,
     "playback_count": 5960895,
     "publisher_metadata": {
       "artist": "Jang Mi"
     },
     "streamable": true,
     "title": "Trả Lại Thời Gian",
-    "stream_url": "",
+    "stream_url": "android.resource://com.quangnv.feemusic/raw/tra_lai_thoi_gian",
     "description": ""
   },
   {
@@ -53,14 +53,14 @@
     "download_url": null,
     "duration": 262006,
     "genre": "Nhạc Trẻ",
-    "id": 345871613,
+    "id": -1,
     "playback_count": 5960895,
     "publisher_metadata": {
       "artist": "The Men"
     },
     "streamable": true,
     "title": "Phai Dấu Cuộc Tình",
-    "stream_url": "",
+    "stream_url": "android.resource://com.quangnv.feemusic/raw/phai_dau_cuoc_tinh",
     "description": ""
   },
   {
@@ -69,14 +69,14 @@
     "download_url": null,
     "duration": 262006,
     "genre": "Nhạc Trẻ",
-    "id": 345871613,
+    "id": -1,
     "playback_count": 5960895,
     "publisher_metadata": {
       "artist": "Hà Anh Tuấn"
     },
     "streamable": true,
     "title": "Người Tình Mùa Đông",
-    "stream_url": "",
+    "stream_url": "android.resource://com.quangnv.feemusic/raw/nguoi_tinh_mua_dong",
     "description": ""
   }
 ]
