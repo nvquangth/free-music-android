@@ -20,15 +20,17 @@ import com.quangnv.freemusic.util.DrawableUtils;
 
 public class GenreAdapter extends BaseRecyclerViewAdapter<Genre, GenreAdapter.GenreViewHolder> {
 
-    public GenreAdapter(Context context) {
+    public GenreAdapter(Context context,
+                        ItemRecyclerViewListener<Genre> itemRecyclerViewListener) {
         super(context);
+        mItemRecyclerViewListener = itemRecyclerViewListener;
     }
 
     @NonNull
     @Override
     public GenreViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = mInflater.inflate(R.layout.item_genre, viewGroup, false);
-        return new GenreViewHolder(view);
+        return new GenreViewHolder(view, mItemRecyclerViewListener);
     }
 
     @Override
@@ -41,18 +43,42 @@ public class GenreAdapter extends BaseRecyclerViewAdapter<Genre, GenreAdapter.Ge
         return mData.size();
     }
 
-    static class GenreViewHolder extends RecyclerView.ViewHolder {
+    static class GenreViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        private ItemRecyclerViewListener<Genre> mItemRecyclerViewListener;
+        private Genre mGenre;
 
         private ImageView mImageGenre;
         private TextView mTextGenreTitle;
 
-        public GenreViewHolder(@NonNull View itemView) {
+        public GenreViewHolder(@NonNull View itemView,
+                               ItemRecyclerViewListener<Genre> itemRecyclerViewListener) {
             super(itemView);
+            mItemRecyclerViewListener = itemRecyclerViewListener;
+            initView();
+            registerListener();
+        }
+
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.item_genre:
+                    mItemRecyclerViewListener.onItemRecyclerViewClick(mGenre, getAdapterPosition());
+                    break;
+            }
+        }
+
+        private void initView() {
             mImageGenre = itemView.findViewById(R.id.image_genre);
             mTextGenreTitle = itemView.findViewById(R.id.text_genre_name);
         }
 
+        private void registerListener() {
+            itemView.setOnClickListener(this);
+        }
+
         private void bindData(Genre genre) {
+            mGenre = genre;
             Glide.with(mImageGenre.getContext())
                     .load(DrawableUtils
                             .getResourceId(mImageGenre.getContext(), genre.getImageUrl()))

@@ -6,11 +6,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
@@ -29,6 +26,8 @@ import com.quangnv.freemusic.screen.OnItemTrackListener;
 import com.quangnv.freemusic.screen.home.HomeFragment;
 import com.quangnv.freemusic.service.ServiceManager;
 import com.quangnv.freemusic.service.TrackService;
+import com.quangnv.freemusic.util.navigator.NavigateAnim;
+import com.quangnv.freemusic.util.navigator.Navigator;
 
 import java.util.List;
 
@@ -45,6 +44,8 @@ public class MainActivity extends BaseActivity implements
 
     @Inject
     MainContract.Presenter mPresenter;
+
+    private Navigator mNavigator;
 
     private TrackService mTrackService;
     private ServiceManager mServiceManager;
@@ -95,7 +96,8 @@ public class MainActivity extends BaseActivity implements
         registerListener();
         initData();
 
-        addFragmentToBackStack(R.id.frame_container, HomeFragment.newInstance(), false);
+        mNavigator.addFragmentToBackStack(R.id.frame_container, HomeFragment.newInstance(),
+                false, NavigateAnim.FADED, null);
     }
 
     @Override
@@ -211,19 +213,10 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void initData() {
+        mNavigator = new Navigator(this);
         mConnection = this;
         mIntent = new Intent(this, TrackService.class);
         mServiceManager = new ServiceManager(getApplicationContext(), mIntent, mConnection,
                 Context.BIND_AUTO_CREATE);
-    }
-
-    private void addFragmentToBackStack(@IdRes int containerViewId, Fragment fragment,
-                                        boolean addToBackStack) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(containerViewId, fragment);
-        if (addToBackStack) {
-            transaction.addToBackStack(null);
-        }
-        transaction.commit();
     }
 }

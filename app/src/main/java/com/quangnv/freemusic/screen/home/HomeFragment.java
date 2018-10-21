@@ -12,11 +12,15 @@ import android.widget.ProgressBar;
 import com.quangnv.freemusic.MainApplication;
 import com.quangnv.freemusic.R;
 import com.quangnv.freemusic.base.BaseFragment;
+import com.quangnv.freemusic.base.BaseRecyclerViewAdapter;
 import com.quangnv.freemusic.data.model.Genre;
 import com.quangnv.freemusic.data.model.Track;
 import com.quangnv.freemusic.screen.OnItemTrackListener;
+import com.quangnv.freemusic.screen.genre.GenreFragment;
 import com.quangnv.freemusic.screen.home.adapter.GenreAdapter;
 import com.quangnv.freemusic.screen.home.adapter.TrackPagerAdapter;
+import com.quangnv.freemusic.util.navigator.NavigateAnim;
+import com.quangnv.freemusic.util.navigator.Navigator;
 
 import java.util.List;
 
@@ -27,7 +31,9 @@ import javax.inject.Inject;
  */
 
 public class HomeFragment extends BaseFragment implements HomeContract.View,
-        View.OnClickListener, OnItemTrackListener {
+        View.OnClickListener,
+        OnItemTrackListener,
+        BaseRecyclerViewAdapter.ItemRecyclerViewListener<Genre> {
 
     private static final int SPAN_COUNT = 2;
     private static final int SPLIT_NUM = 3;
@@ -40,6 +46,8 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
     TrackPagerAdapter mTrackPagerAdapter;
     @Inject
     GenreAdapter mGenreAdapter;
+
+    private Navigator mNavigator;
 
     private List<Track> mTracks;
     private OnItemTrackListener mOnItemTrackListener;
@@ -78,10 +86,11 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
     protected void initComponentsOnCreate(@Nullable Bundle savedInstanceState) {
         DaggerHomeComponent.builder()
                 .appComponent(((MainApplication) getActivity().getApplication()).getAppComponent())
-                .homeModule(new HomeModule(getChildFragmentManager()))
+                .homeModule(new HomeModule(getChildFragmentManager(), this))
                 .build()
                 .inject(this);
         mPresenter.setView(this);
+        mNavigator = new Navigator(this);
     }
 
     @Override
@@ -141,6 +150,12 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
     @Override
     public void onItemTrackClick(List<Track> tracks, int position) {
         mOnItemTrackListener.onItemTrackClick(mTracks, mTrackPager.getCurrentItem());
+    }
+
+    @Override
+    public void onItemRecyclerViewClick(Genre genre, int position) {
+        mNavigator.addFragmentToBackStack(R.id.frame_container, GenreFragment.newInstance(genre),
+                true, NavigateAnim.RIGHT_LEFT, null);
     }
 
     private void initView(View view) {

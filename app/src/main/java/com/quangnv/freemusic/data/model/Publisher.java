@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.quangnv.freemusic.util.Constants;
+import com.quangnv.freemusic.util.StringUtils;
 
 /**
  * Created by quangnv on 12/10/2018
@@ -108,6 +110,9 @@ public class Publisher extends BaseModel implements Parcelable {
     }
 
     public String getArtist() {
+        if (StringUtils.isEmpty(mArtist)) {
+            mArtist = Constants.ARTIST_UNKNOWN;
+        }
         return mArtist;
     }
 
