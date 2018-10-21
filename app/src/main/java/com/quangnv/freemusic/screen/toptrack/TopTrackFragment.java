@@ -13,7 +13,6 @@ import com.quangnv.freemusic.base.BaseFragment;
 import com.quangnv.freemusic.data.model.Track;
 import com.quangnv.freemusic.screen.home.HomeFragment;
 import com.quangnv.freemusic.util.Constants;
-import com.quangnv.freemusic.util.DrawableUtils;
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 

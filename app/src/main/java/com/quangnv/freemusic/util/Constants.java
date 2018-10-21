@@ -20,7 +20,13 @@ public final class Constants {
 
     public static String KIND = "top";
 
+    public static String ARTIST_UNKNOWN = "Unknown";
+
     public static int LOAD_LIMIT = 20;
 
-    public static String ARGUMENT_TRACK = "TRACK";
+    /**
+     * Argument
+     */
+    public static final String ARGUMENT_GENRE = "ARGUMENT_GENRE";
+    public static final String ARGUMENT_TRACK = "ARGUMENT_TRACK";
 }

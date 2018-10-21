@@ -87,7 +87,9 @@ public final class TrackNotificationManager {
     public void updateDescriptionNotification(Track track) {
         if (mNotificationTarget == null) return;
         mRemoteViews.setTextViewText(R.id.text_track_title, track.getTitle());
-        mRemoteViews.setTextViewText(R.id.text_track_artist, track.getPublisher().getArtist());
+        if (track.getPublisher() != null) {
+            mRemoteViews.setTextViewText(R.id.text_track_artist, track.getPublisher().getArtist());
+        }
         Glide.with(mTrackService)
                 .asBitmap()
                 .load(track.getArtWorkUrl())

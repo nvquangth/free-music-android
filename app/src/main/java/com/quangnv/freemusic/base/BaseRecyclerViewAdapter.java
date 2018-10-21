@@ -14,7 +14,7 @@ import java.util.List;
 public abstract class BaseRecyclerViewAdapter<T, VH extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<VH> {
     private Context mContext;
-    private ItemRecyclerViewListener<T> mItemRecyclerViewListener;
+    protected ItemRecyclerViewListener<T> mItemRecyclerViewListener;
     protected LayoutInflater mInflater;
     protected List<T> mData;
 
@@ -45,7 +45,12 @@ public abstract class BaseRecyclerViewAdapter<T, VH extends RecyclerView.ViewHol
         return mData;
     }
 
-    interface ItemRecyclerViewListener<T> {
+    public void addData(T data) {
+        mData.add(data);
+        notifyItemInserted(mData.size() - 1);
+    }
+
+    public interface ItemRecyclerViewListener<T> {
         void onItemRecyclerViewClick(T t, int position);
     }
 }

@@ -1,26 +1,32 @@
 [
   {
     "name": "Rock",
-    "image_url": "rock"
+    "image_url": "rock",
+    "meta_data": "soundcloud:genres:rock"
   },
   {
     "name": "Audio",
-    "image_url": "audio"
+    "image_url": "audio",
+    "meta_data": "soundcloud:genres:all-audio"
   },
   {
     "name": "Music",
-    "image_url": "music"
+    "image_url": "music",
+    "meta_data": "soundcloud:genres:all-music"
   },
   {
     "name": "Country",
-    "image_url": "rock"
+    "image_url": "country",
+    "meta_data": "soundcloud:genres:country"
   },
   {
     "name": "Ambient",
-    "image_url": "audio"
+    "image_url": "ambient",
+    "meta_data": "soundcloud:genres:ambient"
   },
   {
     "name": "Classical",
-    "image_url": "music"
+    "image_url": "classical",
+    "meta_data": "soundcloud:genres:classical"
   }
 ]

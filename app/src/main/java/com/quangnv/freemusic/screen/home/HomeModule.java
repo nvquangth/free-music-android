@@ -3,6 +3,8 @@ package com.quangnv.freemusic.screen.home;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 
+import com.quangnv.freemusic.base.BaseRecyclerViewAdapter;
+import com.quangnv.freemusic.data.model.Genre;
 import com.quangnv.freemusic.data.repository.GenreRepository;
 import com.quangnv.freemusic.data.repository.TrackRepository;
 import com.quangnv.freemusic.data.source.local.GenreLocalDataSource;
@@ -26,9 +28,12 @@ import io.reactivex.disposables.CompositeDisposable;
 public class HomeModule {
 
     private FragmentManager mFragmentManager;
+    private BaseRecyclerViewAdapter.ItemRecyclerViewListener<Genre> mGenreItemRecyclerViewListener;
 
-    public HomeModule(FragmentManager fragmentManager) {
+    public HomeModule(FragmentManager fragmentManager,
+                      BaseRecyclerViewAdapter.ItemRecyclerViewListener<Genre> itemRecyclerViewListener) {
         mFragmentManager = fragmentManager;
+        mGenreItemRecyclerViewListener = itemRecyclerViewListener;
     }
 
     @FragmentScope
@@ -59,7 +64,7 @@ public class HomeModule {
     @FragmentScope
     @Provides
     public GenreAdapter provideGenreAdapter(@ApplicationContext Context context) {
-        return new GenreAdapter(context);
+        return new GenreAdapter(context, mGenreItemRecyclerViewListener);
     }
 
     @FragmentScope

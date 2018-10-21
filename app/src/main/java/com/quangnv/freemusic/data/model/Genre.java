@@ -18,15 +18,20 @@ public class Genre extends BaseModel implements Parcelable {
     @SerializedName("image_url")
     @Expose
     private String mImageUrl;
+    @SerializedName("meta_data")
+    @Expose
+    private String mMetaData;
 
     private Genre(Builder builder) {
         mName = builder.mName;
         mImageUrl = builder.mImageUrl;
+        mMetaData = builder.mMetaData;
     }
 
     protected Genre(Parcel in) {
         mName = in.readString();
         mImageUrl = in.readString();
+        mMetaData = in.readString();
     }
 
     public static final Creator<Genre> CREATOR = new Creator<Genre>() {
@@ -50,12 +55,14 @@ public class Genre extends BaseModel implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(mName);
         parcel.writeString(mImageUrl);
+        parcel.writeString(mMetaData);
     }
 
     public static class Builder {
 
         private String mName;
         private String mImageUrl;
+        private String mMetaData;
 
         public Builder() {
         }
@@ -73,6 +80,11 @@ public class Genre extends BaseModel implements Parcelable {
             mImageUrl = imageUrl;
             return this;
         }
+
+        public Builder setMetaData(String metaData) {
+            mMetaData = metaData;
+            return this;
+        }
     }
 
     public String getName() {
@@ -81,5 +93,9 @@ public class Genre extends BaseModel implements Parcelable {
 
     public String getImageUrl() {
         return mImageUrl;
+    }
+
+    public String getMetaData() {
+        return mMetaData;
     }
 }

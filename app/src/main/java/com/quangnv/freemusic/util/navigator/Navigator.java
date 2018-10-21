@@ -11,6 +11,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.widget.Toast;
@@ -23,17 +24,17 @@ import com.quangnv.freemusic.R;
 
 public class Navigator {
     @NonNull
-    private Activity mActivity;
+    private AppCompatActivity mActivity;
     @NonNull
     private Fragment mFragment;
 
-    public Navigator(@NonNull Activity activity) {
+    public Navigator(@NonNull AppCompatActivity activity) {
         mActivity = activity;
     }
 
     public Navigator(@NonNull Fragment fragment) {
         mFragment = fragment;
-        mActivity = fragment.getActivity();
+        mActivity = (AppCompatActivity) fragment.getActivity();
     }
 
     private void startActivity(@NonNull Intent intent) {
@@ -126,6 +127,17 @@ public class Navigator {
     }
 
     // Fragment
+
+    public void addFragmentToBackStack(@IdRes int containerViewId, Fragment fragment,
+                                       boolean addToBackStack, int animation, String tag) {
+        FragmentTransaction transaction = mActivity.getSupportFragmentManager().beginTransaction();
+        setFragmentTransactionAnimation(transaction, animation);
+        if (addToBackStack) {
+            transaction.addToBackStack(fragment.getClass().getSimpleName());
+        }
+        transaction.add(containerViewId, fragment, tag);
+        transaction.commit();
+    }
 
     /**
      * Go to next fragment which nested inside current fragment
