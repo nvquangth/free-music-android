@@ -1,25 +1,16 @@
 package com.quangnv.freemusic.service;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
-import android.widget.RemoteViews;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.NotificationTarget;
-import com.quangnv.freemusic.R;
 import com.quangnv.freemusic.data.model.Track;
 import com.quangnv.freemusic.mediaplayer.MediaPlayerListener;
 import com.quangnv.freemusic.mediaplayer.MediaPlayerManager;
 import com.quangnv.freemusic.mediaplayer.MediaPlayerPlayType;
-import com.quangnv.freemusic.screen.detail.DetailActivity;
+import com.quangnv.freemusic.notification.TrackNotificationManager;
 
 import java.util.List;
 
@@ -29,28 +20,14 @@ import javax.inject.Inject;
  * Created by quangnv on 20/10/2018
  */
 
-public class TrackService extends Service implements MediaPlayerListener.OnTrackListener, MediaPlayerListener.OnPlayingListener {
+public class TrackService extends Service implements MediaPlayerListener.OnTrackListener,
+        MediaPlayerListener.OnPlayingListener {
 
-    private static final String ACTION_PREVIOUS = "ACTION_PREVIOUS";
-    private static final String ACTION_PLAY = "ACTION_PLAY";
-    private static final String ACTION_PAUSE = "ACTION_PAUSE";
-    private static final String ACTION_NEXT = "ACTION_NEXT";
-    private static final String ACTION_CLOSE = "ACTION_CLOSE";
-    private static final String CHANNEL_ID = "CHANNEL_ID";
-    private static final int NOTIFICATION_ID = 1;
-    private static final int REQUEST_CODE = 1000;
     private final IBinder mBinder = new TrackBinder();
+    private TrackNotificationManager mTrackNotificationManager;
 
     @Inject
     MediaPlayerManager mMediaPlayerManager;
-
-    private NotificationManager mNotificationManager;
-    private Notification mNotification;
-    private NotificationTarget mNotificationTarget;
-    private RemoteViews mRemoteViews;
-    private Intent mIntentNotification;
-    private Intent mIntentRemoteView;
-    private PendingIntent mPendingIntentNotification;
 
     public class TrackBinder extends Binder {
         public TrackService getService() {
@@ -61,6 +38,7 @@ public class TrackService extends Service implements MediaPlayerListener.OnTrack
     @Override
     public void onCreate() {
         mMediaPlayerManager = new MediaPlayerManager(this);
+        mTrackNotificationManager = new TrackNotificationManager(this);
         addTrackListener(this);
         addPlayingListener(this);
     }
@@ -92,12 +70,21 @@ public class TrackService extends Service implements MediaPlayerListener.OnTrack
 
     @Override
     public void onTrackChanged(Track track) {
-
+        mTrackNotificationManager.updateDescriptionNotification(track);
     }
 
     @Override
     public void onPlayChanged(int playType) {
-
+        switch (playType) {
+            case MediaPlayerPlayType.PAUSE:
+                mTrackNotificationManager.updatePlayNotification();
+                break;
+            case MediaPlayerPlayType.PLAY:
+                mTrackNotificationManager.updatePauseNotification();
+                break;
+            case MediaPlayerPlayType.WAIT:
+                break;
+        }
     }
 
     public void setTracks(List<Track> tracks) {
@@ -107,6 +94,7 @@ public class TrackService extends Service implements MediaPlayerListener.OnTrack
     public void play(int position) {
         mMediaPlayerManager.setCurrentTrack(position);
         mMediaPlayerManager.init();
+        mTrackNotificationManager.createNotification();
     }
 
     public void start() {
@@ -131,6 +119,14 @@ public class TrackService extends Service implements MediaPlayerListener.OnTrack
         } else if (mMediaPlayerManager.getPlay() == MediaPlayerPlayType.PLAY) {
             pause();
         }
+    }
+
+    public int getPlayMediaPlayer() {
+        return mMediaPlayerManager.getPlay();
+    }
+
+    public Track getCurrentTrack() {
+        return mMediaPlayerManager.getTracks().get(mMediaPlayerManager.getCurrentTrack());
     }
 
     public void addLoopingListener(MediaPlayerListener.OnLoopingListener listener) {
@@ -189,128 +185,30 @@ public class TrackService extends Service implements MediaPlayerListener.OnTrack
         mMediaPlayerManager.removeTrackErrorListener(listener);
     }
 
+    public void updateMiniPlayer() {
+
+    }
+
     private void handleIntent(Intent intent) {
         if (intent == null || intent.getAction() == null) {
             return;
         }
         switch (intent.getAction()) {
-            case ACTION_PREVIOUS:
+            case TrackNotificationManager.ACTION_PREVIOUS:
                 previous();
                 break;
-            case ACTION_PLAY:
+            case TrackNotificationManager.ACTION_PLAY:
                 changePlayPauseStatus();
                 break;
-            case ACTION_PAUSE:
+            case TrackNotificationManager.ACTION_PAUSE:
                 changePlayPauseStatus();
                 break;
-            case ACTION_NEXT:
+            case TrackNotificationManager.ACTION_NEXT:
                 next();
                 break;
-            case ACTION_CLOSE:
-                closeNotification();
+            case TrackNotificationManager.ACTION_CLOSE:
+                mTrackNotificationManager.closeNotification();
                 break;
         }
-    }
-
-    private void initNotification() {
-        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mIntentRemoteView = new Intent(this, TrackService.class);
-        mIntentNotification = new Intent(this, DetailActivity.class);
-        mIntentNotification.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        mPendingIntentNotification = PendingIntent.getActivity(this, REQUEST_CODE,
-                mIntentNotification, PendingIntent.FLAG_UPDATE_CURRENT);
-        mRemoteViews = new RemoteViews(getPackageName(), R.layout.custom_notification);
-    }
-
-    private void createNotification() {
-        setPreviousRemoteView(mIntentRemoteView);
-        setPauseRemoteView(mIntentRemoteView);
-        setNextRemoteView(mIntentRemoteView);
-        setCloseRemoteView(mIntentRemoteView);
-        mNotification = buildNotification();
-        mNotificationTarget = buildNotificationTarget();
-        updateDescriptionNotification(
-                mMediaPlayerManager.getTracks().get(mMediaPlayerManager.getCurrentTrack()));
-    }
-
-    private void setPreviousRemoteView(Intent intent) {
-        intent.setAction(ACTION_PREVIOUS);
-        PendingIntent previousPendingIntent = PendingIntent.getService(this, REQUEST_CODE,
-                intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        mRemoteViews.setOnClickPendingIntent(R.id.button_previous, previousPendingIntent);
-    }
-
-    private void setPauseRemoteView(Intent intent) {
-        intent.setAction(ACTION_PAUSE);
-        PendingIntent pausePendingIntent = PendingIntent.getService(this, REQUEST_CODE,
-                intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        mRemoteViews.setOnClickPendingIntent(R.id.button_play_pause, pausePendingIntent);
-        mRemoteViews.setImageViewResource(R.id.button_play_pause, R.drawable.ic_pause_white_48dp);
-    }
-
-    private void setNextRemoteView(Intent intent) {
-        intent.setAction(ACTION_NEXT);
-        PendingIntent nextPendingIntent = PendingIntent.getService(this, REQUEST_CODE,
-                intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        mRemoteViews.setOnClickPendingIntent(R.id.button_next, nextPendingIntent);
-    }
-
-    private void setCloseRemoteView(Intent intent) {
-        intent.setAction(ACTION_CLOSE);
-        PendingIntent closePendingIntent = PendingIntent.getService(this, REQUEST_CODE,
-                intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        mRemoteViews.setOnClickPendingIntent(R.id.button_close, closePendingIntent);
-    }
-
-    private Notification buildNotification() {
-        return new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentIntent(mPendingIntentNotification)
-                .setSmallIcon(R.drawable.image_default)
-                .setContent(mRemoteViews)
-                .build();
-    }
-
-    private NotificationTarget buildNotificationTarget() {
-        return new NotificationTarget(this, R.id.image_track, mRemoteViews, mNotification,
-                NOTIFICATION_ID);
-    }
-
-    private void updatePauseNotification() {
-        mIntentRemoteView.setAction(ACTION_PAUSE);
-        PendingIntent pendingIntent = PendingIntent.getService(this, REQUEST_CODE,
-                mIntentRemoteView, PendingIntent.FLAG_UPDATE_CURRENT);
-        mRemoteViews.setImageViewResource(R.id.button_play_pause, R.drawable.ic_pause_white_48dp);
-        mRemoteViews.setOnClickPendingIntent(R.id.button_play_pause, pendingIntent);
-        mNotificationManager.notify(NOTIFICATION_ID, mNotification);
-        startForeground(NOTIFICATION_ID, mNotification);
-    }
-
-    private void updatePlayNotification() {
-        mIntentRemoteView.setAction(ACTION_PLAY);
-        PendingIntent pendingIntent = PendingIntent.getService(this, REQUEST_CODE,
-                mIntentRemoteView, PendingIntent.FLAG_UPDATE_CURRENT);
-        mRemoteViews.setImageViewResource(R.id.button_play_pause,
-                R.drawable.ic_play_arrow_white_48dp);
-        mRemoteViews.setOnClickPendingIntent(R.id.button_play_pause, pendingIntent);
-        mNotificationManager.notify(NOTIFICATION_ID, mNotification);
-        startForeground(NOTIFICATION_ID, mNotification);
-    }
-
-    private void updateDescriptionNotification(Track track) {
-        mRemoteViews.setTextViewText(R.id.text_track_title, track.getTitle());
-        mRemoteViews.setTextViewText(R.id.text_track_artist, track.getPublisher().getArtist());
-        Glide.with(this)
-                .asBitmap()
-                .load(track.getArtWorkUrl())
-                .into(mNotificationTarget);
-        startForeground(NOTIFICATION_ID, mNotification);
-    }
-
-    private void closeNotification() {
-        if (mMediaPlayerManager.getPlay() == MediaPlayerPlayType.PLAY) {
-            pause();
-        }
-        stopForeground(true);
     }
 }
