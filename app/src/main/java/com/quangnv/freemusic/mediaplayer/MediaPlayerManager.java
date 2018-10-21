@@ -64,8 +64,7 @@ public final class MediaPlayerManager extends MediaPlayerSetting implements Base
             setState(MediaPlayerStateType.INITIALIZED);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            reset();
-            init();
+            next();
         } catch (IOException e) {
             e.printStackTrace();
             next();
@@ -298,26 +297,32 @@ public final class MediaPlayerManager extends MediaPlayerSetting implements Base
 
     public void addLoopingListener(MediaPlayerListener.OnLoopingListener listener) {
         mLoopingListeners.add(listener);
+        if (mTracks != null && !mTracks.isEmpty()) notifyLoopChanged();
     }
 
     public void addShufflingListener(MediaPlayerListener.OnShufflingListener listener) {
         mShufflingListeners.add(listener);
+        if (mTracks != null && !mTracks.isEmpty()) notifyShuffleChanged();
     }
 
     public void addPlayingListener(MediaPlayerListener.OnPlayingListener listener) {
         mPlayingListeners.add(listener);
+        if (mTracks != null && !mTracks.isEmpty()) notifyPlayChanged();
     }
 
     public void addCurrentTimeListener(MediaPlayerListener.OnCurrentTimeListener listener) {
         mCurrentTimeListeners.add(listener);
+        if (mTracks != null && !mTracks.isEmpty()) notifyCurrentTimeChanged();
     }
 
     public void addTotalTimeListener(MediaPlayerListener.OnTotalTimeListener listener) {
         mTotalTimeListeners.add(listener);
+        if (mTracks != null && !mTracks.isEmpty()) notifyTotalTimeChanged();
     }
 
     public void addTrackListener(MediaPlayerListener.OnTrackListener listener) {
         mTrackListeners.add(listener);
+        if (mTracks != null && !mTracks.isEmpty()) notifyTrackChanged();
     }
 
     public void addTrackErrorListener(MediaPlayerListener.OnErrorListener listener) {

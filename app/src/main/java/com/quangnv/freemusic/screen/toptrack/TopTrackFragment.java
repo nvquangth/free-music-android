@@ -79,12 +79,10 @@ public class TopTrackFragment extends BaseFragment implements View.OnClickListen
 
     private void bindData(Track track) {
         Glide.with(mBigImageTrack.getContext())
-                .load(DrawableUtils
-                        .getResourceId(mBigImageTrack.getContext(), track.getArtWorkUrl()))
+                .load(track.getArtWorkUrl())
                 .into(mBigImageTrack);
         Glide.with(mSmallImageTrack.getContext())
-                .load(DrawableUtils
-                        .getResourceId(mBigImageTrack.getContext(), track.getArtWorkUrl()))
+                .load(track.getArtWorkUrl())
                 .apply(RequestOptions
                         .bitmapTransform(new RoundedCornersTransformation(RADIUS_IMAGE, 0)))
                 .into(mSmallImageTrack);

@@ -29,7 +29,6 @@ import com.quangnv.freemusic.screen.OnItemTrackListener;
 import com.quangnv.freemusic.screen.home.HomeFragment;
 import com.quangnv.freemusic.service.ServiceManager;
 import com.quangnv.freemusic.service.TrackService;
-import com.quangnv.freemusic.util.DrawableUtils;
 
 import java.util.List;
 
@@ -37,10 +36,12 @@ import javax.inject.Inject;
 
 public class MainActivity extends BaseActivity implements
         BottomNavigationView.OnNavigationItemSelectedListener,
-        View.OnClickListener,
         BottomNavigationView.OnNavigationItemReselectedListener,
+        View.OnClickListener,
         ServiceConnection,
-        OnItemTrackListener, MediaPlayerListener.OnTrackListener, MediaPlayerListener.OnPlayingListener {
+        OnItemTrackListener,
+        MediaPlayerListener.OnTrackListener,
+        MediaPlayerListener.OnPlayingListener {
 
     @Inject
     MainContract.Presenter mPresenter;
@@ -69,13 +70,17 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     protected void onStop() {
+        mTrackService.removeTrackListener(this);
+        mTrackService.removePlayingListener(this);
         mServiceManager.unbindService();
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
-        mServiceManager.stopService();
+        if (mTrackService.getPlayMediaPlayer() != MediaPlayerPlayType.PLAY) {
+            mServiceManager.stopService();
+        }
         super.onDestroy();
     }
 
@@ -141,6 +146,9 @@ public class MainActivity extends BaseActivity implements
         mTrackService.addTrackListener(this);
         mTrackService.addPlayingListener(this);
         mBound = true;
+        if (mTrackService.getPlayMediaPlayer() != MediaPlayerPlayType.WAIT) {
+            mViewMiniPlayer.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -160,8 +168,7 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onTrackChanged(Track track) {
         Glide.with(mImageTrackArtist.getContext())
-                .load(DrawableUtils
-                        .getResourceId(mImageTrackArtist.getContext(), track.getArtWorkUrl()))
+                .load(track.getArtWorkUrl())
                 .apply(RequestOptions.bitmapTransform(new CircleCrop()))
                 .into(mImageTrackArtist);
         mTextTrackArtist.setText(track.getPublisher().getArtist());

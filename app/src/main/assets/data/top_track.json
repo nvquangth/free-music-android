@@ -1,6 +1,6 @@
 [
   {
-    "artwork_url": "mytam",
+    "artwork_url": "android.resource://com.quangnv.feemusic/drawable/mytam",
     "downloadable": false,
     "download_url": null,
     "duration": 262006,
@@ -16,7 +16,7 @@
     "description": ""
   },
   {
-    "artwork_url": "huongtram",
+    "artwork_url": "android.resource://com.quangnv.feemusic/drawable/huongtram",
     "downloadable": false,
     "download_url": null,
     "duration": 262006,
@@ -32,7 +32,7 @@
     "description": ""
   },
   {
-    "artwork_url": "jangmi",
+    "artwork_url": "android.resource://com.quangnv.feemusic/drawable/jangmi",
     "downloadable": false,
     "download_url": null,
     "duration": 262006,
@@ -48,7 +48,7 @@
     "description": ""
   },
   {
-    "artwork_url": "themen",
+    "artwork_url": "android.resource://com.quangnv.feemusic/drawable/themen",
     "downloadable": false,
     "download_url": null,
     "duration": 262006,
@@ -64,7 +64,7 @@
     "description": ""
   },
   {
-    "artwork_url": "haanhtuan",
+    "artwork_url": "android.resource://com.quangnv.feemusic/drawable/haanhtuan",
     "downloadable": false,
     "download_url": null,
     "duration": 262006,
