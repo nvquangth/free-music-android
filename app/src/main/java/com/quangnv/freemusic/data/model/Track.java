@@ -234,6 +234,7 @@ public class Track extends BaseModel implements Parcelable {
     }
 
     public Publisher getPublisher() {
+        if (mPublisher == null) mPublisher = new Publisher.Builder().build();
         return mPublisher;
     }
 

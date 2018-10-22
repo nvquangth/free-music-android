@@ -18,8 +18,12 @@ import com.quangnv.freemusic.R;
 import com.quangnv.freemusic.base.BaseFragment;
 import com.quangnv.freemusic.data.model.Genre;
 import com.quangnv.freemusic.data.model.Track;
+import com.quangnv.freemusic.screen.search.SearchFragment;
+import com.quangnv.freemusic.screen.search.SearchType;
 import com.quangnv.freemusic.screen.tracks.TracksFragment;
 import com.quangnv.freemusic.util.Constants;
+import com.quangnv.freemusic.util.navigator.NavigateAnim;
+import com.quangnv.freemusic.util.navigator.Navigator;
 
 import java.util.List;
 
@@ -34,6 +38,7 @@ public class GenreFragment extends BaseFragment implements GenreContract.View {
     @Inject
     GenreContract.Presenter mPresenter;
 
+    private Navigator mNavigator;
     private TracksFragment mTracksFragment;
     private Genre mGenre;
 
@@ -60,7 +65,9 @@ public class GenreFragment extends BaseFragment implements GenreContract.View {
                 .inject(this);
         mPresenter.setView(this);
         mTracksFragment = TracksFragment.newInstance();
-        addFragmentToBackStack(R.id.frame_container, mTracksFragment, false);
+        mNavigator = new Navigator(this);
+        mNavigator.goNextChildFragment(R.id.frame_container, mTracksFragment,
+                false, NavigateAnim.NONE, null);
         if (getArguments() != null) {
             mGenre = getArguments().getParcelable(Constants.ARGUMENT_GENRE);
         }
@@ -103,10 +110,11 @@ public class GenreFragment extends BaseFragment implements GenreContract.View {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                getFragmentManager().popBackStackImmediate();
+                mNavigator.goBackFragment();
                 break;
             case R.id.nav_search:
-
+                mNavigator.addFragmentToBackStack(R.id.frame_container,
+                        SearchFragment.newInstance(SearchType.NONE), true, NavigateAnim.RIGHT_LEFT, null);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -117,15 +125,5 @@ public class GenreFragment extends BaseFragment implements GenreContract.View {
         mToolbar = view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
-    }
-
-    private void addFragmentToBackStack(@IdRes int containerViewId, Fragment fragment,
-                                        boolean addToBackStack) {
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.add(containerViewId, fragment);
-        if (addToBackStack) {
-            transaction.addToBackStack(null);
-        }
-        transaction.commit();
     }
 }

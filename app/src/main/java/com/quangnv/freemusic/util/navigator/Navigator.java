@@ -169,6 +169,37 @@ public class Navigator {
         return isShowPrevious;
     }
 
+    /**
+     *
+     */
+    public void goBackFragment() {
+        mActivity.getSupportFragmentManager().popBackStackImmediate();
+    }
+
+    /**
+     *
+     * @param fragment
+     */
+    public void showChildFragment(Fragment fragment, int animation) {
+        FragmentTransaction transaction = mFragment.getChildFragmentManager().beginTransaction();
+        setFragmentTransactionAnimation(transaction, animation);
+        transaction.show(fragment);
+        transaction.commitAllowingStateLoss();
+        mFragment.getChildFragmentManager().executePendingTransactions();
+    }
+
+    /**
+     *
+     * @param fragment
+     */
+    public void hideChildFragment(Fragment fragment, int animation) {
+        FragmentTransaction transaction = mFragment.getChildFragmentManager().beginTransaction();
+        setFragmentTransactionAnimation(transaction, animation);
+        transaction.hide(fragment);
+        transaction.commitAllowingStateLoss();
+        mFragment.getChildFragmentManager().executePendingTransactions();
+    }
+
     public void showDialogFragment(@IdRes int containerViewId, DialogFragment dialogFragment,
                                    boolean addToBackStack, int animation, String tag) {
         FragmentTransaction transaction =

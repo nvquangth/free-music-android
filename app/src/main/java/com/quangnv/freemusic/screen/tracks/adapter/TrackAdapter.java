@@ -9,11 +9,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.quangnv.freemusic.R;
 import com.quangnv.freemusic.base.BaseRecyclerViewAdapter;
 import com.quangnv.freemusic.data.model.Track;
 import com.quangnv.freemusic.screen.OnViewTrackDetailListener;
-import com.quangnv.freemusic.util.GlideApp;
 
 /**
  * Created by quangnv on 21/10/2018
@@ -84,9 +85,11 @@ public class TrackAdapter extends BaseRecyclerViewAdapter<Track, TrackAdapter.Tr
 
         private void binData(Track track) {
             mTrack = track;
-            GlideApp.with(mImageTrack.getContext())
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions.error(R.drawable.image_default_border);
+            Glide.with(mImageTrack.getContext())
                     .load(track.getArtWorkUrl())
-                    .error(R.drawable.image_default_border)
+                    .apply(requestOptions)
                     .into(mImageTrack);
             mTextTrackTitle.setText(track.getTitle());
             if (track.getPublisher() != null) {
