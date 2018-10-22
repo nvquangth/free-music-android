@@ -9,7 +9,7 @@
     <View
         android:id="@+id/view_search"
         android:layout_width="0dp"
-        android:layout_height="@dimen/dp_50"
+        android:layout_height="?attr/actionBarSize"
         android:background="@color/color_grey_50"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,6 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@null"
+        android:clickable="false"
         android:padding="@dimen/dp_13"
         android:src="@drawable/ic_search_black_24dp"
         app:layout_constraintBottom_toBottomOf="@+id/view_search"
@@ -46,7 +47,7 @@
         android:layout_height="wrap_content"
         android:background="@null"
         android:padding="@dimen/dp_13"
-        android:src="@drawable/ic_keyboard_voice_black_24dp"
+        android:src="@drawable/ic_keyboard_voice_black_transparent_80_24dp"
         app:layout_constraintBottom_toBottomOf="@+id/view_search"
         app:layout_constraintEnd_toEndOf="@+id/view_search"
         app:layout_constraintTop_toTopOf="parent" />

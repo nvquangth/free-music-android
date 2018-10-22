@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 import com.quangnv.freemusic.MainApplication;
@@ -19,6 +20,8 @@ import com.quangnv.freemusic.screen.OnItemTrackListener;
 import com.quangnv.freemusic.screen.genre.GenreFragment;
 import com.quangnv.freemusic.screen.home.adapter.GenreAdapter;
 import com.quangnv.freemusic.screen.home.adapter.TrackPagerAdapter;
+import com.quangnv.freemusic.screen.search.SearchFragment;
+import com.quangnv.freemusic.screen.search.SearchType;
 import com.quangnv.freemusic.util.navigator.NavigateAnim;
 import com.quangnv.freemusic.util.navigator.Navigator;
 
@@ -53,6 +56,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
     private OnItemTrackListener mOnItemTrackListener;
 
     private View mViewSearch;
+    private ImageButton mButtonVoiceSearch;
     private ViewPager mTrackPager;
     private RecyclerView mGenreRecycler;
     private ProgressBar mProgressBarLoadingTrack;
@@ -143,6 +147,12 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.view_search:
+                mNavigator.addFragmentToBackStack(R.id.frame_container,
+                        SearchFragment.newInstance(SearchType.NONE), true, NavigateAnim.RIGHT_LEFT, null);
+                break;
+            case R.id.button_search_voice:
+                mNavigator.addFragmentToBackStack(R.id.frame_container,
+                        SearchFragment.newInstance(SearchType.VOICE), true, NavigateAnim.RIGHT_LEFT, null);
                 break;
         }
     }
@@ -160,6 +170,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
 
     private void initView(View view) {
         mViewSearch = view.findViewById(R.id.view_search);
+        mButtonVoiceSearch = view.findViewById(R.id.button_search_voice);
         mTrackPager = view.findViewById(R.id.view_pager);
         mGenreRecycler = view.findViewById(R.id.recycler_genre);
         mProgressBarLoadingTrack = view.findViewById(R.id.progress_bar_loading_track);
@@ -168,6 +179,7 @@ public class HomeFragment extends BaseFragment implements HomeContract.View,
 
     private void registerListener() {
         mViewSearch.setOnClickListener(this);
+        mButtonVoiceSearch.setOnClickListener(this);
     }
 
     private void setupGenreRecycler() {

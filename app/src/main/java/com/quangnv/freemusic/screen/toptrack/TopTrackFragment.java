@@ -86,6 +86,8 @@ public class TopTrackFragment extends BaseFragment implements View.OnClickListen
                         .bitmapTransform(new RoundedCornersTransformation(RADIUS_IMAGE, 0)))
                 .into(mSmallImageTrack);
         mTextTrackTitle.setText(track.getTitle());
-        mTextTrackArtist.setText(track.getPublisher().getArtist());
+        if (track.getPublisher() != null) {
+            mTextTrackArtist.setText(track.getPublisher().getArtist());
+        }
     }
 }

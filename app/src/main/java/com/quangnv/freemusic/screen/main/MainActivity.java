@@ -173,7 +173,9 @@ public class MainActivity extends BaseActivity implements
                 .load(track.getArtWorkUrl())
                 .apply(RequestOptions.bitmapTransform(new CircleCrop()))
                 .into(mImageTrackArtist);
-        mTextTrackArtist.setText(track.getPublisher().getArtist());
+        if (track.getPublisher() != null) {
+            mTextTrackArtist.setText(track.getPublisher().getArtist());
+        }
         mTextTrackTitle.setText(track.getTitle());
     }
 

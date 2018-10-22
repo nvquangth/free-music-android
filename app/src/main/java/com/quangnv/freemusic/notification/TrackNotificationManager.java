@@ -64,6 +64,7 @@ public final class TrackNotificationManager {
     }
 
     public void updatePauseNotification() {
+        if (mNotification == null) return;
         mIntentRemoteView.setAction(ACTION_PAUSE);
         PendingIntent pendingIntent = PendingIntent.getService(mTrackService, REQUEST_CODE,
                 mIntentRemoteView, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -74,6 +75,7 @@ public final class TrackNotificationManager {
     }
 
     public void updatePlayNotification() {
+        if (mNotification == null) return;
         mIntentRemoteView.setAction(ACTION_PLAY);
         PendingIntent pendingIntent = PendingIntent.getService(mTrackService, REQUEST_CODE,
                 mIntentRemoteView, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -86,6 +88,7 @@ public final class TrackNotificationManager {
 
     public void updateDescriptionNotification(Track track) {
         if (mNotificationTarget == null) return;
+        if (mNotification == null) return;
         mRemoteViews.setTextViewText(R.id.text_track_title, track.getTitle());
         if (track.getPublisher() != null) {
             mRemoteViews.setTextViewText(R.id.text_track_artist, track.getPublisher().getArtist());

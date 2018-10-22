@@ -6,4 +6,8 @@
     <string name="hint_search">Search for songs...</string>
     <string name="title_genres">Genres</string>
     <string name="title_search">Search</string>
+    <string name="hint_search_track">Key word</string>
+    <string name="title_hot_keys">Hot keys</string>
+    <string name="title_clear">Clear</string>
+    <string name="title_history">History</string>
 </resources>
