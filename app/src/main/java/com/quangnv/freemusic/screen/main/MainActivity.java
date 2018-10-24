@@ -23,6 +23,7 @@ import com.quangnv.freemusic.data.model.Track;
 import com.quangnv.freemusic.mediaplayer.MediaPlayerListener;
 import com.quangnv.freemusic.mediaplayer.MediaPlayerPlayType;
 import com.quangnv.freemusic.screen.OnItemTrackListener;
+import com.quangnv.freemusic.screen.detail.DetailActivity;
 import com.quangnv.freemusic.screen.home.HomeFragment;
 import com.quangnv.freemusic.service.ServiceManager;
 import com.quangnv.freemusic.service.TrackService;
@@ -129,6 +130,7 @@ public class MainActivity extends BaseActivity implements
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.mini_player:
+                mNavigator.startActivity(DetailActivity.class);
                 break;
             case R.id.button_prev:
                 mTrackService.previous();

@@ -9,21 +9,21 @@ public class MediaPlayerSetting {
     private int mShuffle;
     private int mPlay;
 
-    @MediaPlayerShuffleType
+    @MediaPlayerLoopType
     public int getLoop() {
         return mLoop;
     }
 
-    public void setLoop(@MediaPlayerShuffleType int loop) {
+    public void setLoop(@MediaPlayerLoopType int loop) {
         mLoop = loop;
     }
 
-    @MediaPlayerLoopType
+    @MediaPlayerShuffleType
     public int getShuffle() {
         return mShuffle;
     }
 
-    public void setShuffle(@MediaPlayerLoopType int shuffle) {
+    public void setShuffle(@MediaPlayerShuffleType int shuffle) {
         mShuffle = shuffle;
     }
 

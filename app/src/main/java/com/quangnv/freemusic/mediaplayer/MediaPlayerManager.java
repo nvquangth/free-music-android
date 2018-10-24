@@ -8,6 +8,7 @@ import com.quangnv.freemusic.data.model.Track;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -23,6 +24,7 @@ public final class MediaPlayerManager extends MediaPlayerSetting implements Base
     private Context mContext;
     private MediaPlayer mMediaPlayer;
     private List<Track> mTracks;
+    private List<Track> mTracksCopy;
     private int mCurrentTrack;
     @MediaPlayerStateType
     private int mState;
@@ -57,6 +59,12 @@ public final class MediaPlayerManager extends MediaPlayerSetting implements Base
 
         // sure media player's state is idle
         if (mState != MediaPlayerStateType.IDLE) reset();
+
+        if (getLoop() == MediaPlayerLoopType.ONE) {
+            mMediaPlayer.setLooping(true);
+        } else {
+            mMediaPlayer.setLooping(false);
+        }
 
         Uri uri = Uri.parse(mTracks.get(mCurrentTrack).getStreamUrl());
         try {
@@ -169,7 +177,7 @@ public final class MediaPlayerManager extends MediaPlayerSetting implements Base
 
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
-        setState(MediaPlayerStateType.STARTED);
+        setState(MediaPlayerStateType.PREPARED);
         start();
     }
 
@@ -181,10 +189,11 @@ public final class MediaPlayerManager extends MediaPlayerSetting implements Base
                 next();
                 break;
             case MediaPlayerLoopType.ONE:
+                setPlay(MediaPlayerPlayType.PLAY);
                 break;
             case MediaPlayerLoopType.ALL:
                 if (mTracks.size() - 1 == mCurrentTrack) {
-                    mCurrentTrack = 0;
+                    mCurrentTrack = -1;
                 }
                 next();
                 break;
@@ -231,6 +240,14 @@ public final class MediaPlayerManager extends MediaPlayerSetting implements Base
     @Override
     public void setShuffle(@MediaPlayerShuffleType int shuffle) {
         super.setShuffle(shuffle);
+        switch (shuffle) {
+            case MediaPlayerShuffleType.OFF:
+                mTracks = mTracksCopy;
+                break;
+            case MediaPlayerShuffleType.ON:
+                Collections.shuffle(mTracks);
+                break;
+        }
         notifyShuffleChanged();
     }
 
@@ -244,6 +261,7 @@ public final class MediaPlayerManager extends MediaPlayerSetting implements Base
 
     public void setTracks(List<Track> tracks) {
         mTracks = tracks;
+        mTracksCopy = tracks;
     }
 
     public void setCurrentTrack(int currentTrack) {
@@ -293,6 +311,12 @@ public final class MediaPlayerManager extends MediaPlayerSetting implements Base
                 break;
         }
         notifyPlayChanged();
+    }
+
+    public void updateTime() {
+        if (mState != MediaPlayerStateType.ERROR) {
+            notifyCurrentTimeChanged();
+        }
     }
 
     public void addLoopingListener(MediaPlayerListener.OnLoopingListener listener) {
