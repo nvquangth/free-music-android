@@ -22,7 +22,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".screen.detail.DetailActivity" />
+        <activity
+            android:name=".screen.detail.DetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <service android:name=".service.TrackService" />
     </application>

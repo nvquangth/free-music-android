@@ -12,11 +12,11 @@ public interface MediaPlayerListener {
      * setting
      */
     interface OnLoopingListener {
-        void onLoopChanged(@MediaPlayerShuffleType int loopType);
+        void onLoopChanged(@MediaPlayerLoopType int loopType);
     }
 
     interface OnShufflingListener {
-        void onShuffleChanged(@MediaPlayerLoopType int shuffleType);
+        void onShuffleChanged(@MediaPlayerShuffleType int shuffleType);
     }
 
     /**

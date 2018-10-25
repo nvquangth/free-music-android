@@ -8,8 +8,10 @@ import android.support.annotation.Nullable;
 
 import com.quangnv.freemusic.data.model.Track;
 import com.quangnv.freemusic.mediaplayer.MediaPlayerListener;
+import com.quangnv.freemusic.mediaplayer.MediaPlayerLoopType;
 import com.quangnv.freemusic.mediaplayer.MediaPlayerManager;
 import com.quangnv.freemusic.mediaplayer.MediaPlayerPlayType;
+import com.quangnv.freemusic.mediaplayer.MediaPlayerShuffleType;
 import com.quangnv.freemusic.notification.TrackNotificationManager;
 
 import java.util.List;
@@ -119,6 +121,32 @@ public class TrackService extends Service implements MediaPlayerListener.OnTrack
         } else if (mMediaPlayerManager.getPlay() == MediaPlayerPlayType.PLAY) {
             pause();
         }
+    }
+
+    public void changeShuffle() {
+        if (mMediaPlayerManager.getShuffle() == MediaPlayerShuffleType.OFF) {
+            mMediaPlayerManager.setShuffle(MediaPlayerShuffleType.ON);
+        } else if (mMediaPlayerManager.getShuffle() == MediaPlayerShuffleType.ON) {
+            mMediaPlayerManager.setShuffle(MediaPlayerShuffleType.OFF);
+        }
+    }
+
+    public void changeLoop() {
+        if (mMediaPlayerManager.getLoop() == MediaPlayerLoopType.NONE) {
+            mMediaPlayerManager.setLoop(MediaPlayerLoopType.ONE);
+        } else if (mMediaPlayerManager.getLoop() == MediaPlayerLoopType.ONE) {
+            mMediaPlayerManager.setLoop(MediaPlayerLoopType.ALL);
+        } else if (mMediaPlayerManager.getLoop() == MediaPlayerLoopType.ALL) {
+            mMediaPlayerManager.setLoop(MediaPlayerLoopType.NONE);
+        }
+    }
+
+    public void seekTo(int msec) {
+        mMediaPlayerManager.seekTo(msec);
+    }
+
+    public void updateTime() {
+        mMediaPlayerManager.updateTime();
     }
 
     public int getPlayMediaPlayer() {
