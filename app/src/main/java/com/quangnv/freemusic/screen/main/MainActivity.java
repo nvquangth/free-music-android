@@ -13,6 +13,7 @@ import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
@@ -62,6 +63,7 @@ public class MainActivity extends BaseActivity implements
     private AppCompatImageButton mButtonPrev;
     private AppCompatImageButton mButtonPlayPause;
     private AppCompatImageButton mButtonNext;
+    private ProgressBar mProgressBarLoadingPlayer;
 
     @Override
     protected void onStart() {
@@ -185,13 +187,18 @@ public class MainActivity extends BaseActivity implements
     public void onPlayChanged(@MediaPlayerPlayType int playType) {
         switch (playType) {
             case MediaPlayerPlayType.PLAY:
+                mProgressBarLoadingPlayer.setVisibility(View.INVISIBLE);
+                mButtonPlayPause.setVisibility(View.VISIBLE);
                 mButtonPlayPause.setImageResource(R.drawable.ic_pause_circle_outline_black_36dp);
                 break;
             case MediaPlayerPlayType.PAUSE:
+                mProgressBarLoadingPlayer.setVisibility(View.INVISIBLE);
+                mButtonPlayPause.setVisibility(View.VISIBLE);
                 mButtonPlayPause.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
                 break;
             case MediaPlayerPlayType.WAIT:
-
+                mProgressBarLoadingPlayer.setVisibility(View.VISIBLE);
+                mButtonPlayPause.setVisibility(View.INVISIBLE);
                 break;
         }
     }
@@ -205,6 +212,7 @@ public class MainActivity extends BaseActivity implements
         mButtonPrev = findViewById(R.id.button_prev);
         mButtonPlayPause = findViewById(R.id.button_play_pause);
         mButtonNext = findViewById(R.id.button_next);
+        mProgressBarLoadingPlayer = findViewById(R.id.progress_bar_loading_player);
     }
 
     private void registerListener() {

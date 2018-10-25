@@ -15,6 +15,9 @@ import com.quangnv.freemusic.R;
 import com.quangnv.freemusic.base.BaseRecyclerViewAdapter;
 import com.quangnv.freemusic.data.model.Track;
 import com.quangnv.freemusic.screen.OnViewTrackDetailListener;
+import com.quangnv.freemusic.util.Constants;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 /**
  * Created by quangnv on 21/10/2018
@@ -85,11 +88,12 @@ public class TrackAdapter extends BaseRecyclerViewAdapter<Track, TrackAdapter.Tr
 
         private void binData(Track track) {
             mTrack = track;
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions.error(R.drawable.image_default_border);
             Glide.with(mImageTrack.getContext())
                     .load(track.getArtWorkUrl())
-                    .apply(requestOptions)
+                    .apply(new RequestOptions().error(R.drawable.image_default_border))
+                    .apply(
+                            RequestOptions.bitmapTransform(
+                                    new RoundedCornersTransformation(Constants.ROUND_CORNER, 0)))
                     .into(mImageTrack);
             mTextTrackTitle.setText(track.getTitle());
             if (track.getPublisher() != null) {

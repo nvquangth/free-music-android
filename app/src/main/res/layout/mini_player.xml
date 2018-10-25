@@ -92,4 +92,14 @@
         app:layout_constraintEnd_toStartOf="@+id/button_prev"
         app:layout_constraintStart_toEndOf="@+id/image_track_artist"
         app:layout_constraintTop_toBottomOf="@+id/text_track_title" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar_loading_player"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="@dimen/dp_36"
+        android:layout_height="@dimen/dp_36"
+        app:layout_constraintBottom_toBottomOf="@+id/button_play_pause"
+        app:layout_constraintEnd_toEndOf="@+id/button_play_pause"
+        app:layout_constraintStart_toEndOf="@+id/button_prev"
+        app:layout_constraintTop_toTopOf="@+id/button_play_pause" />
 </android.support.constraint.ConstraintLayout>

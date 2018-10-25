@@ -7,12 +7,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.quangnv.freemusic.R;
 import com.quangnv.freemusic.base.BaseFragment;
 import com.quangnv.freemusic.data.model.Track;
 import com.quangnv.freemusic.screen.home.HomeFragment;
 import com.quangnv.freemusic.util.Constants;
+import com.quangnv.freemusic.util.GlideApp;
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
@@ -22,7 +24,7 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class TopTrackFragment extends BaseFragment implements View.OnClickListener {
 
-    private static final int RADIUS_IMAGE = 15;
+    private static final int RADIUS_IMAGE = 20;
 
     private Track mTrack;
 
@@ -82,8 +84,9 @@ public class TopTrackFragment extends BaseFragment implements View.OnClickListen
                 .into(mBigImageTrack);
         Glide.with(mSmallImageTrack.getContext())
                 .load(track.getArtWorkUrl())
-                .apply(RequestOptions
-                        .bitmapTransform(new RoundedCornersTransformation(RADIUS_IMAGE, 0)))
+                .apply(
+                        RequestOptions.bitmapTransform(
+                                new RoundedCornersTransformation(Constants.ROUND_CORNER, 0)))
                 .into(mSmallImageTrack);
         mTextTrackTitle.setText(track.getTitle());
         if (track.getPublisher() != null) {

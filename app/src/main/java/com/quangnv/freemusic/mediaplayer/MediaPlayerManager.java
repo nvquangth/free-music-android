@@ -109,10 +109,8 @@ public final class MediaPlayerManager extends MediaPlayerSetting implements Base
 
     @Override
     public void reset() {
-        if (mState != MediaPlayerStateType.PREPARING) {
-            mMediaPlayer.reset();
-            setState(MediaPlayerStateType.IDLE);
-        }
+        mMediaPlayer.reset();
+        setState(MediaPlayerStateType.IDLE);
     }
 
     @Override
@@ -161,7 +159,8 @@ public final class MediaPlayerManager extends MediaPlayerSetting implements Base
     public int getDuration() {
         if (mState != MediaPlayerStateType.IDLE
                 && mState != MediaPlayerStateType.INITIALIZED
-                && mState != MediaPlayerStateType.ERROR) {
+                && mState != MediaPlayerStateType.ERROR
+                && mState != MediaPlayerStateType.PREPARING) {
             return mMediaPlayer.getDuration();
         }
         return 0;
@@ -279,11 +278,9 @@ public final class MediaPlayerManager extends MediaPlayerSetting implements Base
                 setPlay(MediaPlayerPlayType.WAIT);
                 break;
             case MediaPlayerStateType.INITIALIZED:
-                setPlay(MediaPlayerPlayType.WAIT);
                 notifyTrackChanged();
                 break;
             case MediaPlayerStateType.PREPARING:
-                setPlay(MediaPlayerPlayType.WAIT);
                 break;
             case MediaPlayerStateType.PREPARED:
                 setPlay(MediaPlayerPlayType.PAUSE);

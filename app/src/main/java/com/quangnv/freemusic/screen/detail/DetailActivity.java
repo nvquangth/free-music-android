@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -61,6 +62,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     private TextView mTextCurrentTime;
     private TextView mTextTotalTime;
     private SeekBar mSeekBarTime;
+    private ProgressBar mProgressBarLoadingPlayer;
 
     @Override
     protected void onStart() {
@@ -184,12 +186,17 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     public void onPlayChanged(int playType) {
         switch (playType){
             case MediaPlayerPlayType.WAIT:
-                setImageResourceButtonPlayPause(R.drawable.ic_pause_circle_outline_black_36dp);
+                mProgressBarLoadingPlayer.setVisibility(View.VISIBLE);
+                mButtonPlayPause.setVisibility(View.INVISIBLE);
                 break;
             case MediaPlayerPlayType.PLAY:
+                mProgressBarLoadingPlayer.setVisibility(View.INVISIBLE);
+                mButtonPlayPause.setVisibility(View.VISIBLE);
                 setImageResourceButtonPlayPause(R.drawable.ic_pause_circle_outline_black_36dp);
                 break;
             case MediaPlayerPlayType.PAUSE:
+                mProgressBarLoadingPlayer.setVisibility(View.INVISIBLE);
+                mButtonPlayPause.setVisibility(View.VISIBLE);
                 setImageResourceButtonPlayPause(R.drawable.ic_play_circle_outline_black_36dp);
                 break;
         }
@@ -253,6 +260,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         mTextCurrentTime = findViewById(R.id.text_current_time);
         mTextTotalTime = findViewById(R.id.text_total_time);
         mSeekBarTime = findViewById(R.id.seek_bar_time);
+        mProgressBarLoadingPlayer = findViewById(R.id.progress_bar_loading_player);
     }
 
     private void registerListener() {

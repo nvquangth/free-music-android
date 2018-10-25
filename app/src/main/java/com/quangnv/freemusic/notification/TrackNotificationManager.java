@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import com.bumptech.glide.Glide;
@@ -25,6 +26,7 @@ public final class TrackNotificationManager {
     public static final String ACTION_PREVIOUS = "com.quangnv.freemusic.ACTION_PREVIOUS";
     public static final String ACTION_PLAY = "com.quangnv.freemusic.ACTION_PLAY";
     public static final String ACTION_PAUSE = "com.quangnv.freemusic.ACTION_PAUSE";
+    public static final String ACTION_WAIT = "com.quangnv.freemusic.ACTION_WAIT";
     public static final String ACTION_NEXT = "com.quangnv.freemusic.ACTION_NEXT";
     public static final String ACTION_CLOSE = "com.quangnv.freemusic.ACTION_CLOSE";
     private static final String CHANNEL_ID = "CHANNEL_ID";
@@ -66,6 +68,8 @@ public final class TrackNotificationManager {
     public void updatePauseNotification() {
         if (mNotification == null) return;
         mIntentRemoteView.setAction(ACTION_PAUSE);
+        mRemoteViews.setViewVisibility(R.id.button_play_pause, View.VISIBLE);
+        mRemoteViews.setViewVisibility(R.id.progress_bar_loading_player, View.INVISIBLE);
         PendingIntent pendingIntent = PendingIntent.getService(mTrackService, REQUEST_CODE,
                 mIntentRemoteView, PendingIntent.FLAG_UPDATE_CURRENT);
         mRemoteViews.setImageViewResource(R.id.button_play_pause, R.drawable.ic_pause_white_48dp);
@@ -77,11 +81,21 @@ public final class TrackNotificationManager {
     public void updatePlayNotification() {
         if (mNotification == null) return;
         mIntentRemoteView.setAction(ACTION_PLAY);
+        mRemoteViews.setViewVisibility(R.id.button_play_pause, View.VISIBLE);
+        mRemoteViews.setViewVisibility(R.id.progress_bar_loading_player, View.INVISIBLE);
         PendingIntent pendingIntent = PendingIntent.getService(mTrackService, REQUEST_CODE,
                 mIntentRemoteView, PendingIntent.FLAG_UPDATE_CURRENT);
         mRemoteViews.setImageViewResource(R.id.button_play_pause,
                 R.drawable.ic_play_arrow_white_48dp);
         mRemoteViews.setOnClickPendingIntent(R.id.button_play_pause, pendingIntent);
+        mNotificationManager.notify(NOTIFICATION_ID, mNotification);
+        mTrackService.startForeground(NOTIFICATION_ID, mNotification);
+    }
+
+    public void updateWaitingNotification() {
+        if (mNotification == null) return;
+        mRemoteViews.setViewVisibility(R.id.progress_bar_loading_player, View.VISIBLE);
+        mRemoteViews.setViewVisibility(R.id.button_play_pause, View.INVISIBLE);
         mNotificationManager.notify(NOTIFICATION_ID, mNotification);
         mTrackService.startForeground(NOTIFICATION_ID, mNotification);
     }
