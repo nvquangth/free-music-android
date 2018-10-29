@@ -12,31 +12,11 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
+        app:titleTextAppearance="@style/Toolbar.TitleText"
+        app:subtitleTextAppearance="@style/Toolbar.SubTitleText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <com.rd.PageIndicatorView
-        android:id="@+id/pageIndicatorView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_8"
-        android:layout_marginLeft="@dimen/dp_8"
-        android:layout_marginEnd="@dimen/dp_8"
-        android:layout_marginRight="@dimen/dp_8"
-        android:layout_marginBottom="@dimen/dp_8"
-        app:layout_constraintBottom_toTopOf="@+id/pager_track_detail"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager_detail"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pageIndicatorView" />
 
     <ImageButton
         android:id="@+id/button_shuffle"
@@ -48,7 +28,6 @@
         android:src="@drawable/ic_shuffle_black_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button_prev"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
@@ -60,7 +39,6 @@
         android:src="@drawable/ic_skip_previous_black_24dp"
         app:layout_constraintBottom_toBottomOf="@+id/button_shuffle"
         app:layout_constraintEnd_toStartOf="@+id/button_play_pause"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/button_shuffle"
         app:layout_constraintTop_toTopOf="@+id/button_shuffle" />
 
@@ -73,7 +51,6 @@
         android:src="@drawable/ic_pause_circle_outline_black_36dp"
         app:layout_constraintBottom_toBottomOf="@+id/button_prev"
         app:layout_constraintEnd_toStartOf="@+id/button_next"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/button_prev"
         app:layout_constraintTop_toTopOf="@+id/button_prev" />
 
@@ -86,7 +63,6 @@
         android:src="@drawable/ic_skip_next_black_24dp"
         app:layout_constraintBottom_toBottomOf="@+id/button_play_pause"
         app:layout_constraintEnd_toStartOf="@+id/button_loop"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/button_play_pause"
         app:layout_constraintTop_toTopOf="@+id/button_play_pause" />
 
@@ -99,7 +75,6 @@
         android:src="@drawable/ic_repeat_black_24dp"
         app:layout_constraintBottom_toBottomOf="@+id/button_next"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/button_next"
         app:layout_constraintTop_toTopOf="@+id/button_next" />
 
@@ -122,7 +97,6 @@
         android:layout_marginBottom="@dimen/dp_24"
         app:layout_constraintBottom_toTopOf="@+id/button_play_pause"
         app:layout_constraintEnd_toStartOf="@+id/seek_bar_time"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -132,7 +106,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/text_current_time"
         app:layout_constraintEnd_toStartOf="@+id/text_total_time"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/text_current_time"
         app:layout_constraintTop_toTopOf="@+id/text_current_time" />
 
@@ -144,18 +117,66 @@
         android:layout_marginRight="@dimen/dp_8"
         app:layout_constraintBottom_toBottomOf="@+id/seek_bar_time"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/seek_bar_time"
         app:layout_constraintTop_toTopOf="@+id/seek_bar_time" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager_track_detail"
+    <ImageView
+        android:id="@+id/image_track"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/dp_8"
-        android:layout_marginBottom="@dimen/dp_8"
-        app:layout_constraintBottom_toTopOf="@+id/seek_bar_time"
+        android:layout_height="@dimen/dp_200"
+        android:layout_marginStart="@dimen/dp_8"
+        android:layout_marginLeft="@dimen/dp_8"
+        android:layout_marginTop="@dimen/dp_36"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginRight="@dimen/dp_8"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pager_detail" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:srcCompat="@drawable/mytam" />
+
+    <ImageButton
+        android:id="@+id/button_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/ic_favorite_border_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/button_playlist"
+        app:layout_constraintEnd_toStartOf="@+id/button_playlist"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/button_playlist" />
+
+    <ImageButton
+        android:id="@+id/button_playlist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/ic_playlist_add_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/button_download"
+        app:layout_constraintEnd_toStartOf="@+id/button_download"
+        app:layout_constraintStart_toEndOf="@+id/button_favorite"
+        app:layout_constraintTop_toTopOf="@+id/button_download" />
+
+    <ImageButton
+        android:id="@+id/button_download"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/ic_vertical_align_bottom_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/button_more"
+        app:layout_constraintEnd_toStartOf="@+id/button_more"
+        app:layout_constraintStart_toEndOf="@+id/button_playlist"
+        app:layout_constraintTop_toTopOf="@+id/button_more" />
+
+    <ImageButton
+        android:id="@+id/button_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_24"
+        android:background="@null"
+        android:src="@drawable/ic_more_horiz_black_24dp"
+        app:layout_constraintBottom_toTopOf="@+id/seek_bar_time"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button_download" />
 </android.support.constraint.ConstraintLayout>

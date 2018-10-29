@@ -210,6 +210,9 @@ public class Track extends BaseModel implements Parcelable {
     }
 
     public String getArtWorkUrl() {
+        if (!StringUtils.isEmpty(mArtWorkUrl)) {
+            mArtWorkUrl = mArtWorkUrl.replace("large", "t500x500");
+        }
         return mArtWorkUrl;
     }
 
