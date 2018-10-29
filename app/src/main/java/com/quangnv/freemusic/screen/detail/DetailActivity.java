@@ -12,10 +12,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.quangnv.freemusic.R;
 import com.quangnv.freemusic.base.BaseActivity;
 import com.quangnv.freemusic.data.model.Track;
@@ -54,6 +57,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     private Runnable mRunnableTimer;
 
     private Toolbar mToolbar;
+    private ImageView mImageTrack;
     private ImageButton mButtonShuffle;
     private ImageButton mButtonLoop;
     private ImageButton mButtonPrev;
@@ -167,7 +171,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-
+                mNavigator.finishActivity();
                 break;
             case R.id.nav_timer:
 
@@ -180,6 +184,11 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     public void onTrackChanged(Track track) {
         mToolbar.setTitle(track.getTitle());
         mToolbar.setSubtitle(track.getPublisher().getArtist());
+        Glide.with(this)
+                .load(track.getArtWorkUrl())
+                .apply(new RequestOptions().error(R.drawable.image_default_border))
+                .apply(RequestOptions.circleCropTransform())
+                .into(mImageTrack);
     }
 
     @Override
@@ -251,7 +260,8 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     private void initView() {
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        mToolbar.setNavigationIcon(R.drawable.ic_keyboard_arrow_down_black_24dp);
+        mToolbar.setNavigationIcon(R.drawable.ic_keyboard_arrow_down_white_24dp);
+        mImageTrack = findViewById(R.id.image_track);
         mButtonShuffle = findViewById(R.id.button_shuffle);
         mButtonPrev = findViewById(R.id.button_prev);
         mButtonPlayPause = findViewById(R.id.button_play_pause);
