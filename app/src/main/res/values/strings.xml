@@ -11,4 +11,9 @@
     <string name="title_clear">Clear</string>
     <string name="title_history">History</string>
     <string name="title_timer">Timer</string>
+    <string name="title_local">Local</string>
+    <string name="text_sample_number">1</string>
+    <string name="title_download">Download</string>
+    <string name="title_favorite">Favorite</string>
+    <string name="title_playlist">Playlist</string>
 </resources>

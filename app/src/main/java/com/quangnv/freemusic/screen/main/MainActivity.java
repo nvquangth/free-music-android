@@ -26,6 +26,7 @@ import com.quangnv.freemusic.mediaplayer.MediaPlayerPlayType;
 import com.quangnv.freemusic.screen.OnItemTrackListener;
 import com.quangnv.freemusic.screen.detail.DetailActivity;
 import com.quangnv.freemusic.screen.home.HomeFragment;
+import com.quangnv.freemusic.screen.mymusic.MyMusicFragment;
 import com.quangnv.freemusic.service.ServiceManager;
 import com.quangnv.freemusic.service.TrackService;
 import com.quangnv.freemusic.util.navigator.NavigateAnim;
@@ -107,8 +108,12 @@ public class MainActivity extends BaseActivity implements
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.nav_home:
+                mNavigator.replaceFragment(R.id.frame_container, HomeFragment.newInstance(),
+                        false, NavigateAnim.FADED, null);;
                 return true;
             case R.id.nav_my_music:
+                mNavigator.replaceFragment(R.id.frame_container, MyMusicFragment.newInstance(),
+                        false, NavigateAnim.FADED, null);;
                 return true;
             case R.id.nav_more:
                 return true;
