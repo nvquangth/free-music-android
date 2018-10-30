@@ -22,6 +22,8 @@ public interface TrackDataSource {
 
         Observable<Track> getTrack();
 
+        Observable<List<Track>> getTrackFromLocalMemory();
+
         Completable insertTrack(Track track);
 
         Completable updateTrack(Track track);

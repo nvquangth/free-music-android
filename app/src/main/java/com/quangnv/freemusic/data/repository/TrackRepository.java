@@ -56,6 +56,11 @@ public class TrackRepository implements TrackDataSource.Remote, TrackDataSource.
     }
 
     @Override
+    public Observable<List<Track>> getTrackFromLocalMemory() {
+        return mLocal.getTrackFromLocalMemory();
+    }
+
+    @Override
     public Completable insertTrack(Track track) {
         return null;
     }
