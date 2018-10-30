@@ -7,7 +7,6 @@ import com.quangnv.freemusic.data.repository.TrackRepository;
 import com.quangnv.freemusic.util.rx.BaseSchedulerProvider;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;

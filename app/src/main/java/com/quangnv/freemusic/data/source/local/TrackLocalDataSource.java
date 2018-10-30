@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import com.quangnv.freemusic.data.model.Track;
 import com.quangnv.freemusic.data.source.TrackDataSource;
 import com.quangnv.freemusic.data.source.local.asset.AssetsHelper;
+import com.quangnv.freemusic.data.source.local.sdcard.SdCardHelper;
 import com.quangnv.freemusic.util.Constants;
 
 import java.util.List;
@@ -21,10 +22,12 @@ import io.reactivex.Observable;
 public class TrackLocalDataSource implements TrackDataSource.Local {
 
     private AssetsHelper mAssetsHelper;
+    private SdCardHelper mSdCardHelper;
 
     @Inject
-    public TrackLocalDataSource(AssetsHelper assetsHelper) {
+    public TrackLocalDataSource(AssetsHelper assetsHelper, SdCardHelper sdCardHelper) {
         mAssetsHelper = assetsHelper;
+        mSdCardHelper = sdCardHelper;
     }
 
     @Override
@@ -45,6 +48,11 @@ public class TrackLocalDataSource implements TrackDataSource.Local {
     @Override
     public Observable<Track> getTrack() {
         return null;
+    }
+
+    @Override
+    public Observable<List<Track>> getTrackFromLocalMemory() {
+        return mSdCardHelper.getTrackFromLocal();
     }
 
     @Override

@@ -109,11 +109,11 @@ public class MainActivity extends BaseActivity implements
         switch (menuItem.getItemId()) {
             case R.id.nav_home:
                 mNavigator.replaceFragment(R.id.frame_container, HomeFragment.newInstance(),
-                        false, NavigateAnim.FADED, null);;
+                        false, NavigateAnim.FADED, null);
                 return true;
             case R.id.nav_my_music:
                 mNavigator.replaceFragment(R.id.frame_container, MyMusicFragment.newInstance(),
-                        false, NavigateAnim.FADED, null);;
+                        false, NavigateAnim.FADED, null);
                 return true;
             case R.id.nav_more:
                 return true;
