@@ -139,6 +139,17 @@ public class Navigator {
         transaction.commit();
     }
 
+    public void replaceFragment(@IdRes int containerViewId, Fragment fragment,
+                                       boolean addToBackStack, int animation, String tag) {
+        FragmentTransaction transaction = mActivity.getSupportFragmentManager().beginTransaction();
+        setFragmentTransactionAnimation(transaction, animation);
+        if (addToBackStack) {
+            transaction.addToBackStack(fragment.getClass().getSimpleName());
+        }
+        transaction.replace(containerViewId, fragment, tag);
+        transaction.commit();
+    }
+
     /**
      * Go to next fragment which nested inside current fragment
      *
