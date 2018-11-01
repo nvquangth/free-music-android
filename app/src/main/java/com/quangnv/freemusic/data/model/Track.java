@@ -242,11 +242,10 @@ public class Track extends BaseModel implements Parcelable {
     }
 
     public String getStreamUrl() {
-        if (mId == -1) return mStreamUrl;
         if (mStreamable) {
             return StringUtils.generateLinkStreamTrack(mId);
         }
-        return null;
+        return mStreamUrl;
     }
 
     public String getDownloadUrl() {

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.quangnv.freemusic.data.source.local.asset.AssetsHelper;
 import com.quangnv.freemusic.data.source.local.sdcard.SdCardHelper;
+import com.quangnv.freemusic.data.source.local.sqlite.DbHelper;
 import com.quangnv.freemusic.util.dagger.AppScope;
 import com.quangnv.freemusic.util.dagger.ApplicationContext;
 
@@ -39,5 +40,11 @@ public class ApplicationModule {
     @Provides
     public SdCardHelper provideSdCardHelper() {
         return new SdCardHelper(mContext);
+    }
+
+    @AppScope
+    @Provides
+    public DbHelper providerDbHelper() {
+        return new DbHelper(mContext);
     }
 }

@@ -20,7 +20,7 @@ public interface TrackDataSource {
 
         Observable<List<Track>> getTopTracks();
 
-        Observable<Track> getTrack();
+        Observable<Track> getTrack(long id);
 
         Observable<List<Track>> getTrackFromLocalMemory();
 
@@ -29,6 +29,8 @@ public interface TrackDataSource {
         Completable updateTrack(Track track);
 
         Completable deleteTrack(Track track);
+
+        Observable<Boolean> isExistTrack(Track track);
     }
 
     interface Remote extends TrackDataSource {

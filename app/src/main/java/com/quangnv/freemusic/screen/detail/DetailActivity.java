@@ -16,9 +16,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.quangnv.freemusic.AppComponent;
+import com.quangnv.freemusic.MainApplication;
 import com.quangnv.freemusic.R;
 import com.quangnv.freemusic.base.BaseActivity;
 import com.quangnv.freemusic.data.model.Track;
@@ -31,6 +34,8 @@ import com.quangnv.freemusic.service.TrackService;
 import com.quangnv.freemusic.util.TimeUtils;
 import com.quangnv.freemusic.util.navigator.Navigator;
 
+import javax.inject.Inject;
+
 public class DetailActivity extends BaseActivity implements View.OnClickListener,
         ServiceConnection,
         MediaPlayerListener.OnTrackListener,
@@ -38,12 +43,15 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         MediaPlayerListener.OnCurrentTimeListener,
         MediaPlayerListener.OnTotalTimeListener,
         MediaPlayerListener.OnLoopingListener,
-        MediaPlayerListener.OnShufflingListener, SeekBar.OnSeekBarChangeListener {
+        MediaPlayerListener.OnShufflingListener, SeekBar.OnSeekBarChangeListener, DetailContract.View {
 
     /**
      * The time to update track's current time
      */
     private static final int TIME_DELAY = 500;
+
+    @Inject
+    DetailContract.Presenter mPresenter;
 
     private Navigator mNavigator;
 
@@ -63,6 +71,10 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     private ImageButton mButtonPrev;
     private ImageButton mButtonPlayPause;
     private ImageButton mButtonNext;
+    private ImageButton mButtonFavorite;
+    private ImageButton mButtonPlaylist;
+    private ImageButton mButtonDownload;
+    private ImageButton mButtonMore;
     private TextView mTextCurrentTime;
     private TextView mTextTotalTime;
     private SeekBar mSeekBarTime;
@@ -101,6 +113,15 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     protected void initComponents(Bundle savedInstanceState) {
+
+        DaggerDetailComponent.builder()
+                .appComponent(((MainApplication)getApplication()).getAppComponent())
+                .detailModule(new DetailModule())
+                .build()
+                .inject(this);
+
+        mPresenter.setView(this);
+
         initView();
         registerListener();
         initData();
@@ -123,6 +144,18 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                 break;
             case R.id.button_loop:
                 mTrackService.changeLoop();
+                break;
+            case R.id.button_favorite:
+                mPresenter.addOrRemoveFavorite(mTrackService.getCurrentTrack());
+                break;
+            case R.id.button_playlist:
+
+                break;
+            case R.id.button_download:
+
+                break;
+            case R.id.button_more:
+
                 break;
         }
     }
@@ -182,6 +215,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public void onTrackChanged(Track track) {
+        mPresenter.checkFavoriteTrack(track);
         mToolbar.setTitle(track.getTitle());
         mToolbar.setSubtitle(track.getPublisher().getArtist());
         Glide.with(this)
@@ -252,6 +286,21 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
+    @Override
+    public void showHandleFavoriteError() {
+        Toast.makeText(this, "Handle favorite error", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showTrackAddedToFavorite() {
+        setImageReourceButtonFavorite(R.drawable.ic_favorite_black_24dp);
+    }
+
+    @Override
+    public void showTrackRemovedFromFavorite() {
+        setImageReourceButtonFavorite(R.drawable.ic_favorite_border_black_24dp);
+    }
+
     public static Intent getDetailActivityIntent(Context context) {
         Intent intent = new Intent(context, DetailActivity.class);
         return intent;
@@ -271,6 +320,10 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         mTextTotalTime = findViewById(R.id.text_total_time);
         mSeekBarTime = findViewById(R.id.seek_bar_time);
         mProgressBarLoadingPlayer = findViewById(R.id.progress_bar_loading_player);
+        mButtonFavorite = findViewById(R.id.button_favorite);
+        mButtonPlaylist = findViewById(R.id.button_playlist);
+        mButtonDownload = findViewById(R.id.button_download);
+        mButtonMore = findViewById(R.id.button_more);
     }
 
     private void registerListener() {
@@ -280,6 +333,10 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         mButtonNext.setOnClickListener(this);
         mButtonLoop.setOnClickListener(this);
         mSeekBarTime.setOnSeekBarChangeListener(this);
+        mButtonFavorite.setOnClickListener(this);
+        mButtonPlaylist.setOnClickListener(this);
+        mButtonDownload.setOnClickListener(this);
+        mButtonMore.setOnClickListener(this);
     }
 
     private void initData() {
@@ -312,5 +369,9 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     private void setImageResourceButtonPlayPause(int resId) {
         mButtonPlayPause.setImageResource(resId);
+    }
+
+    private void setImageReourceButtonFavorite(int resId) {
+        mButtonFavorite.setImageResource(resId);
     }
 }

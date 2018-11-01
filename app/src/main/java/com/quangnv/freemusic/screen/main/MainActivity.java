@@ -180,7 +180,9 @@ public class MainActivity extends BaseActivity implements
     public void onTrackChanged(Track track) {
         Glide.with(mImageTrackArtist.getContext())
                 .load(track.getArtWorkUrl())
-                .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+                .apply(RequestOptions
+                        .bitmapTransform(new CircleCrop())
+                        .error(R.drawable.image_default_circle))
                 .into(mImageTrackArtist);
         if (track.getPublisher() != null) {
             mTextTrackArtist.setText(track.getPublisher().getArtist());

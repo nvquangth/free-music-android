@@ -37,12 +37,12 @@ public class TrackRepository implements TrackDataSource.Remote, TrackDataSource.
 
     @Override
     public Observable<List<Track>> searchTracks(String q) {
-        return null;
+        return mLocal.searchTracks(q);
     }
 
     @Override
     public Observable<List<Track>> getTracks() {
-        return null;
+        return mLocal.getTracks();
     }
 
     @Override
@@ -51,8 +51,8 @@ public class TrackRepository implements TrackDataSource.Remote, TrackDataSource.
     }
 
     @Override
-    public Observable<Track> getTrack() {
-        return null;
+    public Observable<Track> getTrack(long id) {
+        return mLocal.getTrack(id);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class TrackRepository implements TrackDataSource.Remote, TrackDataSource.
 
     @Override
     public Completable insertTrack(Track track) {
-        return null;
+        return mLocal.insertTrack(track);
     }
 
     @Override
@@ -72,6 +72,11 @@ public class TrackRepository implements TrackDataSource.Remote, TrackDataSource.
 
     @Override
     public Completable deleteTrack(Track track) {
-        return null;
+        return mLocal.deleteTrack(track);
+    }
+
+    @Override
+    public Observable<Boolean> isExistTrack(Track track) {
+        return mLocal.isExistTrack(track);
     }
 }
