@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import com.quangnv.freemusic.data.model.Publisher;
 import com.quangnv.freemusic.data.model.Track;
@@ -32,7 +33,9 @@ public class SdCardHelper {
                 MediaStore.Audio.Media.TITLE,
                 MediaStore.Audio.Media.ARTIST,
                 MediaStore.Audio.Media.DURATION,
-                MediaStore.Audio.Media.DATA
+                MediaStore.Audio.Media.DATA,
+                MediaStore.Audio.Media.ALBUM_ID,
+                MediaStore.Audio.Media._ID
         };
 
         Cursor cursor = resolver.query(
@@ -48,10 +51,14 @@ public class SdCardHelper {
 
         while (cursor.moveToNext()) {
             Track.Builder builder = new Track.Builder();
+            builder.setId(cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media._ID)));
             builder.setTitle(
                     cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)));
             builder.setDuration(
                     cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)));
+            builder.setArtWorkUrl(
+                    getAlbumArt(
+                            cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID))));
             builder.setStreamUrl(
                     cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA)));
             Publisher.Builder pBuilder = new Publisher.Builder();
@@ -63,5 +70,24 @@ public class SdCardHelper {
 
         cursor.close();
         return Observable.just(tracks);
+    }
+
+    private String getAlbumArt(int albumId) {
+        String[] projections = {MediaStore.Audio.Albums._ID, MediaStore.Audio.Albums.ALBUM_ART};
+        String selection = MediaStore.Audio.Albums._ID + "=?";
+        String[] selectionArgs = {String.valueOf(albumId)};
+        Cursor cursorAlbum = mContext.getContentResolver()
+                .query(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
+                        projections, selection,
+                        selectionArgs,
+                        null);
+        if (cursorAlbum == null) return null;
+        String artwork = null;
+        if (cursorAlbum.moveToFirst()) {
+            artwork = cursorAlbum.getString(
+                    cursorAlbum.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART));
+        }
+        cursorAlbum.close();
+        return artwork;
     }
 }

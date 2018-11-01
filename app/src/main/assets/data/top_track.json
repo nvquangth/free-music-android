@@ -10,7 +10,7 @@
     "publisher_metadata": {
       "artist": "Mỹ Tâm"
     },
-    "streamable": true,
+    "streamable": false,
     "title": "Người Hãy Quên Em Đi",
     "stream_url": "android.resource://com.quangnv.feemusic/raw/nguoi_hay_quen_em_di",
     "description": ""
@@ -21,12 +21,12 @@
     "download_url": null,
     "duration": 262006,
     "genre": "Nhạc Trẻ",
-    "id": -1,
+    "id": -2,
     "playback_count": 5960895,
     "publisher_metadata": {
       "artist": "Hương Tràm"
     },
-    "streamable": true,
+    "streamable": false,
     "title": "Ngốc",
     "stream_url": "android.resource://com.quangnv.feemusic/raw/ngoc",
     "description": ""
@@ -37,12 +37,12 @@
     "download_url": null,
     "duration": 262006,
     "genre": "Bolero",
-    "id": -1,
+    "id": -3,
     "playback_count": 5960895,
     "publisher_metadata": {
       "artist": "Jang Mi"
     },
-    "streamable": true,
+    "streamable": false,
     "title": "Trả Lại Thời Gian",
     "stream_url": "android.resource://com.quangnv.feemusic/raw/tra_lai_thoi_gian",
     "description": ""
@@ -53,12 +53,12 @@
     "download_url": null,
     "duration": 262006,
     "genre": "Nhạc Trẻ",
-    "id": -1,
+    "id": -4,
     "playback_count": 5960895,
     "publisher_metadata": {
       "artist": "The Men"
     },
-    "streamable": true,
+    "streamable": false,
     "title": "Phai Dấu Cuộc Tình",
     "stream_url": "android.resource://com.quangnv.feemusic/raw/phai_dau_cuoc_tinh",
     "description": ""
@@ -69,12 +69,12 @@
     "download_url": null,
     "duration": 262006,
     "genre": "Nhạc Trẻ",
-    "id": -1,
+    "id": -5,
     "playback_count": 5960895,
     "publisher_metadata": {
       "artist": "Hà Anh Tuấn"
     },
-    "streamable": true,
+    "streamable": false,
     "title": "Người Tình Mùa Đông",
     "stream_url": "android.resource://com.quangnv.feemusic/raw/nguoi_tinh_mua_dong",
     "description": ""
