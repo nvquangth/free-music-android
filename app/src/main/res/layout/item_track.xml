@@ -8,9 +8,10 @@
     <ImageView
         android:id="@+id/image_track"
         android:layout_width="@dimen/dp_52"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dp_52"
         android:layout_marginStart="@dimen/dp_4"
         android:layout_marginLeft="@dimen/dp_4"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintStart_toStartOf="parent"
