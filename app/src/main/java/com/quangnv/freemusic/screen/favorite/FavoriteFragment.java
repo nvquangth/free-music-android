@@ -1,22 +1,16 @@
-package com.quangnv.freemusic.screen.genre;
+package com.quangnv.freemusic.screen.favorite;
 
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
 
-import com.quangnv.freemusic.MainApplication;
 import com.quangnv.freemusic.R;
 import com.quangnv.freemusic.base.BaseFragment;
-import com.quangnv.freemusic.data.model.Genre;
 import com.quangnv.freemusic.data.model.Track;
 import com.quangnv.freemusic.screen.search.SearchFragment;
 import com.quangnv.freemusic.screen.search.SearchType;
@@ -25,80 +19,52 @@ import com.quangnv.freemusic.util.Constants;
 import com.quangnv.freemusic.util.navigator.NavigateAnim;
 import com.quangnv.freemusic.util.navigator.Navigator;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 /**
- * Created by quangnv on 21/10/2018
+ * Created by quangnv on 02/11/2018
  */
 
-public class GenreFragment extends BaseFragment implements GenreContract.View {
-
-    @Inject
-    GenreContract.Presenter mPresenter;
+public class FavoriteFragment extends BaseFragment {
 
     private Navigator mNavigator;
     private TracksFragment mTracksFragment;
-    private Genre mGenre;
+    private List<Track> mTracks;
 
     private Toolbar mToolbar;
-    private ProgressBar mProgressLoading;
 
-    public GenreFragment() {
-    }
+    public static FavoriteFragment newInstance(ArrayList<Track> tracks) {
 
-    public static GenreFragment newInstance(Genre genre) {
-        GenreFragment fragment = new GenreFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.ARGUMENT_GENRE, genre);
-        fragment.setArguments(bundle);
+        Bundle args = new Bundle();
+        args.putParcelableArrayList(Constants.ARGUMENT_TRACK, tracks);
+
+        FavoriteFragment fragment = new FavoriteFragment();
+        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     protected void initComponentsOnCreate(@Nullable Bundle savedInstanceState) {
-        DaggerGenreComponent.builder()
-                .appComponent(((MainApplication) getActivity().getApplication()).getAppComponent())
-                .genreModule(new GenreModule())
-                .build()
-                .inject(this);
-        mPresenter.setView(this);
+        if (getArguments() != null) {
+            mTracks = getArguments().getParcelableArrayList(Constants.ARGUMENT_TRACK);
+        }
         mTracksFragment = TracksFragment.newInstance();
         mNavigator = new Navigator(this);
         mNavigator.goNextChildFragment(R.id.frame_container, mTracksFragment,
                 false, NavigateAnim.NONE, null);
-        if (getArguments() != null) {
-            mGenre = getArguments().getParcelable(Constants.ARGUMENT_GENRE);
-        }
         setHasOptionsMenu(true);
     }
 
     @Override
     protected void initComponentsOnCreateView(View view, @Nullable Bundle savedInstanceState) {
         initView(view);
-        mToolbar.setTitle(mGenre.getName());
-        mPresenter.getTracks(mGenre, 0);
+        mTracksFragment.setTracks(mTracks);
     }
 
     @Override
     protected int getLayoutResource() {
-        return R.layout.fragment_genre;
-    }
-
-    @Override
-    public void showLoadingIndicator() {
-        mProgressLoading.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideLoadingIndicator() {
-        mProgressLoading.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void showTracks(List<Track> tracks) {
-        mTracksFragment.setTracks(tracks);
+        return R.layout.fragment_favorite;
     }
 
     @Override
@@ -119,15 +85,14 @@ public class GenreFragment extends BaseFragment implements GenreContract.View {
                         true,
                         NavigateAnim.RIGHT_LEFT,
                         null);
-                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void initView(View view) {
-        mProgressLoading = view.findViewById(R.id.progress_bar_loading);
         mToolbar = view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        mToolbar.setTitle(R.string.title_favorite);
     }
 }
