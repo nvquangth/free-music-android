@@ -82,6 +82,27 @@ public class MyMusicPresenter implements MyMusicContract.Presenter {
 
     @Override
     public void getLocal() {
-
+        Disposable disposable = mTrackRepository.getTrackFromLocalMemory()
+                .subscribeOn(mScheduler.io())
+                .observeOn(mScheduler.ui())
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) {
+                        mView.showLoadingIndicator();
+                    }
+                })
+                .subscribe(new Consumer<List<Track>>() {
+                    @Override
+                    public void accept(List<Track> tracks) {
+                        mView.hideLoadingIndicator();
+                        mView.showLocal(tracks);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) {
+                        mView.hideLoadingIndicator();
+                    }
+                });
+        mCompositeDisposable.add(disposable);
     }
 }

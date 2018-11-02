@@ -13,6 +13,7 @@ import com.quangnv.freemusic.base.BaseFragment;
 import com.quangnv.freemusic.data.model.PlayList;
 import com.quangnv.freemusic.data.model.Track;
 import com.quangnv.freemusic.screen.favorite.FavoriteFragment;
+import com.quangnv.freemusic.screen.local.LocalFragment;
 import com.quangnv.freemusic.util.navigator.NavigateAnim;
 import com.quangnv.freemusic.util.navigator.Navigator;
 
@@ -32,6 +33,7 @@ public class MyMusicFragment extends BaseFragment implements MyMusicContract.Vie
 
     private Navigator mNavigator;
     private ArrayList<Track> mFavoriteTracks;
+    private ArrayList<Track> mLocalTracks;
 
     private TextView mTextNumberPlaylist;
     private TextView mTextNumberFavorite;
@@ -70,6 +72,7 @@ public class MyMusicFragment extends BaseFragment implements MyMusicContract.Vie
         initView(view);
         registerListener();
         mPresenter.getFavorite();
+        mPresenter.getLocal();
     }
 
     @Override
@@ -105,7 +108,8 @@ public class MyMusicFragment extends BaseFragment implements MyMusicContract.Vie
 
     @Override
     public void showLocal(List<Track> tracks) {
-
+        mLocalTracks = (ArrayList<Track>) tracks;
+        mTextNumberLocal.setText(tracks.size() + "");
     }
 
     @Override
@@ -123,7 +127,9 @@ public class MyMusicFragment extends BaseFragment implements MyMusicContract.Vie
 
                 break;
             case R.id.button_folder:
-
+                mNavigator.addFragmentToBackStack(R.id.frame_container,
+                        LocalFragment.newInstance(mLocalTracks),
+                        true, NavigateAnim.RIGHT_LEFT, null);
                 break;
         }
     }
