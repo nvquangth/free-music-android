@@ -1,13 +1,17 @@
 package com.quangnv.freemusic.screen.detail;
 
+import android.app.DownloadManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,11 +24,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.quangnv.freemusic.AppComponent;
 import com.quangnv.freemusic.MainApplication;
 import com.quangnv.freemusic.R;
 import com.quangnv.freemusic.base.BaseActivity;
 import com.quangnv.freemusic.data.model.Track;
+import com.quangnv.freemusic.download.TrackDownloadManager;
 import com.quangnv.freemusic.mediaplayer.MediaPlayerListener;
 import com.quangnv.freemusic.mediaplayer.MediaPlayerLoopType;
 import com.quangnv.freemusic.mediaplayer.MediaPlayerPlayType;
@@ -43,7 +47,9 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         MediaPlayerListener.OnCurrentTimeListener,
         MediaPlayerListener.OnTotalTimeListener,
         MediaPlayerListener.OnLoopingListener,
-        MediaPlayerListener.OnShufflingListener, SeekBar.OnSeekBarChangeListener, DetailContract.View {
+        MediaPlayerListener.OnShufflingListener,
+        SeekBar.OnSeekBarChangeListener,
+        DetailContract.View {
 
     /**
      * The time to update track's current time
@@ -115,12 +121,17 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     protected void initComponents(Bundle savedInstanceState) {
 
         DaggerDetailComponent.builder()
-                .appComponent(((MainApplication)getApplication()).getAppComponent())
+                .appComponent(((MainApplication) getApplication()).getAppComponent())
                 .detailModule(new DetailModule())
                 .build()
                 .inject(this);
 
+        DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+        TrackDownloadManager trackDownloadManager
+                = TrackDownloadManager.getInstance(this, downloadManager);
+
         mPresenter.setView(this);
+        mPresenter.setTrackDownloadManager(trackDownloadManager);
 
         initView();
         registerListener();
@@ -152,7 +163,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
                 break;
             case R.id.button_download:
-
+                downloadTrack(mTrackService.getCurrentTrack());
                 break;
             case R.id.button_more:
 
@@ -223,11 +234,16 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                 .apply(new RequestOptions().error(R.drawable.image_default_border))
                 .apply(RequestOptions.circleCropTransform())
                 .into(mImageTrack);
+        if (track.isDownloadable()) {
+            mButtonDownload.setVisibility(View.VISIBLE);
+        } else {
+            mButtonDownload.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void onPlayChanged(int playType) {
-        switch (playType){
+        switch (playType) {
             case MediaPlayerPlayType.WAIT:
                 mProgressBarLoadingPlayer.setVisibility(View.VISIBLE);
                 mButtonPlayPause.setVisibility(View.INVISIBLE);
@@ -293,12 +309,22 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public void showTrackAddedToFavorite() {
-        setImageReourceButtonFavorite(R.drawable.ic_favorite_black_24dp);
+        setImageResourceButtonFavorite(R.drawable.ic_favorite_black_24dp);
     }
 
     @Override
     public void showTrackRemovedFromFavorite() {
-        setImageReourceButtonFavorite(R.drawable.ic_favorite_border_black_24dp);
+        setImageResourceButtonFavorite(R.drawable.ic_favorite_border_black_24dp);
+    }
+
+    @Override
+    public void showTrackDownloaded() {
+
+    }
+
+    @Override
+    public void showTrackDownloadError() {
+
     }
 
     public static Intent getDetailActivityIntent(Context context) {
@@ -371,7 +397,20 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         mButtonPlayPause.setImageResource(resId);
     }
 
-    private void setImageReourceButtonFavorite(int resId) {
+    private void setImageResourceButtonFavorite(int resId) {
         mButtonFavorite.setImageResource(resId);
+    }
+
+    private long downloadTrack(Track track) {
+        Uri uri = Uri.parse(track.getDownloadUrl());
+        Log.d("download_url", track.getDownloadUrl());
+        DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+        request.setTitle(track.getTitle());
+        request.setDescription(track.getTitle());
+        request.setDestinationInExternalFilesDir(this, Environment.DIRECTORY_DOWNLOADS,
+                track.getTitle());
+        mPresenter.saveTrack(track);
+        return downloadManager.enqueue(request);
     }
 }

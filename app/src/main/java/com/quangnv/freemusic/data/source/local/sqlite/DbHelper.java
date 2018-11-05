@@ -59,6 +59,9 @@ public class DbHelper extends SQLiteOpenHelper {
             + COMA_SEP
             + TrackEntry.COLUMN_NAME_ARTIST
             + INTEGER_TYPE
+            +COMA_SEP
+            + TrackEntry.COLUMN_NAME_DOWNLOAD_STATUS
+            + INTEGER_TYPE
             + " )";
     private static final String SQL_DELETE_TRACK_ENTRIES = "DROP TABLE IF EXISTS "
             + TrackEntry.TABLE_NAME;
@@ -98,5 +101,6 @@ public class DbHelper extends SQLiteOpenHelper {
         public static final String COLUMN_NAME_PLAYBACK_COUNT = "playback_count";
         public static final String COLUMN_NAME_DESCRIPTION = "description";
         public static final String COLUMN_NAME_ARTIST = "artist";
+        public static final String COLUMN_NAME_DOWNLOAD_STATUS = "download_status";
     }
 }

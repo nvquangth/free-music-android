@@ -72,7 +72,7 @@ public class MyMusicFragment extends BaseFragment implements MyMusicContract.Vie
         initView(view);
         registerListener();
         mPresenter.getFavorite();
-        mPresenter.getLocal();
+//        mPresenter.getLocal();
     }
 
     @Override

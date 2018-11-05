@@ -33,15 +33,17 @@ public class TrackDaoImpl implements TrackDao {
     }
 
     @Override
-    public Observable<List<Track>> getTracks() {
+    public Observable<List<Track>> getTracks(int type) {
         List<Track> tracks = new ArrayList<>();
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         try {
+            final String selection = DbHelper.TrackEntry.COLUMN_NAME_DOWNLOAD_STATUS + " = ?";
+            final String[] selectionArgs = {String.valueOf(type)};
             Cursor cursor = db.query(
                     DbHelper.TrackEntry.TABLE_NAME,
                     genProjection(),
-                    null,
-                    null,
+                    selection,
+                    selectionArgs,
                     null,
                     null,
                     null
@@ -125,7 +127,7 @@ public class TrackDaoImpl implements TrackDao {
     }
 
     @Override
-    public Completable insertTrack(final Track track) {
+    public Completable insertTrack(final Track track, final int type) {
         return Completable.create(new CompletableOnSubscribe() {
             @Override
             public void subscribe(CompletableEmitter emitter) throws Exception {
@@ -144,6 +146,7 @@ public class TrackDaoImpl implements TrackDao {
                     values.put(DbHelper.TrackEntry.COLUMN_NAME_PLAYBACK_COUNT, track.getPlaybackCount());
                     values.put(DbHelper.TrackEntry.COLUMN_NAME_DESCRIPTION, track.getDescription());
                     values.put(DbHelper.TrackEntry.COLUMN_NAME_ARTIST, track.getPublisher().getArtist());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_DOWNLOAD_STATUS, type);
                     db.insert(DbHelper.TrackEntry.TABLE_NAME, null, values);
                     db.close();
                     emitter.onComplete();

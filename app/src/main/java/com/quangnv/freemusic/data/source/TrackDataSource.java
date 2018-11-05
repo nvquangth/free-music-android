@@ -1,6 +1,7 @@
 package com.quangnv.freemusic.data.source;
 
 import com.quangnv.freemusic.data.model.Track;
+import com.quangnv.freemusic.data.model.TrackLocalType;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface TrackDataSource {
     interface Local extends TrackDataSource {
         Observable<List<Track>> searchTracks(String q);
 
-        Observable<List<Track>> getTracks();
+        Observable<List<Track>> getTracks(@TrackLocalType int type);
 
         Observable<List<Track>> getTopTracks();
 
@@ -24,7 +25,7 @@ public interface TrackDataSource {
 
         Observable<List<Track>> getTrackFromLocalMemory();
 
-        Completable insertTrack(Track track);
+        Completable insertTrack(Track track, @TrackLocalType int type);
 
         Completable updateTrack(Track track);
 

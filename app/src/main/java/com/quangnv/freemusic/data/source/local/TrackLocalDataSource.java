@@ -3,6 +3,7 @@ package com.quangnv.freemusic.data.source.local;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.quangnv.freemusic.data.model.Track;
+import com.quangnv.freemusic.data.model.TrackLocalType;
 import com.quangnv.freemusic.data.source.TrackDataSource;
 import com.quangnv.freemusic.data.source.local.asset.AssetsHelper;
 import com.quangnv.freemusic.data.source.local.sdcard.SdCardHelper;
@@ -44,8 +45,8 @@ public class TrackLocalDataSource implements TrackDataSource.Local {
     }
 
     @Override
-    public Observable<List<Track>> getTracks() {
-        return mTrackDao.getTracks();
+    public Observable<List<Track>> getTracks(@TrackLocalType int type) {
+        return mTrackDao.getTracks(type);
     }
 
     @Override
@@ -64,8 +65,8 @@ public class TrackLocalDataSource implements TrackDataSource.Local {
     }
 
     @Override
-    public Completable insertTrack(Track track) {
-        return mTrackDao.insertTrack(track);
+    public Completable insertTrack(Track track, @TrackLocalType int type) {
+        return mTrackDao.insertTrack(track, type);
     }
 
     @Override

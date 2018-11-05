@@ -50,6 +50,8 @@ public class Track extends BaseModel implements Parcelable {
     @Expose
     private String mDownloadUrl;
 
+    private int mDownloadStatus;
+
     private Track(Builder builder) {
         mId = builder.mId;
         mTitle = builder.mTitle;
@@ -63,6 +65,7 @@ public class Track extends BaseModel implements Parcelable {
         mPublisher = builder.mPublisher;
         mStreamUrl = builder.mStreamUrl;
         mDownloadUrl = builder.mDownloadUrl;
+        mDownloadStatus = builder.mDownloadStatus;
     }
 
     protected Track(Parcel in) {
@@ -78,6 +81,7 @@ public class Track extends BaseModel implements Parcelable {
         mPublisher = in.readParcelable(Publisher.class.getClassLoader());
         mStreamUrl = in.readString();
         mDownloadUrl = in.readString();
+        mDownloadStatus = in.readInt();
     }
 
     public static final Creator<Track> CREATOR = new Creator<Track>() {
@@ -111,6 +115,7 @@ public class Track extends BaseModel implements Parcelable {
         parcel.writeParcelable(mPublisher, i);
         parcel.writeString(mStreamUrl);
         parcel.writeString(mDownloadUrl);
+        parcel.writeInt(mDownloadStatus);
     }
 
     public static class Builder {
@@ -127,6 +132,7 @@ public class Track extends BaseModel implements Parcelable {
         private Publisher mPublisher;
         private String mStreamUrl;
         private String mDownloadUrl;
+        private int mDownloadStatus;
 
         public Builder() {
 
@@ -195,6 +201,11 @@ public class Track extends BaseModel implements Parcelable {
             mDownloadUrl = downloadUrl;
             return this;
         }
+
+        public Builder setDownloadStatus(@TrackLocalType int downloadStatus) {
+            mDownloadStatus = downloadStatus;
+            return this;
+        }
     }
 
     public long getId() {
@@ -253,5 +264,13 @@ public class Track extends BaseModel implements Parcelable {
             return StringUtils.generateLinkDownloadTrack(mId);
         }
         return null;
+    }
+
+    public int getDownloadStatus() {
+        return mDownloadStatus;
+    }
+
+    public void setStreamUrl(String streamUrl) {
+        mStreamUrl = streamUrl;
     }
 }
