@@ -32,4 +32,9 @@ public final class Constants {
     public static final String ARGUMENT_GENRE = "ARGUMENT_GENRE";
     public static final String ARGUMENT_TRACK = "ARGUMENT_TRACK";
     public static final String ARGUMENT_SEARCH = "ARGUMENT_SEARCH";
+
+    /**
+     * Extra
+     */
+    public static final String EXTRA_TRACK = "com.quangnv.freemusic.EXTRA_TRACK";
 }

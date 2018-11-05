@@ -1,6 +1,7 @@
 package com.quangnv.freemusic.screen.mymusic;
 
 import com.quangnv.freemusic.data.model.Track;
+import com.quangnv.freemusic.data.model.TrackLocalType;
 import com.quangnv.freemusic.data.repository.TrackRepository;
 import com.quangnv.freemusic.util.rx.BaseSchedulerProvider;
 
@@ -51,7 +52,7 @@ public class MyMusicPresenter implements MyMusicContract.Presenter {
 
     @Override
     public void getFavorite() {
-        Disposable disposable = mTrackRepository.getTracks()
+        Disposable disposable = mTrackRepository.getTracks(TrackLocalType.FAVORITE)
                 .subscribeOn(mScheduler.io())
                 .observeOn(mScheduler.ui())
                 .doOnSubscribe(new Consumer<Disposable>() {

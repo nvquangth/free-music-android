@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.NotificationTarget;
 import com.quangnv.freemusic.R;
 import com.quangnv.freemusic.data.model.Track;

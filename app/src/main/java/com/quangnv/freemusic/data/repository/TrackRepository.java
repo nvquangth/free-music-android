@@ -1,6 +1,7 @@
 package com.quangnv.freemusic.data.repository;
 
 import com.quangnv.freemusic.data.model.Track;
+import com.quangnv.freemusic.data.model.TrackLocalType;
 import com.quangnv.freemusic.data.source.TrackDataSource;
 import com.quangnv.freemusic.data.source.local.TrackLocalDataSource;
 import com.quangnv.freemusic.data.source.remote.TrackRemoteDataSource;
@@ -41,8 +42,8 @@ public class TrackRepository implements TrackDataSource.Remote, TrackDataSource.
     }
 
     @Override
-    public Observable<List<Track>> getTracks() {
-        return mLocal.getTracks();
+    public Observable<List<Track>> getTracks(@TrackLocalType int type) {
+        return mLocal.getTracks(type);
     }
 
     @Override
@@ -61,8 +62,8 @@ public class TrackRepository implements TrackDataSource.Remote, TrackDataSource.
     }
 
     @Override
-    public Completable insertTrack(Track track) {
-        return mLocal.insertTrack(track);
+    public Completable insertTrack(Track track, @TrackLocalType int type) {
+        return mLocal.insertTrack(track, type);
     }
 
     @Override
