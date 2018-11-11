@@ -14,16 +14,20 @@ import java.util.List;
 
 public class Playlist extends BaseModel implements Parcelable {
 
+    @SerializedName("id")
+    @Expose
+    private int mId;
     @SerializedName("name")
     @Expose
     private String mName;
     @SerializedName("track")
     @Expose
     private List<Track> mTracks;
+    @SerializedName("image_url")
+    @Expose
+    private String mImageUrl;
 
-    private Playlist(Builder builder) {
-        mName = builder.mName;
-        mTracks = builder.mTracks;
+    public Playlist() {
     }
 
     protected Playlist(Parcel in) {
@@ -54,34 +58,35 @@ public class Playlist extends BaseModel implements Parcelable {
         parcel.writeTypedList(mTracks);
     }
 
-    public static class Builder {
+    public int getId() {
+        return mId;
+    }
 
-        private String mName;
-        private List<Track> mTracks;
-
-        public Builder() {
-        }
-
-        public Playlist build() {
-            return new Playlist(this);
-        }
-
-        public Builder setName(String name) {
-            mName = name;
-            return this;
-        }
-
-        private Builder setTrack(List<Track> tracks) {
-            mTracks = tracks;
-            return this;
-        }
+    public void setId(int id) {
+        mId = id;
     }
 
     public String getName() {
         return mName;
     }
 
+    public void setName(String name) {
+        mName = name;
+    }
+
     public List<Track> getTracks() {
         return mTracks;
+    }
+
+    public void setTracks(List<Track> tracks) {
+        mTracks = tracks;
+    }
+
+    public String getImageUrl() {
+        return mImageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        mImageUrl = imageUrl;
     }
 }

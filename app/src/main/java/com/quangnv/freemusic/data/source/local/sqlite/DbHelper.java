@@ -21,7 +21,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     private static final String COMA_SEP = ",";
 
-    private static final String SQL_CRREATE_TRACK_ENTRIES = "CREATE TABLE "
+    private static final String SQL_CREATE_TRACK_ENTRIES = "CREATE TABLE "
             + TrackEntry.TABLE_NAME
             + " ("
             + TrackEntry.COLUMN_NAME_ID
@@ -59,12 +59,33 @@ public class DbHelper extends SQLiteOpenHelper {
             + COMA_SEP
             + TrackEntry.COLUMN_NAME_ARTIST
             + INTEGER_TYPE
-            +COMA_SEP
+            + COMA_SEP
             + TrackEntry.COLUMN_NAME_DOWNLOAD_STATUS
             + INTEGER_TYPE
+            + COMA_SEP
+            + TrackEntry.COLUMN_NAME_PLAYLIST_ID
+            + INTEGER_TYPE
             + " )";
+
+    private static final String SQL_CREATE_PLAYLIST_ENTRIES = "CREATE TABLE "
+            + PlaylistEntry.TABLE_NAME
+            + " ("
+            + PlaylistEntry.COLUMN_NAME_ID
+            + INTEGER_TYPE
+            + "AUTOINCREMENT"
+            + COMA_SEP
+            + PlaylistEntry.COLUMN_NAME_TITLE
+            + TEXT_TYPE
+            + COMA_SEP
+            + PlaylistEntry.COLUMN_NAME_IMAGE_URL
+            + TEXT_TYPE
+            + " )";
+
     private static final String SQL_DELETE_TRACK_ENTRIES = "DROP TABLE IF EXISTS "
             + TrackEntry.TABLE_NAME;
+
+    private static final String SQL_DELETE_PLAYLIST_ENTRIES = "DROP TABLE IF EXISTS "
+            + PlaylistEntry.TABLE_NAME;
 
     public DbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -72,12 +93,14 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CRREATE_TRACK_ENTRIES);
+        db.execSQL(SQL_CREATE_TRACK_ENTRIES);
+        db.execSQL(SQL_CREATE_PLAYLIST_ENTRIES);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL(SQL_DELETE_TRACK_ENTRIES);
+        db.execSQL(SQL_DELETE_PLAYLIST_ENTRIES);
         onCreate(db);
     }
 
@@ -102,5 +125,14 @@ public class DbHelper extends SQLiteOpenHelper {
         public static final String COLUMN_NAME_DESCRIPTION = "description";
         public static final String COLUMN_NAME_ARTIST = "artist";
         public static final String COLUMN_NAME_DOWNLOAD_STATUS = "download_status";
+        public static final String COLUMN_NAME_PLAYLIST_ID = "playlist_id";
     }
-}
+
+    public static final class PlaylistEntry implements BaseColumns {
+
+        public static final String TABLE_NAME = "playlist";
+        public static final String COLUMN_NAME_ID = "id";
+        public static final String COLUMN_NAME_TITLE = "title";
+        public static final String COLUMN_NAME_IMAGE_URL = "image_url";
+    }
+ }
