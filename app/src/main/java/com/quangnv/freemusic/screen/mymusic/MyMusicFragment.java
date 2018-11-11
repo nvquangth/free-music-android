@@ -10,10 +10,11 @@ import android.widget.TextView;
 import com.quangnv.freemusic.MainApplication;
 import com.quangnv.freemusic.R;
 import com.quangnv.freemusic.base.BaseFragment;
-import com.quangnv.freemusic.data.model.PlayList;
+import com.quangnv.freemusic.data.model.Playlist;
 import com.quangnv.freemusic.data.model.Track;
 import com.quangnv.freemusic.screen.favorite.FavoriteFragment;
 import com.quangnv.freemusic.screen.local.LocalFragment;
+import com.quangnv.freemusic.screen.playlist.PlaylistFragment;
 import com.quangnv.freemusic.util.navigator.NavigateAnim;
 import com.quangnv.freemusic.util.navigator.Navigator;
 
@@ -91,7 +92,7 @@ public class MyMusicFragment extends BaseFragment implements MyMusicContract.Vie
     }
 
     @Override
-    public void showPlayList(List<PlayList> playLists) {
+    public void showPlayList(List<Playlist> playlists) {
 
     }
 
@@ -116,7 +117,9 @@ public class MyMusicFragment extends BaseFragment implements MyMusicContract.Vie
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_playlist:
-
+                mNavigator.addFragmentToBackStack(R.id.frame_container,
+                        PlaylistFragment.newInstance(null),
+                        true, NavigateAnim.RIGHT_LEFT, null);
                 break;
             case R.id.button_favorite:
                 mNavigator.addFragmentToBackStack(R.id.frame_container,
