@@ -1,7 +1,7 @@
 package com.quangnv.freemusic.screen.mymusic;
 
 import com.quangnv.freemusic.base.BasePresenter;
-import com.quangnv.freemusic.data.model.PlayList;
+import com.quangnv.freemusic.data.model.Playlist;
 import com.quangnv.freemusic.data.model.Track;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public interface MyMusicContract {
 
         void hideLoadingIndicator();
 
-        void showPlayList(List<PlayList> playLists);
+        void showPlayList(List<Playlist> playlists);
 
         void showFavorite(List<Track> tracks);
 

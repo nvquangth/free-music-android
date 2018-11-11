@@ -12,7 +12,7 @@ import java.util.List;
  * Created by quangnv on 12/10/2018
  */
 
-public class PlayList extends BaseModel implements Parcelable {
+public class Playlist extends BaseModel implements Parcelable {
 
     @SerializedName("name")
     @Expose
@@ -21,25 +21,25 @@ public class PlayList extends BaseModel implements Parcelable {
     @Expose
     private List<Track> mTracks;
 
-    private PlayList(Builder builder) {
+    private Playlist(Builder builder) {
         mName = builder.mName;
         mTracks = builder.mTracks;
     }
 
-    protected PlayList(Parcel in) {
+    protected Playlist(Parcel in) {
         mName = in.readString();
         mTracks = in.createTypedArrayList(Track.CREATOR);
     }
 
-    public static final Creator<PlayList> CREATOR = new Creator<PlayList>() {
+    public static final Creator<Playlist> CREATOR = new Creator<Playlist>() {
         @Override
-        public PlayList createFromParcel(Parcel in) {
-            return new PlayList(in);
+        public Playlist createFromParcel(Parcel in) {
+            return new Playlist(in);
         }
 
         @Override
-        public PlayList[] newArray(int size) {
-            return new PlayList[size];
+        public Playlist[] newArray(int size) {
+            return new Playlist[size];
         }
     };
 
@@ -62,8 +62,8 @@ public class PlayList extends BaseModel implements Parcelable {
         public Builder() {
         }
 
-        public PlayList build() {
-            return new PlayList(this);
+        public Playlist build() {
+            return new Playlist(this);
         }
 
         public Builder setName(String name) {
