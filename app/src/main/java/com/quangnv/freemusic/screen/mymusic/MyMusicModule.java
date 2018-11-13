@@ -1,6 +1,8 @@
 package com.quangnv.freemusic.screen.mymusic;
 
+import com.quangnv.freemusic.data.repository.PlaylistRepository;
 import com.quangnv.freemusic.data.repository.TrackRepository;
+import com.quangnv.freemusic.data.source.local.PlaylistLocalDataSource;
 import com.quangnv.freemusic.data.source.local.TrackLocalDataSource;
 import com.quangnv.freemusic.data.source.remote.TrackRemoteDataSource;
 import com.quangnv.freemusic.util.dagger.FragmentScope;
@@ -32,9 +34,17 @@ public class MyMusicModule {
 
     @FragmentScope
     @Provides
+    PlaylistRepository providePlaylistRepository(PlaylistLocalDataSource local) {
+        return new PlaylistRepository(local);
+    }
+
+    @FragmentScope
+    @Provides
     MyMusicContract.Presenter provideMyMusicPresenter(BaseSchedulerProvider scheduler,
                                                       CompositeDisposable compositeDisposable,
-                                                      TrackRepository trackRepository) {
-        return new MyMusicPresenter(scheduler, compositeDisposable, trackRepository);
+                                                      TrackRepository trackRepository,
+                                                      PlaylistRepository playlistRepository) {
+        return new MyMusicPresenter(scheduler, compositeDisposable, trackRepository,
+                playlistRepository);
     }
 }
