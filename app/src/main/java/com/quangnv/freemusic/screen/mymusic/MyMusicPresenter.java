@@ -1,7 +1,9 @@
 package com.quangnv.freemusic.screen.mymusic;
 
+import com.quangnv.freemusic.data.model.Playlist;
 import com.quangnv.freemusic.data.model.Track;
 import com.quangnv.freemusic.data.model.TrackLocalType;
+import com.quangnv.freemusic.data.repository.PlaylistRepository;
 import com.quangnv.freemusic.data.repository.TrackRepository;
 import com.quangnv.freemusic.util.rx.BaseSchedulerProvider;
 
@@ -21,13 +23,16 @@ public class MyMusicPresenter implements MyMusicContract.Presenter {
     private BaseSchedulerProvider mScheduler;
     private CompositeDisposable mCompositeDisposable;
     private TrackRepository mTrackRepository;
+    private PlaylistRepository mPlaylistRepository;
 
     public MyMusicPresenter(BaseSchedulerProvider scheduler,
                             CompositeDisposable compositeDisposable,
-                            TrackRepository trackRepository) {
+                            TrackRepository trackRepository,
+                            PlaylistRepository playlistRepository) {
         mScheduler = scheduler;
         mCompositeDisposable = compositeDisposable;
         mTrackRepository = trackRepository;
+        mPlaylistRepository = playlistRepository;
     }
 
     @Override
@@ -47,7 +52,28 @@ public class MyMusicPresenter implements MyMusicContract.Presenter {
 
     @Override
     public void getPlayList() {
-
+        Disposable disposable = mPlaylistRepository.getPlaylists()
+                .subscribeOn(mScheduler.io())
+                .observeOn(mScheduler.ui())
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) {
+                        mView.showLoadingIndicator();
+                    }
+                })
+                .subscribe(new Consumer<List<Playlist>>() {
+                    @Override
+                    public void accept(List<Playlist> playlists) {
+                        mView.hideLoadingIndicator();
+                        mView.showPlayList(playlists);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) {
+                        mView.hideLoadingIndicator();
+                    }
+                });
+        mCompositeDisposable.add(disposable);
     }
 
     @Override

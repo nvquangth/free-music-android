@@ -15,6 +15,8 @@ import com.quangnv.freemusic.data.model.Track;
 import com.quangnv.freemusic.screen.favorite.FavoriteFragment;
 import com.quangnv.freemusic.screen.local.LocalFragment;
 import com.quangnv.freemusic.screen.playlist.PlaylistFragment;
+import com.quangnv.freemusic.screen.search.SearchFragment;
+import com.quangnv.freemusic.screen.search.SearchType;
 import com.quangnv.freemusic.util.navigator.NavigateAnim;
 import com.quangnv.freemusic.util.navigator.Navigator;
 
@@ -33,9 +35,12 @@ public class MyMusicFragment extends BaseFragment implements MyMusicContract.Vie
     MyMusicContract.Presenter mPresenter;
 
     private Navigator mNavigator;
+    private ArrayList<Playlist> mPlaylists;
     private ArrayList<Track> mFavoriteTracks;
     private ArrayList<Track> mLocalTracks;
 
+    private View mViewSearch;
+    private ImageButton mButtonVoiceSearch;
     private TextView mTextNumberPlaylist;
     private TextView mTextNumberFavorite;
     private TextView mTextNumberDownload;
@@ -72,8 +77,9 @@ public class MyMusicFragment extends BaseFragment implements MyMusicContract.Vie
     protected void initComponentsOnCreateView(View view, @Nullable Bundle savedInstanceState) {
         initView(view);
         registerListener();
+        mPresenter.getPlayList();
         mPresenter.getFavorite();
-//        mPresenter.getLocal();
+        mPresenter.getLocal();
     }
 
     @Override
@@ -93,7 +99,8 @@ public class MyMusicFragment extends BaseFragment implements MyMusicContract.Vie
 
     @Override
     public void showPlayList(List<Playlist> playlists) {
-
+        mPlaylists = (ArrayList<Playlist>) playlists;
+        mTextNumberPlaylist.setText(playlists.size() + "");
     }
 
     @Override
@@ -117,22 +124,33 @@ public class MyMusicFragment extends BaseFragment implements MyMusicContract.Vie
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_playlist:
+            case R.id.text_title_playlist:
                 mNavigator.addFragmentToBackStack(R.id.frame_container,
-                        PlaylistFragment.newInstance(null),
+                        PlaylistFragment.newInstance(mPlaylists),
                         true, NavigateAnim.RIGHT_LEFT, null);
                 break;
             case R.id.button_favorite:
+            case R.id.text_title_favorite:
                 mNavigator.addFragmentToBackStack(R.id.frame_container,
                         FavoriteFragment.newInstance(mFavoriteTracks),
                         true, NavigateAnim.RIGHT_LEFT, null);
                 break;
             case R.id.button_download:
-
+            case R.id.text_title_download:
                 break;
             case R.id.button_folder:
+            case R.id.text_title_folder:
                 mNavigator.addFragmentToBackStack(R.id.frame_container,
                         LocalFragment.newInstance(mLocalTracks),
                         true, NavigateAnim.RIGHT_LEFT, null);
+                break;
+            case R.id.view_search:
+                mNavigator.addFragmentToBackStack(R.id.frame_container,
+                        SearchFragment.newInstance(SearchType.NONE), true, NavigateAnim.RIGHT_LEFT, null);
+                break;
+            case R.id.button_search_voice:
+                mNavigator.addFragmentToBackStack(R.id.frame_container,
+                        SearchFragment.newInstance(SearchType.VOICE), true, NavigateAnim.RIGHT_LEFT, null);
                 break;
         }
     }
@@ -147,6 +165,8 @@ public class MyMusicFragment extends BaseFragment implements MyMusicContract.Vie
         mButtonDownload = view.findViewById(R.id.button_download);
         mButtonLocal = view.findViewById(R.id.button_folder);
         mProgressBarLoading = view.findViewById(R.id.progress_bar_loading);
+        mViewSearch = view.findViewById(R.id.view_search);
+        mButtonVoiceSearch = view.findViewById(R.id.button_search_voice);
     }
 
     private void registerListener() {
@@ -154,5 +174,7 @@ public class MyMusicFragment extends BaseFragment implements MyMusicContract.Vie
         mButtonFavorite.setOnClickListener(this);
         mButtonDownload.setOnClickListener(this);
         mButtonLocal.setOnClickListener(this);
+        mViewSearch.setOnClickListener(this);
+        mButtonVoiceSearch.setOnClickListener(this);
     }
 }

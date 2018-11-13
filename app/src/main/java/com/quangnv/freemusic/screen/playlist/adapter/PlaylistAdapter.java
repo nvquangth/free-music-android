@@ -48,6 +48,7 @@ public class PlaylistAdapter extends
         private ItemRecyclerViewListener<Playlist> mPlaylistItemRecyclerViewListener;
         private TextView mTextKey;
         private TextView mTextTitle;
+        private TextView mTextNumberTrack;
 
         public PlaylistViewHolder(@NonNull View itemView,
                                   ItemRecyclerViewListener<Playlist> itemRecyclerViewListener) {
@@ -56,6 +57,7 @@ public class PlaylistAdapter extends
 
             mTextKey = itemView.findViewById(R.id.text_playlist_key);
             mTextTitle = itemView.findViewById(R.id.text_playlist_title);
+            mTextNumberTrack = itemView.findViewById(R.id.text_number_track);
 
             itemView.setOnClickListener(this);
         }
@@ -76,6 +78,11 @@ public class PlaylistAdapter extends
             }
             mTextKey.setText(key.toUpperCase());
             mTextTitle.setText(playlist.getName());
+            if (playlist.getTracks() == null || playlist.getTracks().isEmpty()) {
+                mTextNumberTrack.setText("0");
+            } else {
+                mTextNumberTrack.setText(playlist.getTracks().size());
+            }
         }
     }
 }

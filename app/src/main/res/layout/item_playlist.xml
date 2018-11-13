@@ -24,11 +24,26 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_8"
         android:layout_marginLeft="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_marginRight="@dimen/dp_8"
         android:ellipsize="end"
         android:maxLines="1"
         android:text="@string/app_name"
         android:textColor="@color/color_transparent_80"
         app:layout_constraintBottom_toBottomOf="@+id/text_playlist_key"
+        app:layout_constraintEnd_toStartOf="@+id/text_number_track"
         app:layout_constraintStart_toEndOf="@+id/text_playlist_key"
         app:layout_constraintTop_toTopOf="@+id/text_playlist_key" />
+
+    <TextView
+        android:id="@+id/text_number_track"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:layout_marginRight="@dimen/dp_16"
+        android:text="@string/app_name"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/text_playlist_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/text_playlist_title" />
 </android.support.constraint.ConstraintLayout>

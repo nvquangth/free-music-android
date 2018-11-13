@@ -170,6 +170,7 @@ public class PlaylistFragment extends BaseFragment implements View.OnClickListen
                 playlist.setName(title);
                 mPresenter.savePlaylist(playlist);
                 mPlaylistAdapter.addData(playlist);
+                mRecyclerPlaylist.scrollToPosition(mPlaylistAdapter.getData().size() - 1);
             }
         });
 
