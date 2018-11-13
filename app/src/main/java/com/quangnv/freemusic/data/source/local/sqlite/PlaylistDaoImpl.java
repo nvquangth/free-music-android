@@ -107,7 +107,6 @@ public class PlaylistDaoImpl implements PlaylistDao {
                 try {
                     ContentValues values = new ContentValues();
                     values.put(DbHelper.PlaylistEntry.COLUMN_NAME_TITLE, playlist.getName());
-                    values.put(DbHelper.PlaylistEntry.COLUMN_NAME_IMAGE_URL, playlist.getImageUrl());
                     db.insert(DbHelper.PlaylistEntry.TABLE_NAME, null, values);
                     db.close();
                     emitter.onComplete();
