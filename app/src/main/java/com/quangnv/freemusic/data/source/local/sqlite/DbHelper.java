@@ -72,7 +72,7 @@ public class DbHelper extends SQLiteOpenHelper {
             + " ("
             + PlaylistEntry.COLUMN_NAME_ID
             + INTEGER_TYPE
-            + "AUTOINCREMENT"
+            + " PRIMARY KEY AUTOINCREMENT"
             + COMA_SEP
             + PlaylistEntry.COLUMN_NAME_TITLE
             + TEXT_TYPE
@@ -135,4 +135,4 @@ public class DbHelper extends SQLiteOpenHelper {
         public static final String COLUMN_NAME_TITLE = "title";
         public static final String COLUMN_NAME_IMAGE_URL = "image_url";
     }
- }
+}

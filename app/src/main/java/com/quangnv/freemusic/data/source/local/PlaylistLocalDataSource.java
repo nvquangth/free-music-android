@@ -7,6 +7,8 @@ import com.quangnv.freemusic.data.source.local.sqlite.PlaylistDaoImpl;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 
@@ -18,6 +20,7 @@ public class PlaylistLocalDataSource implements PlaylistDataSource.Local {
 
     private PlaylistDao mPlaylistDao;
 
+    @Inject
     public PlaylistLocalDataSource(PlaylistDaoImpl playlistDao) {
         mPlaylistDao = playlistDao;
     }
