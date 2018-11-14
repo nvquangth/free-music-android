@@ -33,6 +33,7 @@ import com.quangnv.freemusic.mediaplayer.MediaPlayerListener;
 import com.quangnv.freemusic.mediaplayer.MediaPlayerLoopType;
 import com.quangnv.freemusic.mediaplayer.MediaPlayerPlayType;
 import com.quangnv.freemusic.mediaplayer.MediaPlayerShuffleType;
+import com.quangnv.freemusic.screen.playlistdialog.PlaylistDialogFragment;
 import com.quangnv.freemusic.service.ServiceManager;
 import com.quangnv.freemusic.service.TrackService;
 import com.quangnv.freemusic.util.TimeUtils;
@@ -160,7 +161,9 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                 mPresenter.addOrRemoveFavorite(mTrackService.getCurrentTrack());
                 break;
             case R.id.button_playlist:
-
+                PlaylistDialogFragment playlistDialogFragment =
+                        PlaylistDialogFragment.newInstance(mTrackService.getCurrentTrack());
+                playlistDialogFragment.show(getSupportFragmentManager(), null);
                 break;
             case R.id.button_download:
                 downloadTrack(mTrackService.getCurrentTrack());

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -174,6 +175,13 @@ public class MainActivity extends BaseActivity implements
         if (mViewMiniPlayer.getVisibility() == View.GONE) {
             mViewMiniPlayer.setVisibility(View.VISIBLE);
         }
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mNavigator.startActivity(DetailActivity.class);
+            }
+        }, 1500);
     }
 
     @Override
