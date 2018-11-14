@@ -19,4 +19,5 @@
     <string name="title_create_playlist">Create Playlist</string>
     <string name="title_ok">OK</string>
     <string name="title_cancel">Cancel</string>
+    <string name="title_select_playlist">Select playlist</string>
 </resources>
