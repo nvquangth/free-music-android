@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
@@ -21,6 +22,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.quangnv.freemusic.R;
 import com.quangnv.freemusic.base.BaseActivity;
+import com.quangnv.freemusic.data.model.Playlist;
 import com.quangnv.freemusic.data.model.Track;
 import com.quangnv.freemusic.mediaplayer.MediaPlayerListener;
 import com.quangnv.freemusic.mediaplayer.MediaPlayerPlayType;
@@ -30,6 +32,7 @@ import com.quangnv.freemusic.screen.home.HomeFragment;
 import com.quangnv.freemusic.screen.mymusic.MyMusicFragment;
 import com.quangnv.freemusic.service.ServiceManager;
 import com.quangnv.freemusic.service.TrackService;
+import com.quangnv.freemusic.util.Constants;
 import com.quangnv.freemusic.util.navigator.NavigateAnim;
 import com.quangnv.freemusic.util.navigator.Navigator;
 
@@ -44,7 +47,8 @@ public class MainActivity extends BaseActivity implements
         ServiceConnection,
         OnItemTrackListener,
         MediaPlayerListener.OnTrackListener,
-        MediaPlayerListener.OnPlayingListener {
+        MediaPlayerListener.OnPlayingListener,
+        MyMusicFragment.OnPlaylistListener {
 
     private static final int TIME_DELAY_OPEN_TRACK_DETAIL = 1000;
 
@@ -116,7 +120,7 @@ public class MainActivity extends BaseActivity implements
                 return true;
             case R.id.nav_my_music:
                 mNavigator.replaceFragment(R.id.frame_container, MyMusicFragment.newInstance(),
-                        false, NavigateAnim.FADED, null);
+                        false, NavigateAnim.FADED, Constants.FLAG_MY_MUSIC_FRAGMENT);
                 return true;
             case R.id.nav_more:
                 return true;
@@ -247,5 +251,15 @@ public class MainActivity extends BaseActivity implements
         mIntent = new Intent(this, TrackService.class);
         mServiceManager = new ServiceManager(getApplicationContext(), mIntent, mConnection,
                 Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    public void onPlaylistAdded(Playlist playlist) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        MyMusicFragment myMusicFragment =
+                (MyMusicFragment) fragmentManager.findFragmentByTag(Constants.FLAG_MY_MUSIC_FRAGMENT);
+        if (myMusicFragment != null) {
+            myMusicFragment.addPlaylist(playlist);
+        }
     }
 }

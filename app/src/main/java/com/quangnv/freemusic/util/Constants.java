@@ -38,4 +38,9 @@ public final class Constants {
      * Extra
      */
     public static final String EXTRA_TRACK = "com.quangnv.freemusic.EXTRA_TRACK";
+
+    /**
+     * Flag
+     */
+    public static final String FLAG_MY_MUSIC_FRAGMENT = "FLAG_MY_MUSIC_FRAGMENT";
 }

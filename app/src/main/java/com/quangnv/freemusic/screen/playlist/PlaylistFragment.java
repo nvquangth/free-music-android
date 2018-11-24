@@ -1,5 +1,6 @@
 package com.quangnv.freemusic.screen.playlist;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.quangnv.freemusic.R;
 import com.quangnv.freemusic.base.BaseFragment;
 import com.quangnv.freemusic.base.BaseRecyclerViewAdapter;
 import com.quangnv.freemusic.data.model.Playlist;
+import com.quangnv.freemusic.screen.mymusic.MyMusicFragment;
 import com.quangnv.freemusic.screen.playlist.adapter.PlaylistAdapter;
 import com.quangnv.freemusic.screen.search.SearchFragment;
 import com.quangnv.freemusic.screen.search.SearchType;
@@ -44,6 +46,7 @@ public class PlaylistFragment extends BaseFragment implements View.OnClickListen
 
     private Navigator mNavigator;
     private List<Playlist> mPlaylists;
+    private MyMusicFragment.OnPlaylistListener mOnPlaylistListener;
 
     private Toolbar mToolbar;
     private FloatingActionButton mFABNewPlaylist;
@@ -57,6 +60,24 @@ public class PlaylistFragment extends BaseFragment implements View.OnClickListen
         PlaylistFragment fragment = new PlaylistFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getActivity() instanceof MyMusicFragment.OnPlaylistListener) {
+            mOnPlaylistListener = (MyMusicFragment.OnPlaylistListener) getActivity();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mOnPlaylistListener != null) {
+            mOnPlaylistListener = null;
+        }
+        super.onDestroy();
     }
 
     @Override
@@ -134,8 +155,8 @@ public class PlaylistFragment extends BaseFragment implements View.OnClickListen
     }
 
     @Override
-    public void showCreatePlaylistSuccessful() {
-
+    public void showCreatePlaylistSuccessful(Playlist playlist) {
+        mOnPlaylistListener.onPlaylistAdded(playlist);
     }
 
     @Override

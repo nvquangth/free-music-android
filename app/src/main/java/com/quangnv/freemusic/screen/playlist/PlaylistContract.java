@@ -15,7 +15,7 @@ public interface PlaylistContract {
 
         void hideLoadingIndicator();
 
-        void showCreatePlaylistSuccessful();
+        void showCreatePlaylistSuccessful(Playlist playlist);
 
         void showCreatePlaylistFailed();
     }
