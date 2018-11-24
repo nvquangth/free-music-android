@@ -46,6 +46,8 @@ public class MainActivity extends BaseActivity implements
         MediaPlayerListener.OnTrackListener,
         MediaPlayerListener.OnPlayingListener {
 
+    private static final int TIME_DELAY_OPEN_TRACK_DETAIL = 1000;
+
     @Inject
     MainContract.Presenter mPresenter;
 
@@ -181,7 +183,7 @@ public class MainActivity extends BaseActivity implements
             public void run() {
                 mNavigator.startActivity(DetailActivity.class);
             }
-        }, 1500);
+        }, TIME_DELAY_OPEN_TRACK_DETAIL);
     }
 
     @Override

@@ -26,6 +26,7 @@ public class DbHelper extends SQLiteOpenHelper {
             + " ("
             + TrackEntry.COLUMN_NAME_ID
             + INTEGER_TYPE
+            + " PRIMARY KEY"
             + COMA_SEP
             + TrackEntry.COLUMN_NAME_TITLE
             + TEXT_TYPE
@@ -64,6 +65,15 @@ public class DbHelper extends SQLiteOpenHelper {
             + INTEGER_TYPE
             + COMA_SEP
             + TrackEntry.COLUMN_NAME_PLAYLIST_ID
+            + INTEGER_TYPE
+            + COMA_SEP
+            + TrackEntry.COLUMN_NAME_IS_ADDED_PLAYLIST
+            + INTEGER_TYPE
+            + COMA_SEP
+            + TrackEntry.COLUMN_NAME_IS_ADDED_FAVORITE
+            + INTEGER_TYPE
+            + COMA_SEP
+            + TrackEntry.COLUMN_NAME_IS_DOWNLOADED
             + INTEGER_TYPE
             + " )";
 
@@ -126,6 +136,9 @@ public class DbHelper extends SQLiteOpenHelper {
         public static final String COLUMN_NAME_ARTIST = "artist";
         public static final String COLUMN_NAME_DOWNLOAD_STATUS = "download_status";
         public static final String COLUMN_NAME_PLAYLIST_ID = "playlist_id";
+        public static final String COLUMN_NAME_IS_ADDED_PLAYLIST = "is_added_playlist";
+        public static final String COLUMN_NAME_IS_ADDED_FAVORITE = "is_added_favorite";
+        public static final String COLUMN_NAME_IS_DOWNLOADED = "is_downloaded";
     }
 
     public static final class PlaylistEntry implements BaseColumns {

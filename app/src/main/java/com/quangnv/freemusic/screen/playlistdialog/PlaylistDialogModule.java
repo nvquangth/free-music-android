@@ -5,7 +5,10 @@ import android.content.Context;
 import com.quangnv.freemusic.base.BaseRecyclerViewAdapter;
 import com.quangnv.freemusic.data.model.Playlist;
 import com.quangnv.freemusic.data.repository.PlaylistRepository;
+import com.quangnv.freemusic.data.repository.TrackRepository;
 import com.quangnv.freemusic.data.source.local.PlaylistLocalDataSource;
+import com.quangnv.freemusic.data.source.local.TrackLocalDataSource;
+import com.quangnv.freemusic.data.source.remote.TrackRemoteDataSource;
 import com.quangnv.freemusic.screen.playlistdialog.adapter.PlaylistDialogAdapter;
 import com.quangnv.freemusic.util.dagger.ApplicationContext;
 import com.quangnv.freemusic.util.dagger.FragmentScope;
@@ -43,10 +46,19 @@ public class PlaylistDialogModule {
 
     @FragmentScope
     @Provides
+    TrackRepository provideTrackRepository(TrackRemoteDataSource remote,
+                                           TrackLocalDataSource local) {
+        return new TrackRepository(remote, local);
+    }
+
+    @FragmentScope
+    @Provides
     PlaylistDialogContract.Presenter providePlaylistDialogPresenter(CompositeDisposable compositeDisposable,
                                                                     BaseSchedulerProvider scheduler,
-                                                                    PlaylistRepository playlistRepository) {
-        return new PlaylistDialogPresenter(compositeDisposable, scheduler, playlistRepository);
+                                                                    PlaylistRepository playlistRepository,
+                                                                    TrackRepository trackRepository) {
+        return new PlaylistDialogPresenter(compositeDisposable, scheduler, playlistRepository,
+                trackRepository);
     }
 
     @FragmentScope

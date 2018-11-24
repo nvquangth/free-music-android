@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.quangnv.freemusic.data.model.Playlist;
 import com.quangnv.freemusic.data.model.Publisher;
 import com.quangnv.freemusic.data.model.Track;
 
@@ -61,7 +62,7 @@ public class TrackDaoImpl implements TrackDao {
     public Observable<Track> getTrack(final long trackId) {
         return Observable.create(new ObservableOnSubscribe<Track>() {
             @Override
-            public void subscribe(ObservableEmitter<Track> emitter) throws Exception {
+            public void subscribe(ObservableEmitter<Track> emitter) {
                 Track track = null;
                 SQLiteDatabase db = mDbHelper.getReadableDatabase();
                 try {
@@ -130,7 +131,7 @@ public class TrackDaoImpl implements TrackDao {
     public Completable insertTrack(final Track track, final int type) {
         return Completable.create(new CompletableOnSubscribe() {
             @Override
-            public void subscribe(CompletableEmitter emitter) throws Exception {
+            public void subscribe(CompletableEmitter emitter) {
                 SQLiteDatabase db = mDbHelper.getWritableDatabase();
                 try {
                     ContentValues values = new ContentValues();
@@ -140,13 +141,23 @@ public class TrackDaoImpl implements TrackDao {
                     values.put(DbHelper.TrackEntry.COLUMN_NAME_ARTWORK_URL, track.getArtWorkUrl());
                     values.put(DbHelper.TrackEntry.COLUMN_NAME_STREAMABLE, track.isStreamable());
                     values.put(DbHelper.TrackEntry.COLUMN_NAME_STREAM_URL, track.getStreamUrl());
-                    values.put(DbHelper.TrackEntry.COLUMN_NAME_DOWNLOADABLE, track.isDownloadable());
-                    values.put(DbHelper.TrackEntry.COLUMN_NAME_DOWNLOAD_URL, track.getDownloadUrl());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_DOWNLOADABLE,
+                            track.isDownloadable());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_DOWNLOAD_URL,
+                            track.getDownloadUrl());
                     values.put(DbHelper.TrackEntry.COLUMN_NAME_GENRE, track.getGenre());
-                    values.put(DbHelper.TrackEntry.COLUMN_NAME_PLAYBACK_COUNT, track.getPlaybackCount());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_PLAYBACK_COUNT,
+                            track.getPlaybackCount());
                     values.put(DbHelper.TrackEntry.COLUMN_NAME_DESCRIPTION, track.getDescription());
-                    values.put(DbHelper.TrackEntry.COLUMN_NAME_ARTIST, track.getPublisher().getArtist());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_ARTIST,
+                            track.getPublisher().getArtist());
                     values.put(DbHelper.TrackEntry.COLUMN_NAME_DOWNLOAD_STATUS, type);
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_IS_ADDED_PLAYLIST,
+                            track.getIsAddedPlaylist());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_IS_ADDED_FAVORITE,
+                            track.getIsAddedFavorite());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_IS_DOWNLOADED,
+                            track.getIsDownloaded());
                     db.insert(DbHelper.TrackEntry.TABLE_NAME, null, values);
                     db.close();
                     emitter.onComplete();
@@ -165,7 +176,7 @@ public class TrackDaoImpl implements TrackDao {
     public Completable deleteTrack(final Track track) {
         return Completable.create(new CompletableOnSubscribe() {
             @Override
-            public void subscribe(CompletableEmitter emitter) throws Exception {
+            public void subscribe(CompletableEmitter emitter) {
                 SQLiteDatabase db = mDbHelper.getWritableDatabase();
                 try {
                     final String selection = DbHelper.TrackEntry.COLUMN_NAME_ID + " = ? ";
@@ -186,7 +197,7 @@ public class TrackDaoImpl implements TrackDao {
     public Completable deleteAllTracks() {
         return Completable.create(new CompletableOnSubscribe() {
             @Override
-            public void subscribe(CompletableEmitter emitter) throws Exception {
+            public void subscribe(CompletableEmitter emitter) {
                 SQLiteDatabase db = mDbHelper.getWritableDatabase();
                 try {
                     db.delete(DbHelper.TrackEntry.TABLE_NAME, null, null);
@@ -205,7 +216,7 @@ public class TrackDaoImpl implements TrackDao {
     public Completable updateTrack(final Track track) {
         return Completable.create(new CompletableOnSubscribe() {
             @Override
-            public void subscribe(CompletableEmitter emitter) throws Exception {
+            public void subscribe(CompletableEmitter emitter) {
                 SQLiteDatabase db = mDbHelper.getWritableDatabase();
                 try {
                     ContentValues values = new ContentValues();
@@ -215,12 +226,24 @@ public class TrackDaoImpl implements TrackDao {
                     values.put(DbHelper.TrackEntry.COLUMN_NAME_ARTWORK_URL, track.getArtWorkUrl());
                     values.put(DbHelper.TrackEntry.COLUMN_NAME_STREAMABLE, track.isStreamable());
                     values.put(DbHelper.TrackEntry.COLUMN_NAME_STREAM_URL, track.getStreamUrl());
-                    values.put(DbHelper.TrackEntry.COLUMN_NAME_DOWNLOADABLE, track.isDownloadable());
-                    values.put(DbHelper.TrackEntry.COLUMN_NAME_DOWNLOAD_URL, track.getDownloadUrl());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_DOWNLOADABLE,
+                            track.isDownloadable());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_DOWNLOAD_URL,
+                            track.getDownloadUrl());
                     values.put(DbHelper.TrackEntry.COLUMN_NAME_GENRE, track.getGenre());
-                    values.put(DbHelper.TrackEntry.COLUMN_NAME_PLAYBACK_COUNT, track.getPlaybackCount());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_PLAYBACK_COUNT,
+                            track.getPlaybackCount());
                     values.put(DbHelper.TrackEntry.COLUMN_NAME_DESCRIPTION, track.getDescription());
-                    values.put(DbHelper.TrackEntry.COLUMN_NAME_ARTIST, track.getPublisher().getArtist());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_ARTIST,
+                            track.getPublisher().getArtist());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_DOWNLOAD_STATUS,
+                            track.getDownloadStatus());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_IS_ADDED_PLAYLIST,
+                            track.getIsAddedPlaylist());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_IS_ADDED_FAVORITE,
+                            track.getIsAddedFavorite());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_IS_DOWNLOADED,
+                            track.getIsDownloaded());
                     db.insert(DbHelper.TrackEntry.TABLE_NAME, null, values);
                     db.update(
                             DbHelper.TrackEntry.TABLE_NAME,
@@ -260,6 +283,51 @@ public class TrackDaoImpl implements TrackDao {
         return Observable.just(tracks);
     }
 
+    @Override
+    public Completable addTrackToPlaylist(final Track track, final Playlist playlist) {
+        return Completable.create(new CompletableOnSubscribe() {
+            @Override
+            public void subscribe(CompletableEmitter emitter) {
+                SQLiteDatabase db = mDbHelper.getWritableDatabase();
+                try {
+                    ContentValues values = new ContentValues();
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_ID, track.getId());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_TITLE, track.getTitle());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_DURATION, track.getDuration());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_ARTWORK_URL, track.getArtWorkUrl());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_STREAMABLE, track.isStreamable());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_STREAM_URL, track.getStreamUrl());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_DOWNLOADABLE,
+                            track.isDownloadable());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_DOWNLOAD_URL,
+                            track.getDownloadUrl());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_GENRE, track.getGenre());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_PLAYBACK_COUNT,
+                            track.getPlaybackCount());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_DESCRIPTION, track.getDescription());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_ARTIST,
+                            track.getPublisher().getArtist());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_PLAYLIST_ID, playlist.getId());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_IS_ADDED_PLAYLIST,
+                            track.getIsAddedPlaylist());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_IS_ADDED_FAVORITE,
+                            track.getIsAddedFavorite());
+                    values.put(DbHelper.TrackEntry.COLUMN_NAME_IS_DOWNLOADED,
+                            track.getIsDownloaded());
+                    db.insert(DbHelper.TrackEntry.TABLE_NAME, null, values);
+                    db.close();
+                    emitter.onComplete();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    db.close();
+                    emitter.onError(e);
+                } finally {
+                    db.close();
+                }
+            }
+        });
+    }
+
     private List<Track> genTracks(Cursor cursor) {
         List<Track> tracks = new ArrayList<>();
         if (cursor.moveToFirst()) {
@@ -275,34 +343,38 @@ public class TrackDaoImpl implements TrackDao {
     }
 
     private Track genTrack(Cursor cursor) {
-        Track.Builder builder = new Track.Builder();
-        Track track = builder
-                .setId(cursor.getLong(
-                        cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_ID)))
-                .setTitle(cursor.getString(
-                        cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_TITLE)))
-                .setDuration(cursor.getLong(
-                        cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_DURATION)))
-                .setArtWorkUrl(cursor.getString(
-                        cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_ARTWORK_URL)))
-                .setStreamable(cursor.getInt(
-                        cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_STREAMABLE)) == 1)
-                .setStreamUrl(cursor.getString(
-                        cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_STREAM_URL)))
-                .setDownloadable(cursor.getInt(
-                        cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_DOWNLOADABLE))
-                        == 1)
-                .setDownloadUrl(cursor.getString(
-                        cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_DOWNLOAD_URL)))
-                .setGenre(cursor.getString(
-                        cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_GENRE)))
-                .setPlaybackCount(cursor.getLong(
-                        cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_PLAYBACK_COUNT)))
-                .setDescription(cursor.getString(
-                        cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_DESCRIPTION)))
-                .setPublisher(new Publisher.Builder().setArtist(cursor.getString(
-                        cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_ARTIST))).build())
-                .build();
+        Track track = new Track();
+        track.setId(cursor.getLong(cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_ID)));
+        track.setTitle(cursor.getString(
+                cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_TITLE)));
+        track.setDuration(cursor.getLong(
+                cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_DURATION)));
+        track.setArtWorkUrl(cursor.getString(
+                cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_ARTWORK_URL)));
+        track.setStreamable(cursor.getInt(
+                cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_STREAMABLE)) == 1);
+        track.setStreamUrl(cursor.getString(
+                cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_STREAM_URL)));
+        track.setDownloadable(cursor.getInt(
+                cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_DOWNLOADABLE)) == 1);
+        track.setDownloadUrl(cursor.getString(
+                cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_DOWNLOAD_URL)));
+        track.setGenre(cursor.getString(
+                        cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_GENRE)));
+        track.setPlaybackCount(cursor.getLong(
+                        cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_PLAYBACK_COUNT)));
+        track.setDescription(cursor.getString(
+                        cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_DESCRIPTION)));
+        track.setPublisher(new Publisher.Builder().setArtist(cursor.getString(
+                        cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_ARTIST))).build());
+        track.setDownloadStatus(cursor.getInt(
+                        cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_DOWNLOAD_STATUS)));
+        track.setIsAddedPlaylist(cursor.getInt(
+                        cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_IS_ADDED_PLAYLIST)));
+        track.setIsAddedFavorite(cursor.getInt(
+                        cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_IS_ADDED_FAVORITE)));
+        track.setIsDownloaded(cursor.getInt(
+                        cursor.getColumnIndex(DbHelper.TrackEntry.COLUMN_NAME_IS_DOWNLOADED)));
         return track;
     }
 
@@ -319,7 +391,12 @@ public class TrackDaoImpl implements TrackDao {
                 DbHelper.TrackEntry.COLUMN_NAME_GENRE,
                 DbHelper.TrackEntry.COLUMN_NAME_PLAYBACK_COUNT,
                 DbHelper.TrackEntry.COLUMN_NAME_DESCRIPTION,
-                DbHelper.TrackEntry.COLUMN_NAME_ARTIST
+                DbHelper.TrackEntry.COLUMN_NAME_ARTIST,
+                DbHelper.TrackEntry.COLUMN_NAME_PLAYLIST_ID,
+                DbHelper.TrackEntry.COLUMN_NAME_DOWNLOAD_STATUS,
+                DbHelper.TrackEntry.COLUMN_NAME_IS_ADDED_PLAYLIST,
+                DbHelper.TrackEntry.COLUMN_NAME_IS_ADDED_FAVORITE,
+                DbHelper.TrackEntry.COLUMN_NAME_IS_DOWNLOADED
         };
     }
 }

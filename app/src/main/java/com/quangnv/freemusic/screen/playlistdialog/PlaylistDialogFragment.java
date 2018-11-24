@@ -1,9 +1,9 @@
 package com.quangnv.freemusic.screen.playlistdialog;
 
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.quangnv.freemusic.MainApplication;
 import com.quangnv.freemusic.R;
@@ -51,13 +51,14 @@ public class PlaylistDialogFragment extends BaseDialogFragment implements
 
     @Override
     protected void initComponentsOnCreate(Bundle savedInstanceState) {
-        setStyle(STYLE_NO_TITLE, android.R.style.Theme_Holo);
         DaggerPlaylistDialogComponent.builder()
                 .appComponent((((MainApplication) getActivity().getApplication()).getAppComponent()))
                 .playlistDialogModule(new PlaylistDialogModule(this))
                 .build()
                 .inject(this);
         mPresenter.setView(this);
+
+        setStyle(STYLE_NO_TITLE, android.R.style.Theme_Holo);
     }
 
     @Override
@@ -73,7 +74,7 @@ public class PlaylistDialogFragment extends BaseDialogFragment implements
 
     @Override
     public void onItemRecyclerViewClick(Playlist playlist, int position) {
-        dismiss();
+        mPresenter.addTrackToPlaylist(mTrack, playlist);
     }
 
     @Override
@@ -89,6 +90,18 @@ public class PlaylistDialogFragment extends BaseDialogFragment implements
     @Override
     public void showPlaylist(List<Playlist> playlists) {
         mPlaylistDialogAdapter.setData(playlists);
+    }
+
+    @Override
+    public void showAddTrackToPlaylistSuccessful() {
+        Toast.makeText(getContext(), "Track added to playlist!", Toast.LENGTH_SHORT).show();
+//        dismiss();
+    }
+
+    @Override
+    public void showAddTrackToPlaylistFailed() {
+        Toast.makeText(getContext(), "Failed add track to playlist!", Toast.LENGTH_SHORT).show();
+//        dismiss();
     }
 
     private void initView(View view) {

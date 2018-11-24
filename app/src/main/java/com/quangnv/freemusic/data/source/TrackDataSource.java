@@ -1,5 +1,6 @@
 package com.quangnv.freemusic.data.source;
 
+import com.quangnv.freemusic.data.model.Playlist;
 import com.quangnv.freemusic.data.model.Track;
 import com.quangnv.freemusic.data.model.TrackLocalType;
 
@@ -32,6 +33,8 @@ public interface TrackDataSource {
         Completable deleteTrack(Track track);
 
         Observable<Boolean> isExistTrack(Track track);
+
+        Completable addTrackToPlaylist(Track track, Playlist playlist);
     }
 
     interface Remote extends TrackDataSource {

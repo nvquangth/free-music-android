@@ -2,6 +2,7 @@ package com.quangnv.freemusic.data.source.local;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.quangnv.freemusic.data.model.Playlist;
 import com.quangnv.freemusic.data.model.Track;
 import com.quangnv.freemusic.data.model.TrackLocalType;
 import com.quangnv.freemusic.data.source.TrackDataSource;
@@ -91,6 +92,11 @@ public class TrackLocalDataSource implements TrackDataSource.Local {
                         return Observable.just(true);
                     }
                 });
+    }
+
+    @Override
+    public Completable addTrackToPlaylist(Track track, Playlist playlist) {
+        return mTrackDao.addTrackToPlaylist(track, playlist);
     }
 
     private List<Track> getTopTrackFromAssets(String path) {
