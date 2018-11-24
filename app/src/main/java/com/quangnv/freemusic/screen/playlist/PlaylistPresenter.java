@@ -29,7 +29,7 @@ public class PlaylistPresenter implements PlaylistContract.Presenter {
     }
 
     @Override
-    public void savePlaylist(Playlist playlist) {
+    public void savePlaylist(final Playlist playlist) {
         Disposable disposable = mPlaylistRepository.insert(playlist)
                 .subscribeOn(mScheduler.io())
                 .observeOn(mScheduler.ui())
@@ -43,7 +43,7 @@ public class PlaylistPresenter implements PlaylistContract.Presenter {
                     @Override
                     public void run() {
                         mView.hideLoadingIndicator();
-                        mView.showCreatePlaylistSuccessful();
+                        mView.showCreatePlaylistSuccessful(playlist);
                     }
                 }, new Consumer<Throwable>() {
                     @Override

@@ -1,5 +1,6 @@
 package com.quangnv.freemusic.screen.mymusic;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -62,7 +63,7 @@ public class MyMusicFragment extends BaseFragment implements MyMusicContract.Vie
         fragment.setArguments(args);
         return fragment;
     }
-    
+
     @Override
     protected void initComponentsOnCreate(@Nullable Bundle savedInstanceState) {
         DaggerMyMusicComponent.builder()
@@ -155,6 +156,11 @@ public class MyMusicFragment extends BaseFragment implements MyMusicContract.Vie
         }
     }
 
+    public void addPlaylist(Playlist playlist) {
+        mPlaylists.add(playlist);
+        showPlayList(mPlaylists);
+    }
+
     private void initView(View view) {
         mTextNumberPlaylist = view.findViewById(R.id.text_number_playlist);
         mTextNumberFavorite = view.findViewById(R.id.text_number_favorite);
@@ -176,5 +182,15 @@ public class MyMusicFragment extends BaseFragment implements MyMusicContract.Vie
         mButtonLocal.setOnClickListener(this);
         mViewSearch.setOnClickListener(this);
         mButtonVoiceSearch.setOnClickListener(this);
+    }
+
+    public interface OnPlaylistListener {
+
+        void onPlaylistAdded(Playlist playlist);
+    }
+
+    public interface OnReloadFavoriteListener {
+
+        void onReloadFavorite();
     }
 }
