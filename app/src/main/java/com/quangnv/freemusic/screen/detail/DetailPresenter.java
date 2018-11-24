@@ -36,48 +36,24 @@ public class DetailPresenter implements DetailContract.Presenter {
 
     @Override
     public void addOrRemoveFavorite(final Track track) {
-
         Disposable disposable = mTrackRepository.getTrack(track.getId())
                 .subscribeOn(mScheduler.io())
                 .observeOn(mScheduler.ui())
                 .subscribe(new Consumer<Track>() {
                     @Override
                     public void accept(Track track) {
-                        Disposable disposable = mTrackRepository.deleteTrack(track)
-                                .subscribeOn(mScheduler.io())
-                                .observeOn(mScheduler.ui())
-                                .subscribe(new Action() {
-                                    @Override
-                                    public void run() {
-                                        mView.showTrackRemovedFromFavorite();
-                                    }
-                                }, new Consumer<Throwable>() {
-                                    @Override
-                                    public void accept(Throwable throwable) {
-                                        mView.showHandleFavoriteError();
-                                    }
-                                });
-                        mCompositeDisposable.add(disposable);
+                        if (track.getIsDownloaded() == 0 && track.getIsAddedPlaylist() == 0) {
+                            deleteTrack(track);
+                        } else {
+                            track.setIsAddedFavorite(1);
+                            updateTrack(track);
+                        }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) {
-                        Disposable disposable = mTrackRepository.insertTrack(track,
-                                TrackLocalType.FAVORITE)
-                                .subscribeOn(mScheduler.io())
-                                .observeOn(mScheduler.ui())
-                                .subscribe(new Action() {
-                                    @Override
-                                    public void run() {
-                                        mView.showTrackAddedToFavorite();
-                                    }
-                                }, new Consumer<Throwable>() {
-                                    @Override
-                                    public void accept(Throwable throwable) {
-                                        mView.showHandleFavoriteError();
-                                    }
-                                });
-                        mCompositeDisposable.add(disposable);
+                        track.setIsAddedFavorite(1);
+                        insertTrack(track);
                     }
                 });
         mCompositeDisposable.add(disposable);
@@ -91,7 +67,11 @@ public class DetailPresenter implements DetailContract.Presenter {
                 .subscribe(new Consumer<Track>() {
                     @Override
                     public void accept(Track track) {
-                        mView.showTrackAddedToFavorite();
+                        if (track.getDownloadStatus() == TrackLocalType.FAVORITE) {
+                            mView.showTrackAddedToFavorite();
+                        } else {
+                            mView.showTrackRemovedFromFavorite();
+                        }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -107,7 +87,8 @@ public class DetailPresenter implements DetailContract.Presenter {
         mTrackDownloadManager.downloadTrack(track);
         String url = StringUtils.formatFilePath(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getPath(),
                 track.getTitle());
-        Disposable disposable = mTrackRepository.insertTrack(genTrack(track, url), TrackLocalType.DOWNLOAD)
+        track.setStreamUrl(url);
+        Disposable disposable = mTrackRepository.insertTrack(track, TrackLocalType.DOWNLOAD)
                 .subscribeOn(mScheduler.io())
                 .observeOn(mScheduler.ui())
                 .subscribe(new Action() {
@@ -144,20 +125,58 @@ public class DetailPresenter implements DetailContract.Presenter {
         mTrackDownloadManager = trackDownloadManager;
     }
 
-    private Track genTrack(Track track, String url) {
-        Track.Builder builder = new Track.Builder();
-        return builder.setId(track.getId())
-                .setTitle(track.getTitle())
-                .setDuration(track.getDuration())
-                .setArtWorkUrl(track.getArtWorkUrl())
-                .setStreamable(false)
-                .setStreamUrl(url)
-                .setDownloadable(track.isDownloadable())
-                .setDownloadUrl(track.getDownloadUrl())
-                .setGenre(track.getGenre())
-                .setPlaybackCount(track.getPlaybackCount())
-                .setDescription(track.getDescription())
-                .setPublisher(track.getPublisher())
-                .build();
+    private void deleteTrack(Track track) {
+        Disposable disposable = mTrackRepository.deleteTrack(track)
+                .subscribeOn(mScheduler.io())
+                .observeOn(mScheduler.ui())
+                .subscribe(new Action() {
+                    @Override
+                    public void run() {
+                        mView.showTrackRemovedFromFavorite();
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) {
+                        mView.showHandleFavoriteError();
+                    }
+                });
+        mCompositeDisposable.add(disposable);
+    }
+
+    private void updateTrack(Track track) {
+        Disposable disposable = mTrackRepository.updateTrack(track)
+                .subscribeOn(mScheduler.io())
+                .observeOn(mScheduler.ui())
+                .subscribe(new Action() {
+                    @Override
+                    public void run() {
+                        mView.showTrackAddedToFavorite();
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) {
+                        mView.showHandleFavoriteError();
+                    }
+                });
+        mCompositeDisposable.add(disposable);
+    }
+
+    private void insertTrack(Track track) {
+        Disposable disposable = mTrackRepository.insertTrack(track,
+                TrackLocalType.FAVORITE)
+                .subscribeOn(mScheduler.io())
+                .observeOn(mScheduler.ui())
+                .subscribe(new Action() {
+                    @Override
+                    public void run() {
+                        mView.showTrackAddedToFavorite();
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) {
+                        mView.showHandleFavoriteError();
+                    }
+                });
+        mCompositeDisposable.add(disposable);
     }
 }

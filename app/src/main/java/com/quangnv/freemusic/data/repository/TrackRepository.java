@@ -1,5 +1,6 @@
 package com.quangnv.freemusic.data.repository;
 
+import com.quangnv.freemusic.data.model.Playlist;
 import com.quangnv.freemusic.data.model.Track;
 import com.quangnv.freemusic.data.model.TrackLocalType;
 import com.quangnv.freemusic.data.source.TrackDataSource;
@@ -79,5 +80,10 @@ public class TrackRepository implements TrackDataSource.Remote, TrackDataSource.
     @Override
     public Observable<Boolean> isExistTrack(Track track) {
         return mLocal.isExistTrack(track);
+    }
+
+    @Override
+    public Completable addTrackToPlaylist(Track track, Playlist playlist) {
+        return mLocal.addTrackToPlaylist(track, playlist);
     }
 }

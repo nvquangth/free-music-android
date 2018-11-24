@@ -50,22 +50,22 @@ public class SdCardHelper {
         if (cursor == null) return Observable.just(tracks);
 
         while (cursor.moveToNext()) {
-            Track.Builder builder = new Track.Builder();
-            builder.setId(cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media._ID)));
-            builder.setTitle(
+            Track track = new Track();
+            track.setId(cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media._ID)));
+            track.setTitle(
                     cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)));
-            builder.setDuration(
+            track.setDuration(
                     cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)));
-            builder.setArtWorkUrl(
+            track.setArtWorkUrl(
                     getAlbumArt(
                             cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID))));
-            builder.setStreamUrl(
+            track.setStreamUrl(
                     cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA)));
             Publisher.Builder pBuilder = new Publisher.Builder();
             pBuilder.setArtist(
                     cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)));
-            builder.setPublisher(pBuilder.build());
-            tracks.add(builder.build());
+            track.setPublisher(pBuilder.build());
+            tracks.add(track);
         }
 
         cursor.close();

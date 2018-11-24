@@ -51,21 +51,11 @@ public class Track extends BaseModel implements Parcelable {
     private String mDownloadUrl;
 
     private int mDownloadStatus;
+    private int mIsAddedPlaylist;
+    private int mIsAddedFavorite;
+    private int mIsDownloaded;
 
-    private Track(Builder builder) {
-        mId = builder.mId;
-        mTitle = builder.mTitle;
-        mDuration = builder.mDuration;
-        mArtWorkUrl = builder.mArtWorkUrl;
-        mStreamable = builder.mStreamable;
-        mDownloadable = builder.mDownloadable;
-        mGenre = builder.mGenre;
-        mPlaybackCount = builder.mPlaybackCount;
-        mDescription = builder.mDescription;
-        mPublisher = builder.mPublisher;
-        mStreamUrl = builder.mStreamUrl;
-        mDownloadUrl = builder.mDownloadUrl;
-        mDownloadStatus = builder.mDownloadStatus;
+    public Track() {
     }
 
     protected Track(Parcel in) {
@@ -82,6 +72,9 @@ public class Track extends BaseModel implements Parcelable {
         mStreamUrl = in.readString();
         mDownloadUrl = in.readString();
         mDownloadStatus = in.readInt();
+        mIsAddedPlaylist = in.readInt();
+        mIsAddedFavorite = in.readInt();
+        mIsDownloaded = in.readInt();
     }
 
     public static final Creator<Track> CREATOR = new Creator<Track>() {
@@ -116,108 +109,33 @@ public class Track extends BaseModel implements Parcelable {
         parcel.writeString(mStreamUrl);
         parcel.writeString(mDownloadUrl);
         parcel.writeInt(mDownloadStatus);
-    }
-
-    public static class Builder {
-
-        private long mId;
-        private String mTitle;
-        private long mDuration;
-        private String mArtWorkUrl;
-        private boolean mStreamable;
-        private boolean mDownloadable;
-        private String mGenre;
-        private long mPlaybackCount;
-        private String mDescription;
-        private Publisher mPublisher;
-        private String mStreamUrl;
-        private String mDownloadUrl;
-        private int mDownloadStatus;
-
-        public Builder() {
-
-        }
-
-        public Track build() {
-            return new Track(this);
-        }
-
-        public Builder setId(long id) {
-            mId = id;
-            return this;
-        }
-
-        public Builder setTitle(String title) {
-            mTitle = title;
-            return this;
-        }
-
-        public Builder setDuration(long duration) {
-            mDuration = duration;
-            return this;
-        }
-
-        public Builder setArtWorkUrl(String artWorkUrl) {
-            mArtWorkUrl = artWorkUrl;
-            return this;
-        }
-
-        public Builder setStreamable(boolean streamable) {
-            mStreamable = streamable;
-            return this;
-        }
-
-        public Builder setDownloadable(boolean downloadable) {
-            mDownloadable = downloadable;
-            return this;
-        }
-
-        public Builder setGenre(String genre) {
-            mGenre = genre;
-            return this;
-        }
-
-        public Builder setPlaybackCount(long playbackCount) {
-            mPlaybackCount = playbackCount;
-            return this;
-        }
-
-        public Builder setDescription(String description) {
-            mDescription = description;
-            return this;
-        }
-
-        public Builder setPublisher(Publisher publisher) {
-            mPublisher = publisher;
-            return this;
-        }
-
-        public Builder setStreamUrl(String streamUrl) {
-            mStreamUrl = streamUrl;
-            return this;
-        }
-
-        public Builder setDownloadUrl(String downloadUrl) {
-            mDownloadUrl = downloadUrl;
-            return this;
-        }
-
-        public Builder setDownloadStatus(@TrackLocalType int downloadStatus) {
-            mDownloadStatus = downloadStatus;
-            return this;
-        }
+        parcel.writeInt(mIsAddedPlaylist);
+        parcel.writeInt(mIsAddedFavorite);
+        parcel.writeInt(mIsDownloaded);
     }
 
     public long getId() {
         return mId;
     }
 
+    public void setId(long id) {
+        mId = id;
+    }
+
     public String getTitle() {
         return mTitle;
     }
 
+    public void setTitle(String title) {
+        mTitle = title;
+    }
+
     public long getDuration() {
         return mDuration;
+    }
+
+    public void setDuration(long duration) {
+        mDuration = duration;
     }
 
     public String getArtWorkUrl() {
@@ -227,29 +145,56 @@ public class Track extends BaseModel implements Parcelable {
         return mArtWorkUrl;
     }
 
+    public void setArtWorkUrl(String artWorkUrl) {
+        mArtWorkUrl = artWorkUrl;
+    }
+
     public boolean isStreamable() {
         return mStreamable;
+    }
+
+    public void setStreamable(boolean streamable) {
+        mStreamable = streamable;
     }
 
     public boolean isDownloadable() {
         return mDownloadable;
     }
 
+    public void setDownloadable(boolean downloadable) {
+        mDownloadable = downloadable;
+    }
+
     public String getGenre() {
         return mGenre;
+    }
+
+    public void setGenre(String genre) {
+        mGenre = genre;
     }
 
     public long getPlaybackCount() {
         return mPlaybackCount;
     }
 
+    public void setPlaybackCount(long playbackCount) {
+        mPlaybackCount = playbackCount;
+    }
+
     public String getDescription() {
         return mDescription;
     }
 
+    public void setDescription(String description) {
+        mDescription = description;
+    }
+
     public Publisher getPublisher() {
-        if (mPublisher == null) mPublisher = new Publisher.Builder().build();
         return mPublisher;
+    }
+
+    public void setPublisher(Publisher publisher) {
+        mPublisher = publisher;
     }
 
     public String getStreamUrl() {
@@ -259,18 +204,50 @@ public class Track extends BaseModel implements Parcelable {
         return mStreamUrl;
     }
 
+    public void setStreamUrl(String streamUrl) {
+        mStreamUrl = streamUrl;
+    }
+
     public String getDownloadUrl() {
         if (mDownloadable) {
             return StringUtils.generateLinkDownloadTrack(mId);
         }
-        return null;
+        return mDownloadUrl;
+    }
+
+    public void setDownloadUrl(String downloadUrl) {
+        mDownloadUrl = downloadUrl;
     }
 
     public int getDownloadStatus() {
         return mDownloadStatus;
     }
 
-    public void setStreamUrl(String streamUrl) {
-        mStreamUrl = streamUrl;
+    public void setDownloadStatus(int downloadStatus) {
+        mDownloadStatus = downloadStatus;
+    }
+
+    public int getIsAddedPlaylist() {
+        return mIsAddedPlaylist;
+    }
+
+    public void setIsAddedPlaylist(int isAddedPlaylist) {
+        mIsAddedPlaylist = isAddedPlaylist;
+    }
+
+    public int getIsAddedFavorite() {
+        return mIsAddedFavorite;
+    }
+
+    public void setIsAddedFavorite(int isAddedFavorite) {
+        mIsAddedFavorite = isAddedFavorite;
+    }
+
+    public int getIsDownloaded() {
+        return mIsDownloaded;
+    }
+
+    public void setIsDownloaded(int isDownloaded) {
+        mIsDownloaded = isDownloaded;
     }
 }

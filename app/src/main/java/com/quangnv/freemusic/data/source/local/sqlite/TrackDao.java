@@ -1,5 +1,6 @@
 package com.quangnv.freemusic.data.source.local.sqlite;
 
+import com.quangnv.freemusic.data.model.Playlist;
 import com.quangnv.freemusic.data.model.Track;
 import com.quangnv.freemusic.data.model.TrackLocalType;
 
@@ -29,4 +30,6 @@ public interface TrackDao {
     Completable updateTrack(Track track);
 
     Observable<List<Track>> searchTrackByTitle(String trackTitle);
+
+    Completable addTrackToPlaylist(Track track, Playlist playlist);
 }
