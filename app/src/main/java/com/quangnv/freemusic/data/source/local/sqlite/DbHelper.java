@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
+import com.quangnv.freemusic.data.model.SearchHistory;
+
 /**
  * Created by quangnv on 30/10/2018
  */
@@ -91,11 +93,24 @@ public class DbHelper extends SQLiteOpenHelper {
             + TEXT_TYPE
             + " )";
 
+    private static final String SQL_CREATE_SEARCH_HISTORY_ENTRIES = "CREATE TABLE "
+            + SearchHistoryEntry.TABLE_NAME
+            + " ("
+            + SearchHistoryEntry.COLUMN_NAME_ID
+            + INTEGER_TYPE
+            + " PRIMARY KEY AUTOINCREMENT"
+            + COMA_SEP
+            + SearchHistoryEntry.COLUMN_NAME_TITLE
+            + TEXT_TYPE
+            + " )";
+
     private static final String SQL_DELETE_TRACK_ENTRIES = "DROP TABLE IF EXISTS "
             + TrackEntry.TABLE_NAME;
 
     private static final String SQL_DELETE_PLAYLIST_ENTRIES = "DROP TABLE IF EXISTS "
             + PlaylistEntry.TABLE_NAME;
+
+    private static final String SQL_DELETE_SEARCH_HISTORY_ENTRIES = "DROP TABLE IF EXIXTS";
 
     public DbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -105,12 +120,14 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_TRACK_ENTRIES);
         db.execSQL(SQL_CREATE_PLAYLIST_ENTRIES);
+        db.execSQL(SQL_CREATE_SEARCH_HISTORY_ENTRIES);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL(SQL_DELETE_TRACK_ENTRIES);
         db.execSQL(SQL_DELETE_PLAYLIST_ENTRIES);
+        db.execSQL(SQL_DELETE_SEARCH_HISTORY_ENTRIES);
         onCreate(db);
     }
 
@@ -147,5 +164,12 @@ public class DbHelper extends SQLiteOpenHelper {
         public static final String COLUMN_NAME_ID = "id";
         public static final String COLUMN_NAME_TITLE = "title";
         public static final String COLUMN_NAME_IMAGE_URL = "image_url";
+    }
+
+    public static final class SearchHistoryEntry implements BaseColumns {
+
+        public static final String TABLE_NAME = "search_history";
+        public static final String COLUMN_NAME_ID = "id";
+        public static final String COLUMN_NAME_TITLE = "title";
     }
 }
