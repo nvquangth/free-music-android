@@ -36,19 +36,22 @@ public class SearchHistoryDaoImpl implements SearchHistoryDao {
         List<SearchHistory> histories = new ArrayList<>();
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
-        Cursor cursor = db.query(
-                DbHelper.SearchHistoryEntry.TABLE_NAME,
-                getProjections(),
-                null,
-                null,
-                null,
-                null,
-                null);
+        try {
+            Cursor cursor = db.query(
+                    DbHelper.SearchHistoryEntry.TABLE_NAME,
+                    getProjections(),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null);
 
-        while (cursor.moveToNext()) {
-            histories.add(getSearchHistory(cursor));
+            while (cursor.moveToNext()) {
+                histories.add(getSearchHistory(cursor));
+            }
+            cursor.close();
+        } catch (Exception e) {
         }
-        cursor.close();
         db.close();
         return Observable.just(histories);
     }
@@ -141,6 +144,24 @@ public class SearchHistoryDaoImpl implements SearchHistoryDao {
                 final String selectionArgs[] = {String.valueOf(searchHistory.getId())};
 
                 long n = db.delete(DbHelper.SearchHistoryEntry.TABLE_NAME, selection, selectionArgs);
+                db.close();
+                if (n > 0) {
+                    emitter.onComplete();
+                } else {
+                    emitter.onError(new Exception("Element is not exists"));
+                }
+            }
+        });
+    }
+
+    @Override
+    public Completable deleteAll() {
+        return Completable.create(new CompletableOnSubscribe() {
+            @Override
+            public void subscribe(CompletableEmitter emitter) throws Exception {
+                SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+                long n = db.delete(DbHelper.SearchHistoryEntry.TABLE_NAME, null, null);
                 db.close();
                 if (n > 0) {
                     emitter.onComplete();

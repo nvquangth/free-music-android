@@ -44,4 +44,9 @@ public class SearchHistoryRepository implements SearchHistoryDataSource.Local {
     public Completable delete(SearchHistory searchHistory) {
         return mLocal.delete(searchHistory);
     }
+
+    @Override
+    public Completable deleteAll() {
+        return mLocal.deleteAll();
+    }
 }

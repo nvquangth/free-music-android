@@ -110,7 +110,8 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_PLAYLIST_ENTRIES = "DROP TABLE IF EXISTS "
             + PlaylistEntry.TABLE_NAME;
 
-    private static final String SQL_DELETE_SEARCH_HISTORY_ENTRIES = "DROP TABLE IF EXIXTS";
+    private static final String SQL_DELETE_SEARCH_HISTORY_ENTRIES = "DROP TABLE IF EXISTS "
+            + SearchHistoryEntry.TABLE_NAME;
 
     public DbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
