@@ -24,5 +24,7 @@ public interface SearchHistoryDataSource {
         Completable update(SearchHistory searchHistory);
 
         Completable delete(SearchHistory searchHistory);
+
+        Completable deleteAll();
     }
 }

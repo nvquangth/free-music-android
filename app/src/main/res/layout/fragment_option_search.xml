@@ -14,6 +14,7 @@
         android:layout_marginTop="@dimen/dp_8"
         android:text="@string/title_hot_keys"
         android:textAllCaps="true"
+        android:textStyle="bold"
         android:textColor="@android:color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -39,6 +40,7 @@
         android:padding="@dimen/dp_8"
         android:text="@string/title_history"
         android:textAllCaps="true"
+        android:textStyle="bold"
         android:textColor="@android:color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recycler_hot_key" />
@@ -65,5 +67,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_title_history" />
-
 </android.support.constraint.ConstraintLayout>

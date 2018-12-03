@@ -16,17 +16,18 @@ import com.quangnv.freemusic.base.BaseRecyclerViewAdapter;
 
 public class HotKeyAdapter extends BaseRecyclerViewAdapter<String, HotKeyAdapter.HotKeyViewHolder> {
 
-    public HotKeyAdapter(Context context,
-                         ItemRecyclerViewListener<String> itemRecyclerViewListener) {
+    private OnItemHotKeyListener mHotKeyListener;
+
+    public HotKeyAdapter(Context context, OnItemHotKeyListener hotKeyListener) {
         super(context);
-        mItemRecyclerViewListener = itemRecyclerViewListener;
+        mHotKeyListener = hotKeyListener;
     }
 
     @NonNull
     @Override
     public HotKeyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = mInflater.inflate(R.layout.item_hot_key, viewGroup, false);
-        return new HotKeyViewHolder(view, mItemRecyclerViewListener);
+        return new HotKeyViewHolder(view, mHotKeyListener);
     }
 
     @Override
@@ -41,15 +42,14 @@ public class HotKeyAdapter extends BaseRecyclerViewAdapter<String, HotKeyAdapter
 
     static class HotKeyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private ItemRecyclerViewListener<String> mItemRecyclerViewListener;
+        private OnItemHotKeyListener mHotKeyListener;
         private String mHotKey;
 
         private TextView mTextHotKey;
 
-        public HotKeyViewHolder(@NonNull View itemView,
-                                ItemRecyclerViewListener<String> itemRecyclerViewListener) {
+        public HotKeyViewHolder(@NonNull View itemView, OnItemHotKeyListener hotKeyListener) {
             super(itemView);
-            mItemRecyclerViewListener = itemRecyclerViewListener;
+            mHotKeyListener = hotKeyListener;
 
             mTextHotKey = itemView.findViewById(R.id.text_hot_key);
             itemView.setOnClickListener(this);
@@ -57,7 +57,7 @@ public class HotKeyAdapter extends BaseRecyclerViewAdapter<String, HotKeyAdapter
 
         @Override
         public void onClick(View view) {
-            mItemRecyclerViewListener.onItemRecyclerViewClick(mHotKey, getAdapterPosition());
+            mHotKeyListener.onItemHotKeyClick(mHotKey, getAdapterPosition());
         }
 
         private void bindData(String hotKey) {

@@ -50,6 +50,11 @@ public abstract class BaseRecyclerViewAdapter<T, VH extends RecyclerView.ViewHol
         notifyItemInserted(mData.size() - 1);
     }
 
+    public void removeElement(int position) {
+        mData.remove(position);
+        notifyItemRemoved(position);
+    }
+
     public interface ItemRecyclerViewListener<T> {
         void onItemRecyclerViewClick(T t, int position);
     }

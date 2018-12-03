@@ -1,6 +1,7 @@
 package com.quangnv.freemusic.screen.search;
 
 import com.quangnv.freemusic.base.BasePresenter;
+import com.quangnv.freemusic.data.model.SearchHistory;
 import com.quangnv.freemusic.data.model.Track;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public interface SearchContract {
 
         void showHotKey(List<String> hotKeys);
 
-        void showSearchHistory(List<String> history);
+        void showSearchHistory(List<SearchHistory> histories);
 
         void showTracks(List<Track> tracks);
     }
@@ -28,7 +29,13 @@ public interface SearchContract {
 
         void getHotKey();
 
-        void getHistory();
+        void addHistory(SearchHistory history);
+
+        void clearHistory(SearchHistory history);
+
+        void clearAllHistories();
+
+        void getHistories();
 
         void searchTracks(String q, int offset);
     }

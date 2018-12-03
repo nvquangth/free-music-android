@@ -13,8 +13,11 @@ import android.widget.TextView;
 import com.quangnv.freemusic.MainApplication;
 import com.quangnv.freemusic.R;
 import com.quangnv.freemusic.base.BaseFragment;
-import com.quangnv.freemusic.base.BaseRecyclerViewAdapter;
+import com.quangnv.freemusic.data.model.SearchHistory;
 import com.quangnv.freemusic.data.model.Track;
+import com.quangnv.freemusic.screen.search.option.OnActionClearHistoryListener;
+import com.quangnv.freemusic.screen.search.option.OnItemHistoryListener;
+import com.quangnv.freemusic.screen.search.option.OnItemHotKeyListener;
 import com.quangnv.freemusic.screen.search.option.SearchOptionFragment;
 import com.quangnv.freemusic.screen.tracks.TracksFragment;
 import com.quangnv.freemusic.util.Constants;
@@ -31,9 +34,11 @@ import javax.inject.Inject;
  */
 
 public class SearchFragment extends BaseFragment implements SearchContract.View,
-        BaseRecyclerViewAdapter.ItemRecyclerViewListener<String>,
         View.OnClickListener,
-        TextView.OnEditorActionListener {
+        TextView.OnEditorActionListener,
+        OnItemHotKeyListener,
+        OnItemHistoryListener,
+        OnActionClearHistoryListener {
 
     @Inject
     SearchContract.Presenter mPresenter;
@@ -82,6 +87,7 @@ public class SearchFragment extends BaseFragment implements SearchContract.View,
         registerListener();
         // if crash, call within handler
         mPresenter.getHotKey();
+        mPresenter.getHistories();
     }
 
     @Override
@@ -105,8 +111,8 @@ public class SearchFragment extends BaseFragment implements SearchContract.View,
     }
 
     @Override
-    public void showSearchHistory(List<String> history) {
-
+    public void showSearchHistory(List<SearchHistory> histories) {
+        mSearchOptionFragment.setHistories(histories);
     }
 
     @Override
@@ -114,12 +120,6 @@ public class SearchFragment extends BaseFragment implements SearchContract.View,
         mTracksFragment.setTracks(tracks);
         mNavigator.hideChildFragment(mSearchOptionFragment, NavigateAnim.NONE);
         mNavigator.showChildFragment(mTracksFragment, NavigateAnim.FADED);
-    }
-
-    @Override
-    public void onItemRecyclerViewClick(String s, int position) {
-        mTextSearch.setText(s);
-        mPresenter.searchTracks(s, offset);
     }
 
     @Override
@@ -132,6 +132,28 @@ public class SearchFragment extends BaseFragment implements SearchContract.View,
 
                 break;
         }
+    }
+
+    @Override
+    public void onItemHotKeyClick(String s, int position) {
+        mPresenter.searchTracks(s, offset);
+        mTextSearch.setText(s);
+    }
+
+    @Override
+    public void onItemHistoryClick(SearchHistory history, int position, boolean isClearHistory) {
+        if (!isClearHistory) {
+            mPresenter.searchTracks(history.getTitle(), offset);
+            mTextSearch.setText(history.getTitle());
+        } else {
+            mPresenter.clearHistory(history);
+            mSearchOptionFragment.removeHistory(history, position);
+        }
+    }
+
+    @Override
+    public void onClearAllClick() {
+        mPresenter.clearAllHistories();
     }
 
     private void initView(View view) {
@@ -152,10 +174,19 @@ public class SearchFragment extends BaseFragment implements SearchContract.View,
         if (i == EditorInfo.IME_ACTION_SEARCH) {
             String q = textView.getText().toString();
             if (!StringUtils.isEmpty(q)) {
+                SearchHistory history = createHistory(q);
                 mPresenter.searchTracks(q, offset);
+                mPresenter.addHistory(history);
+//                mSearchOptionFragment.addHistory(history);
                 return true;
             }
         }
         return false;
+    }
+
+    private SearchHistory createHistory(String title) {
+        SearchHistory history = new SearchHistory();
+        history.setTitle(title);
+        return history;
     }
 }

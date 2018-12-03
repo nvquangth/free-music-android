@@ -50,4 +50,9 @@ public class SearchHistoryLocalDataSource implements SearchHistoryDataSource.Loc
     public Completable delete(SearchHistory searchHistory) {
         return mSearchHistoryDao.delete(searchHistory);
     }
+
+    @Override
+    public Completable deleteAll() {
+        return mSearchHistoryDao.deleteAll();
+    }
 }
