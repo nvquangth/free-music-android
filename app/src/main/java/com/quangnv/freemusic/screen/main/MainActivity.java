@@ -73,6 +73,10 @@ public class MainActivity extends BaseActivity implements
     private AppCompatImageButton mButtonNext;
     private ProgressBar mProgressBarLoadingPlayer;
 
+    public static Intent getIntent(Context context) {
+        return new Intent(context, MainActivity.class);
+    }
+
     @Override
     protected void onStart() {
         mServiceManager.bindService();

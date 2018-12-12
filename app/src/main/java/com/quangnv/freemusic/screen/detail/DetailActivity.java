@@ -33,6 +33,7 @@ import com.quangnv.freemusic.mediaplayer.MediaPlayerListener;
 import com.quangnv.freemusic.mediaplayer.MediaPlayerLoopType;
 import com.quangnv.freemusic.mediaplayer.MediaPlayerPlayType;
 import com.quangnv.freemusic.mediaplayer.MediaPlayerShuffleType;
+import com.quangnv.freemusic.screen.main.MainActivity;
 import com.quangnv.freemusic.screen.playlistdialog.PlaylistDialogFragment;
 import com.quangnv.freemusic.service.ServiceManager;
 import com.quangnv.freemusic.service.TrackService;
@@ -219,6 +220,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         switch (item.getItemId()) {
             case android.R.id.home:
                 mNavigator.finishActivity();
+                startActivity(MainActivity.getIntent(this));
                 break;
             case R.id.nav_timer:
 
