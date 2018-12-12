@@ -69,7 +69,7 @@ public class TrackRepository implements TrackDataSource.Remote, TrackDataSource.
 
     @Override
     public Completable updateTrack(Track track) {
-        return null;
+        return mLocal.updateTrack(track);
     }
 
     @Override

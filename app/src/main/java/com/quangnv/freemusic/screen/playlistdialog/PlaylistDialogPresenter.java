@@ -1,5 +1,7 @@
 package com.quangnv.freemusic.screen.playlistdialog;
 
+import android.util.Log;
+
 import com.quangnv.freemusic.data.model.Playlist;
 import com.quangnv.freemusic.data.model.Track;
 import com.quangnv.freemusic.data.repository.PlaylistRepository;
@@ -12,6 +14,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 /**
  * Created by quangnv on 13/11/2018
@@ -62,95 +65,43 @@ public class PlaylistDialogPresenter implements PlaylistDialogContract.Presenter
     }
 
     @Override
-    public void addTrackToPlaylist(Track track, Playlist playlist) {
-//        Disposable disposable = mTrackRepository.getTrack(track.getId())
-//                .subscribeOn(mScheduler.io())
-//                .observeOn(mScheduler.ui())
-//                .doOnSubscribe(new Consumer<Disposable>() {
-//                    @Override
-//                    public void accept(Disposable disposable) {
-//                        mView.showLoadingIndicator();
-//                    }
-//                })
-//                .subscribe(new Consumer<Track>() {
-//                    @Override
-//                    public void accept(Track track) {
-//                        track.setIsAddedPlaylist(1);
-//                        Disposable disposable = mTrackRepository.updateTrack(track)
-//                                .subscribeOn(mScheduler.io())
-//                                .observeOn(mScheduler.ui())
-//                                .doOnSubscribe(new Consumer<Disposable>() {
-//                                    @Override
-//                                    public void accept(Disposable disposable) {
-//                                        mView.showLoadingIndicator();
-//                                    }
-//                                })
-//                                .subscribe(new Action() {
-//                                    @Override
-//                                    public void run() {
-//                                        mView.showAddTrackToPlaylistSuccessful();
-//                                    }
-//                                }, new Consumer<Throwable>() {
-//                                    @Override
-//                                    public void accept(Throwable throwable) {
-//                                        mView.showAddTrackToPlaylistFailed();
-//                                    }
-//                                });
-//                        mCompositeDisposable.add(disposable);
-//                    }
-//                }, new Consumer<Throwable>() {
-//                    @Override
-//                    public void accept(Throwable throwable) {
-//                        track.setIsAddedPlaylist(1);
-//                        Disposable disposable = mTrackRepository.addTrackToPlaylist(track, playlist)
-//                                .subscribeOn(mScheduler.io())
-//                                .observeOn(mScheduler.ui())
-//                                .doOnSubscribe(new Consumer<Disposable>() {
-//                                    @Override
-//                                    public void accept(Disposable disposable) {
-//                                        mView.showLoadingIndicator();
-//                                    }
-//                                })
-//                                .subscribe(new Action() {
-//                                    @Override
-//                                    public void run() {
-//                                        mView.hideLoadingIndicator();
-//                                        mView.showAddTrackToPlaylistSuccessful();
-//                                    }
-//                                }, new Consumer<Throwable>() {
-//                                    @Override
-//                                    public void accept(Throwable throwable) {
-//                                        mView.hideLoadingIndicator();
-//                                        mView.showAddTrackToPlaylistFailed();
-//                                    }
-//                                });
-//                        mCompositeDisposable.add(disposable);
-//                    }
-//                });
-//        mCompositeDisposable.add(disposable);
+    public void addTrackToPlaylist(final Track track, final Playlist playlist) {
+        Disposable disposable = mTrackRepository.getTrack(track.getId())
+                .map(new Function<Track, Boolean>() {
+                    @Override
+                    public Boolean apply(Track track) {
+                        if (track.getIsAddedPlaylist() == 1 && (track.getIsAddedFavorite() == 1 || track.getIsDownloaded() == 1)) {
+                            return true;
+                        }
+                        return false;
+                    }
+                })
+                .subscribeOn(mScheduler.io())
+                .observeOn(mScheduler.ui())
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) {
 
-//        track.setIsAddedPlaylist(1);
-//        Disposable disposable = mTrackRepository.updateTrack(track)
-//                .subscribeOn(mScheduler.io())
-//                .observeOn(mScheduler.ui())
-//                .doOnSubscribe(new Consumer<Disposable>() {
-//                    @Override
-//                    public void accept(Disposable disposable) {
-//                        mView.showLoadingIndicator();
-//                    }
-//                })
-//                .subscribe(new Action() {
-//                    @Override
-//                    public void run() {
-//                        mView.showAddTrackToPlaylistSuccessful();
-//                    }
-//                }, new Consumer<Throwable>() {
-//                    @Override
-//                    public void accept(Throwable throwable) {
-//                        mView.showAddTrackToPlaylistFailed();
-//                    }
-//                });
-//        mCompositeDisposable.add(disposable);
+                    }
+                })
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) {
+                        if (aBoolean) {
+                            track.setIsAddedPlaylist(0);
+                        } else {
+                            track.setIsAddedPlaylist(1);
+                        }
+                        update(track, playlist);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) {
+                        track.setIsAddedPlaylist(1);
+                        add(track, playlist);
+                    }
+                });
+        mCompositeDisposable.add(disposable);
     }
 
     @Override
@@ -166,5 +117,63 @@ public class PlaylistDialogPresenter implements PlaylistDialogContract.Presenter
     @Override
     public void setView(PlaylistDialogContract.View view) {
         mView = view;
+    }
+
+    private void add(Track track, Playlist playlist) {
+        Disposable disposable = mTrackRepository.addTrackToPlaylist(track, playlist)
+                .subscribeOn(mScheduler.io())
+                .observeOn(mScheduler.ui())
+                .subscribe(new Action() {
+                    @Override
+                    public void run() {
+                        Log.d("f***", "add track to playlist successful");
+                        mView.showAddTrackToPlaylistSuccessful();
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) {
+                        Log.d("f***", "add track to playlist failed");
+                        mView.showAddTrackToPlaylistFailed();
+                    }
+                });
+        mCompositeDisposable.add(disposable);
+    }
+
+    private void remove(Track track, Playlist playlist) {
+        Disposable disposable = mTrackRepository.deleteTrack(track)
+                .subscribeOn(mScheduler.io())
+                .observeOn(mScheduler.ui())
+                .subscribe(new Action() {
+                    @Override
+                    public void run() {
+                        Log.d("f***", "track removed successful");
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) {
+                        Log.d("f***", "track removed failed");
+                    }
+                });
+        mCompositeDisposable.add(disposable);
+    }
+
+    private void update(Track track, Playlist playlist) {
+        Disposable disposable = mTrackRepository.updateTrack(track)
+                .subscribeOn(mScheduler.io())
+                .observeOn(mScheduler.ui())
+                .subscribe(new Action() {
+                    @Override
+                    public void run() {
+                        Log.d("f***", "track updated successful");
+                        mView.showAddTrackToPlaylistSuccessful();
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) {
+                        Log.d("f***", "track updated failed");
+                        mView.showAddTrackToPlaylistFailed();
+                    }
+                });
+        mCompositeDisposable.add(disposable);
     }
 }

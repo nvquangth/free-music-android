@@ -244,7 +244,6 @@ public class TrackDaoImpl implements TrackDao {
                             track.getIsAddedFavorite());
                     values.put(DbHelper.TrackEntry.COLUMN_NAME_IS_DOWNLOADED,
                             track.getIsDownloaded());
-                    db.insert(DbHelper.TrackEntry.TABLE_NAME, null, values);
                     db.update(
                             DbHelper.TrackEntry.TABLE_NAME,
                             values,

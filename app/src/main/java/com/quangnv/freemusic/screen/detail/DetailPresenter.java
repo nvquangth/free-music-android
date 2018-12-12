@@ -43,10 +43,20 @@ public class DetailPresenter implements DetailContract.Presenter {
                     @Override
                     public void accept(Track track) {
                         if (track.getIsDownloaded() == 0 && track.getIsAddedPlaylist() == 0) {
-                            deleteTrack(track);
+                            if (track.getIsAddedFavorite() == 0) {
+                                track.setIsAddedFavorite(1);
+                                updateTrack(track, 1);
+                            } else {
+                                deleteTrack(track);
+                            }
                         } else {
-                            track.setIsAddedFavorite(1);
-                            updateTrack(track);
+                            if (track.getIsAddedFavorite() == 0) {
+                                track.setIsAddedFavorite(1);
+                                updateTrack(track, 1);
+                            } else {
+                                track.setIsAddedFavorite(0);
+                                updateTrack(track, 0);
+                            }
                         }
                     }
                 }, new Consumer<Throwable>() {
@@ -143,14 +153,18 @@ public class DetailPresenter implements DetailContract.Presenter {
         mCompositeDisposable.add(disposable);
     }
 
-    private void updateTrack(Track track) {
+    private void updateTrack(Track track, final int isAdded) {
         Disposable disposable = mTrackRepository.updateTrack(track)
                 .subscribeOn(mScheduler.io())
                 .observeOn(mScheduler.ui())
                 .subscribe(new Action() {
                     @Override
                     public void run() {
-                        mView.showTrackAddedToFavorite();
+                        if (isAdded == 0) {
+                            mView.showTrackRemovedFromFavorite();
+                        } else {
+                            mView.showTrackAddedToFavorite();
+                        }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
