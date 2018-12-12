@@ -72,7 +72,7 @@ public class TrackLocalDataSource implements TrackDataSource.Local {
 
     @Override
     public Completable updateTrack(Track track) {
-        return null;
+        return mTrackDao.updateTrack(track);
     }
 
     @Override
