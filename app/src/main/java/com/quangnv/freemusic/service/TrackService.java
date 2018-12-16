@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.quangnv.freemusic.data.model.Track;
 import com.quangnv.freemusic.mediaplayer.MediaPlayerListener;
@@ -80,15 +79,12 @@ public class TrackService extends Service implements MediaPlayerListener.OnTrack
     public void onPlayChanged(int playType) {
         switch (playType) {
             case MediaPlayerPlayType.PAUSE:
-                Log.d("fuck", "pause");
                 mTrackNotificationManager.updatePlayNotification();
                 break;
             case MediaPlayerPlayType.PLAY:
-                Log.d("fuck", "play");
                 mTrackNotificationManager.updatePauseNotification();
                 break;
             case MediaPlayerPlayType.WAIT:
-                Log.d("fuck", "wait");
                 mTrackNotificationManager.updateWaitingNotification();
                 break;
         }
@@ -160,6 +156,18 @@ public class TrackService extends Service implements MediaPlayerListener.OnTrack
 
     public Track getCurrentTrack() {
         return mMediaPlayerManager.getTracks().get(mMediaPlayerManager.getCurrentTrack());
+    }
+
+    public void timer(int minutes) {
+        mMediaPlayerManager.timer(minutes);
+    }
+
+    public void unTimer() {
+        mMediaPlayerManager.unTimer();
+    }
+
+    public int getTimer() {
+        return mMediaPlayerManager.getTimer();
     }
 
     public void addLoopingListener(MediaPlayerListener.OnLoopingListener listener) {

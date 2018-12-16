@@ -94,13 +94,13 @@ public class PlaylistDialogFragment extends BaseDialogFragment implements
 
     @Override
     public void showAddTrackToPlaylistSuccessful() {
-        Toast.makeText(getContext(), "Track added to playlist!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), R.string.msg_success_add_track_to_playlist, Toast.LENGTH_SHORT).show();
         dismiss();
     }
 
     @Override
     public void showAddTrackToPlaylistFailed() {
-        Toast.makeText(getContext(), "Failed add track to playlist!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), R.string.msg_failed_add_track_to_playlist, Toast.LENGTH_SHORT).show();
         dismiss();
     }
 

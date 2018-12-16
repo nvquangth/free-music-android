@@ -63,4 +63,17 @@ public interface BaseMediaPlayer {
      * @return
      */
     int getCurrentPosition();
+
+    /**
+     *
+     * @param minutes
+     */
+    void timer(int minutes);
+
+    /**
+     * cancel timer
+     */
+    void unTimer();
+
+    int getTimer();
 }

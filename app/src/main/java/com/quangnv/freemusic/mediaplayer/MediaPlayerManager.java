@@ -3,6 +3,7 @@ package com.quangnv.freemusic.mediaplayer;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Handler;
 
 import com.quangnv.freemusic.data.model.Track;
 
@@ -35,6 +36,15 @@ public final class MediaPlayerManager extends MediaPlayerSetting implements Base
     private List<MediaPlayerListener.OnTotalTimeListener> mTotalTimeListeners;
     private List<MediaPlayerListener.OnTrackListener> mTrackListeners;
     private List<MediaPlayerListener.OnErrorListener> mErrorListeners;
+    private Handler mHandler = new Handler();
+    private Runnable mRunnableTimer = new Runnable() {
+        @Override
+        public void run() {
+            mTimer = 0;
+            pause();
+        }
+    };
+    private int mTimer;
 
     public MediaPlayerManager(Context context) {
         mContext = context;
@@ -172,6 +182,23 @@ public final class MediaPlayerManager extends MediaPlayerSetting implements Base
             return mMediaPlayer.getCurrentPosition();
         }
         return 0;
+    }
+
+    @Override
+    public void timer(int minutes) {
+        mTimer = minutes;
+        mHandler.postDelayed(mRunnableTimer, minutes * 60 * 1000);
+    }
+
+    @Override
+    public void unTimer() {
+        mTimer = 0;
+        mHandler.removeCallbacks(mRunnableTimer);
+    }
+
+    @Override
+    public int getTimer() {
+        return mTimer;
     }
 
     @Override
