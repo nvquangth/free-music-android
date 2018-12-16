@@ -41,4 +41,12 @@ public final class StringUtils {
     public static String formatTrackFile(String fileName) {
         return String.format(Locale.ENGLISH, "%s.mp3", fileName);
     }
+
+    public static String format(String... args) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < args.length; i++) {
+            sb.append(args[i]);
+        }
+        return sb.toString();
+    }
 }

@@ -3,16 +3,13 @@
     <string name="title_home">Home</string>
     <string name="title_my_music">My music</string>
     <string name="title_more">More</string>
-    <string name="hint_search">Search for songs...</string>
     <string name="title_genres">Genres</string>
     <string name="title_search">Search</string>
-    <string name="hint_search_track">Key word</string>
     <string name="title_hot_keys">Hot keys</string>
     <string name="title_clear">Clear</string>
     <string name="title_history">History</string>
     <string name="title_timer">Timer</string>
     <string name="title_local">Local</string>
-    <string name="text_sample_number">1</string>
     <string name="title_download">Download</string>
     <string name="title_favorite">Favorite</string>
     <string name="title_playlist">Playlist</string>
@@ -20,4 +17,12 @@
     <string name="title_ok">OK</string>
     <string name="title_cancel">Cancel</string>
     <string name="title_select_playlist">Select playlist</string>
+    <string name="hint_timer">Input minutes</string>
+    <string name="hint_search_track">Key word</string>
+    <string name="hint_search">Search for songs…</string>
+    <string name="msg_timer_pause">Player will pause after </string>
+    <string name="msg_minutes"> minutes</string>
+    <string name="msg_success_add_track_to_playlist">Track added to playlist!</string>
+    <string name="msg_failed_add_track_to_playlist">Failed add track to playlist!</string>
+    <string name="text_sample_number">1</string>
 </resources>

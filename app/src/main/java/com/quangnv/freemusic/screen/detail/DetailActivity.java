@@ -35,6 +35,8 @@ import com.quangnv.freemusic.mediaplayer.MediaPlayerPlayType;
 import com.quangnv.freemusic.mediaplayer.MediaPlayerShuffleType;
 import com.quangnv.freemusic.screen.main.MainActivity;
 import com.quangnv.freemusic.screen.playlistdialog.PlaylistDialogFragment;
+import com.quangnv.freemusic.screen.timer.OnTimerPlayerListener;
+import com.quangnv.freemusic.screen.timer.TimerDialogFragment;
 import com.quangnv.freemusic.service.ServiceManager;
 import com.quangnv.freemusic.service.TrackService;
 import com.quangnv.freemusic.util.TimeUtils;
@@ -51,7 +53,8 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         MediaPlayerListener.OnLoopingListener,
         MediaPlayerListener.OnShufflingListener,
         SeekBar.OnSeekBarChangeListener,
-        DetailContract.View {
+        DetailContract.View,
+        OnTimerPlayerListener {
 
     /**
      * The time to update track's current time
@@ -223,7 +226,8 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                 startActivity(MainActivity.getIntent(this));
                 break;
             case R.id.nav_timer:
-
+                TimerDialogFragment timerDialogFragment = TimerDialogFragment.newInstance(mTrackService.getTimer());
+                timerDialogFragment.show(getSupportFragmentManager(), null);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -330,6 +334,16 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void showTrackDownloadError() {
 
+    }
+
+    @Override
+    public void onTimer(int msec) {
+        mTrackService.timer(msec);
+    }
+
+    @Override
+    public void onCancel() {
+        mTrackService.unTimer();
     }
 
     public static Intent getDetailActivityIntent(Context context) {
