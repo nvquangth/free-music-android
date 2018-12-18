@@ -24,5 +24,7 @@
     <string name="msg_minutes"> minutes</string>
     <string name="msg_success_add_track_to_playlist">Track added to playlist!</string>
     <string name="msg_failed_add_track_to_playlist">Failed add track to playlist!</string>
+    <string name="msg_permissions">You need permission write storage</string>
+    <string name="msg_retry">Retry</string>
     <string name="text_sample_number">1</string>
 </resources>
