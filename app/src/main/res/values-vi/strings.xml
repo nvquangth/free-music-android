@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Free Music</string>
+    <string name="title_home">Trang chủ</string>
+    <string name="title_my_music">Của tôi</string>
+    <string name="title_more">Thông tin</string>
+    <string name="title_genres">Thể loại</string>
+    <string name="title_search">Tìm kiếm</string>
+    <string name="title_hot_keys">Từ khóa nổi bật</string>
+    <string name="title_clear">Xóa</string>
+    <string name="title_history">Lịch sử</string>
+    <string name="title_timer">Hẹn giờ</string>
+    <string name="title_local">Thiết bị</string>
+    <string name="title_download">Tải xuống</string>
+    <string name="title_favorite">Yêu thích</string>
+    <string name="title_playlist">Danh sách</string>
+    <string name="title_create_playlist">Tạo danh sách</string>
+    <string name="title_ok">OK</string>
+    <string name="title_cancel">Hủy bỏ</string>
+    <string name="title_select_playlist">Lựa chọn danh sách</string>
+    <string name="hint_timer">Nhấp số phút</string>
+    <string name="hint_search_track">Từ khóa</string>
+    <string name="hint_search">Tìm kiếm bài hát…</string>
+    <string name="msg_timer_pause">Trình phát nhạc sẽ tạm dừng sau </string>
+    <string name="msg_minutes"> phút</string>
+    <string name="msg_success_add_track_to_playlist">Đã thêm bài hát vào danh sách!</string>
+    <string name="msg_failed_add_track_to_playlist">Lỗi thêm bài hát vào danh sách!</string>
+    <string name="msg_permissions">Bạn cần cung cấp quyền truy cập bộ nhớ</string>
+    <string name="msg_retry">Thử lại</string>
+    <string name="text_sample_number">1</string>
+</resources>
