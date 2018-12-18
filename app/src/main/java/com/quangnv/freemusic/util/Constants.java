@@ -26,7 +26,7 @@ public final class Constants {
 
     public static int ROUND_CORNER = 15;
 
-    public static int TIME_DELAY_OPEN_HOME_SCREEN = 1500;
+    public static int TIME_DELAY_OPEN_HOME_SCREEN = 1000;
 
     /**
      * Argument
