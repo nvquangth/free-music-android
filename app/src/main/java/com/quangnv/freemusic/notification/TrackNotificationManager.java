@@ -1,16 +1,17 @@
 package com.quangnv.freemusic.notification;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.RemoteViews;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.NotificationTarget;
 import com.quangnv.freemusic.R;
 import com.quangnv.freemusic.data.model.Track;
@@ -30,7 +31,7 @@ public final class TrackNotificationManager {
     public static final String ACTION_WAIT = "com.quangnv.freemusic.ACTION_WAIT";
     public static final String ACTION_NEXT = "com.quangnv.freemusic.ACTION_NEXT";
     public static final String ACTION_CLOSE = "com.quangnv.freemusic.ACTION_CLOSE";
-    private static final String CHANNEL_ID = "CHANNEL_ID";
+    private static final String CHANEL_ID = "CHANEL_ID";
     private static final int NOTIFICATION_ID = 1;
     private static final int REQUEST_CODE = 1000;
 
@@ -54,6 +55,16 @@ public final class TrackNotificationManager {
         mPendingIntentNotification = PendingIntent.getActivity(service, REQUEST_CODE,
                 mIntentNotification, PendingIntent.FLAG_UPDATE_CURRENT);
         mRemoteViews = new RemoteViews(service.getPackageName(), R.layout.custom_notification);
+
+        NotificationManager notificationManager =
+                (NotificationManager) service.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(CHANEL_ID,
+                    service.getString(R.string.app_name),
+                    NotificationManager.IMPORTANCE_LOW);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
     public void createNotification() {
@@ -152,7 +163,7 @@ public final class TrackNotificationManager {
     }
 
     private Notification buildNotification() {
-        return new NotificationCompat.Builder(mTrackService, CHANNEL_ID)
+        return new NotificationCompat.Builder(mTrackService, CHANEL_ID)
                 .setContentIntent(mPendingIntentNotification)
                 .setSmallIcon(R.drawable.ic_music_note_white_24dp)
                 .setContent(mRemoteViews)
