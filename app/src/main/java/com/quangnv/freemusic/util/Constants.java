@@ -24,6 +24,8 @@ public final class Constants {
 
     public static int LOAD_LIMIT = 20;
 
+    public static int LOAD_OFFSET = 10;
+
     public static int ROUND_CORNER = 15;
 
     public static int TIME_DELAY_OPEN_HOME_SCREEN = 1000;

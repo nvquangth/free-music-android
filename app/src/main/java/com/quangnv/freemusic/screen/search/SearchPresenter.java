@@ -9,6 +9,7 @@ import com.quangnv.freemusic.data.repository.TrackRepository;
 import com.quangnv.freemusic.util.rx.BaseSchedulerProvider;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -120,19 +121,20 @@ public class SearchPresenter implements SearchContract.Presenter {
                 .observeOn(mScheduler.ui())
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
-                    public void accept(Disposable disposable) throws Exception {
+                    public void accept(Disposable disposable) {
                         mView.showLoadingIndicator();
                     }
                 })
                 .subscribe(new Consumer<List<SearchHistory>>() {
                     @Override
-                    public void accept(List<SearchHistory> searchHistories) throws Exception {
+                    public void accept(List<SearchHistory> searchHistories) {
+                        Collections.reverse(searchHistories);
                         mView.hideLoadingIndicator();
                         mView.showSearchHistory(searchHistories);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
-                    public void accept(Throwable throwable) throws Exception {
+                    public void accept(Throwable throwable) {
                         mView.hideLoadingIndicator();
                     }
                 });
