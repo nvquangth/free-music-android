@@ -1,9 +1,11 @@
 package com.quangnv.freemusic.screen.main;
 
+import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -16,6 +18,7 @@ import android.support.v7.widget.AppCompatTextView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
@@ -29,10 +32,12 @@ import com.quangnv.freemusic.mediaplayer.MediaPlayerPlayType;
 import com.quangnv.freemusic.screen.OnItemTrackListener;
 import com.quangnv.freemusic.screen.detail.DetailActivity;
 import com.quangnv.freemusic.screen.home.HomeFragment;
+import com.quangnv.freemusic.screen.more.MoreFragment;
 import com.quangnv.freemusic.screen.mymusic.MyMusicFragment;
 import com.quangnv.freemusic.service.ServiceManager;
 import com.quangnv.freemusic.service.TrackService;
 import com.quangnv.freemusic.util.Constants;
+import com.quangnv.freemusic.util.StringUtils;
 import com.quangnv.freemusic.util.navigator.NavigateAnim;
 import com.quangnv.freemusic.util.navigator.Navigator;
 
@@ -48,7 +53,9 @@ public class MainActivity extends BaseActivity implements
         OnItemTrackListener,
         MediaPlayerListener.OnTrackListener,
         MediaPlayerListener.OnPlayingListener,
-        MyMusicFragment.OnPlaylistListener {
+        MyMusicFragment.OnPlaylistListener,
+        MoreFragment.OnActionReportListener,
+        MoreFragment.OnActionRateListener {
 
     private static final int TIME_DELAY_OPEN_TRACK_DETAIL = 1000;
 
@@ -127,6 +134,8 @@ public class MainActivity extends BaseActivity implements
                         false, NavigateAnim.FADED, Constants.FLAG_MY_MUSIC_FRAGMENT);
                 return true;
             case R.id.nav_more:
+                mNavigator.replaceFragment(R.id.frame_container, MoreFragment.newInstance(),
+                        false, NavigateAnim.FADED, null);
                 return true;
         }
         return false;
@@ -265,5 +274,49 @@ public class MainActivity extends BaseActivity implements
         if (myMusicFragment != null) {
             myMusicFragment.addPlaylist(playlist);
         }
+    }
+
+    @Override
+    public void onActionReportClick() {
+        openReport();
+    }
+
+    @Override
+    public void onActionRateClick() {
+        openRate();
+    }
+
+    private void openReport() {
+        String mailto = "mailto:free.music@quangnv.com" +
+                "?subject=" + Uri.encode(getSubjectMail()) +
+                "&body=" + Uri.encode(getString(R.string.msg_content));
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse(mailto));
+        try {
+            startActivity(Intent.createChooser(intent, getString(R.string.msg_sending_mail)));
+            finish();
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(this, R.string.msg_no_client_mail, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void openRate() {
+        Uri uri = Uri.parse("market://details?id=" + getPackageName());
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
+        }
+    }
+
+    private String getSubjectMail() {
+        return StringUtils.format(getString(R.string.title_report),
+                " - ",
+                getString(R.string.app_name));
     }
 }

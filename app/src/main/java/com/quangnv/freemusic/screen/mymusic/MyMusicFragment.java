@@ -1,6 +1,5 @@
 package com.quangnv.freemusic.screen.mymusic;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -56,9 +55,9 @@ public class MyMusicFragment extends BaseFragment implements MyMusicContract.Vie
     }
 
     public static MyMusicFragment newInstance() {
-        
+
         Bundle args = new Bundle();
-        
+
         MyMusicFragment fragment = new MyMusicFragment();
         fragment.setArguments(args);
         return fragment;
@@ -67,7 +66,7 @@ public class MyMusicFragment extends BaseFragment implements MyMusicContract.Vie
     @Override
     protected void initComponentsOnCreate(@Nullable Bundle savedInstanceState) {
         DaggerMyMusicComponent.builder()
-                .appComponent(((MainApplication)getActivity().getApplication()).getAppComponent())
+                .appComponent(((MainApplication) getActivity().getApplication()).getAppComponent())
                 .build()
                 .inject(this);
         mPresenter.setView(this);
@@ -147,11 +146,13 @@ public class MyMusicFragment extends BaseFragment implements MyMusicContract.Vie
                 break;
             case R.id.view_search:
                 mNavigator.addFragmentToBackStack(R.id.frame_container,
-                        SearchFragment.newInstance(SearchType.NONE), true, NavigateAnim.RIGHT_LEFT, null);
+                        SearchFragment.newInstance(SearchType.NONE),
+                        true, NavigateAnim.RIGHT_LEFT, null);
                 break;
             case R.id.button_search_voice:
                 mNavigator.addFragmentToBackStack(R.id.frame_container,
-                        SearchFragment.newInstance(SearchType.VOICE), true, NavigateAnim.RIGHT_LEFT, null);
+                        SearchFragment.newInstance(SearchType.VOICE),
+                        true, NavigateAnim.RIGHT_LEFT, null);
                 break;
         }
     }

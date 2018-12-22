@@ -26,5 +26,17 @@
     <string name="msg_failed_add_track_to_playlist">Failed add track to playlist!</string>
     <string name="msg_permissions">You need permission write storage</string>
     <string name="msg_retry">Retry</string>
+    <string name="msg_content">Content</string>
+    <string name="msg_sending_mail">Send mail…</string>
+    <string name="msg_no_client_mail">There is no email client installed.</string>
     <string name="text_sample_number">1</string>
+    <string name="title_information">Information</string>
+    <string name="title_version">Version</string>
+    <string name="title_version_app">1.0.5</string>
+    <string name="title_report"><![CDATA[Report & Feedback]]></string>
+    <string name="title_rate_me">Rate me</string>
+    <string name="title_setting">Setting</string>
+    <string name="title_theme">Theme</string>
+    <string name="title_language">Language</string>
+    <string name="title_notification">Notification</string>
 </resources>
