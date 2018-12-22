@@ -1,10 +1,7 @@
 package com.quangnv.freemusic.screen.genre;
 
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -33,7 +30,8 @@ import javax.inject.Inject;
  * Created by quangnv on 21/10/2018
  */
 
-public class GenreFragment extends BaseFragment implements GenreContract.View {
+public class GenreFragment extends BaseFragment implements GenreContract.View,
+        TracksFragment.OnLoadMoreTrackListener {
 
     @Inject
     GenreContract.Presenter mPresenter;
@@ -41,6 +39,8 @@ public class GenreFragment extends BaseFragment implements GenreContract.View {
     private Navigator mNavigator;
     private TracksFragment mTracksFragment;
     private Genre mGenre;
+    private int mOffset;
+    private boolean mIsLoadMore;
 
     private Toolbar mToolbar;
     private ProgressBar mProgressLoading;
@@ -78,7 +78,7 @@ public class GenreFragment extends BaseFragment implements GenreContract.View {
     protected void initComponentsOnCreateView(View view, @Nullable Bundle savedInstanceState) {
         initView(view);
         mToolbar.setTitle(mGenre.getName());
-        mPresenter.getTracks(mGenre, 0);
+        mPresenter.getTracks(mGenre, mOffset);
     }
 
     @Override
@@ -89,16 +89,18 @@ public class GenreFragment extends BaseFragment implements GenreContract.View {
     @Override
     public void showLoadingIndicator() {
         mProgressLoading.setVisibility(View.VISIBLE);
+        mIsLoadMore = true;
     }
 
     @Override
     public void hideLoadingIndicator() {
         mProgressLoading.setVisibility(View.GONE);
+        mIsLoadMore = false;
     }
 
     @Override
     public void showTracks(List<Track> tracks) {
-        mTracksFragment.setTracks(tracks);
+        mTracksFragment.addTracks(tracks);
     }
 
     @Override
@@ -122,6 +124,14 @@ public class GenreFragment extends BaseFragment implements GenreContract.View {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onLoadMore() {
+        if (!mIsLoadMore) {
+            mOffset = mOffset + Constants.LOAD_OFFSET;
+            mPresenter.getTracks(mGenre, mOffset);
+        }
     }
 
     private void initView(View view) {

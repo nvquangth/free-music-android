@@ -38,15 +38,18 @@ public class SearchFragment extends BaseFragment implements SearchContract.View,
         TextView.OnEditorActionListener,
         OnItemHotKeyListener,
         OnItemHistoryListener,
-        OnActionClearHistoryListener {
+        OnActionClearHistoryListener,
+        TracksFragment.OnLoadMoreTrackListener {
 
     @Inject
     SearchContract.Presenter mPresenter;
 
-    private int offset;
+    private int mOffset;
+    private boolean mIsLoadMore;
     private Navigator mNavigator;
     private SearchOptionFragment mSearchOptionFragment;
     private TracksFragment mTracksFragment;
+    private String mKeyWord;
 
     private ProgressBar mProgressBarLoadingIndicator;
     private ImageButton mButtonBack;
@@ -98,11 +101,13 @@ public class SearchFragment extends BaseFragment implements SearchContract.View,
     @Override
     public void showLoadingIndicator() {
         mProgressBarLoadingIndicator.setVisibility(View.VISIBLE);
+        mIsLoadMore = true;
     }
 
     @Override
     public void hideLoadingIndicator() {
         mProgressBarLoadingIndicator.setVisibility(View.GONE);
+        mIsLoadMore = false;
     }
 
     @Override
@@ -117,7 +122,7 @@ public class SearchFragment extends BaseFragment implements SearchContract.View,
 
     @Override
     public void showTracks(List<Track> tracks) {
-        mTracksFragment.setTracks(tracks);
+        mTracksFragment.addTracks(tracks);
         mNavigator.hideChildFragment(mSearchOptionFragment, NavigateAnim.NONE);
         mNavigator.showChildFragment(mTracksFragment, NavigateAnim.FADED);
     }
@@ -136,14 +141,16 @@ public class SearchFragment extends BaseFragment implements SearchContract.View,
 
     @Override
     public void onItemHotKeyClick(String s, int position) {
-        mPresenter.searchTracks(s, offset);
+        mKeyWord = s;
+        mPresenter.searchTracks(s, mOffset);
         mTextSearch.setText(s);
     }
 
     @Override
     public void onItemHistoryClick(SearchHistory history, int position, boolean isClearHistory) {
         if (!isClearHistory) {
-            mPresenter.searchTracks(history.getTitle(), offset);
+            mKeyWord = history.getTitle();
+            mPresenter.searchTracks(history.getTitle(), mOffset);
             mTextSearch.setText(history.getTitle());
         } else {
             mPresenter.clearHistory(history);
@@ -154,6 +161,38 @@ public class SearchFragment extends BaseFragment implements SearchContract.View,
     @Override
     public void onClearAllClick() {
         mPresenter.clearAllHistories();
+    }
+
+    @Override
+    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+        if (i == EditorInfo.IME_ACTION_SEARCH) {
+            String q = textView.getText().toString();
+            if (!StringUtils.isEmpty(q)) {
+                SearchHistory history = createHistory(q);
+                mKeyWord = q;
+                mTracksFragment.clearTracks();
+                mOffset = 0;
+                mPresenter.searchTracks(q, mOffset);
+                mPresenter.addHistory(history);
+//                mSearchOptionFragment.addHistory(history);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void onLoadMore() {
+        if (!mIsLoadMore) {
+            mOffset = mOffset + Constants.LOAD_OFFSET;
+            mPresenter.searchTracks(mKeyWord, mOffset);
+        }
+    }
+
+    private SearchHistory createHistory(String title) {
+        SearchHistory history = new SearchHistory();
+        history.setTitle(title);
+        return history;
     }
 
     private void initView(View view) {
@@ -167,26 +206,5 @@ public class SearchFragment extends BaseFragment implements SearchContract.View,
         mButtonBack.setOnClickListener(this);
         mButtonSearchVoice.setOnClickListener(this);
         mTextSearch.setOnEditorActionListener(this);
-    }
-
-    @Override
-    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-        if (i == EditorInfo.IME_ACTION_SEARCH) {
-            String q = textView.getText().toString();
-            if (!StringUtils.isEmpty(q)) {
-                SearchHistory history = createHistory(q);
-                mPresenter.searchTracks(q, offset);
-                mPresenter.addHistory(history);
-//                mSearchOptionFragment.addHistory(history);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private SearchHistory createHistory(String title) {
-        SearchHistory history = new SearchHistory();
-        history.setTitle(title);
-        return history;
     }
 }
