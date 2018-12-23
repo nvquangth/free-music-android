@@ -45,6 +45,10 @@ public class MyMusicFragment extends BaseFragment implements MyMusicContract.Vie
     private TextView mTextNumberFavorite;
     private TextView mTextNumberDownload;
     private TextView mTextNumberLocal;
+    private TextView mTextTitlePlaylist;
+    private TextView mTextTitleFavorite;
+    private TextView mTextTitleDownload;
+    private TextView mTextTitleLocal;
     private ImageButton mButtonPlaylist;
     private ImageButton mButtonFavorite;
     private ImageButton mButtonDownload;
@@ -125,21 +129,25 @@ public class MyMusicFragment extends BaseFragment implements MyMusicContract.Vie
         switch (view.getId()) {
             case R.id.button_playlist:
             case R.id.text_title_playlist:
+            case R.id.text_number_playlist:
                 mNavigator.addFragmentToBackStack(R.id.frame_container,
                         PlaylistFragment.newInstance(mPlaylists),
                         true, NavigateAnim.RIGHT_LEFT, null);
                 break;
             case R.id.button_favorite:
             case R.id.text_title_favorite:
+            case R.id.text_number_favorite:
                 mNavigator.addFragmentToBackStack(R.id.frame_container,
                         FavoriteFragment.newInstance(mFavoriteTracks),
                         true, NavigateAnim.RIGHT_LEFT, null);
                 break;
             case R.id.button_download:
             case R.id.text_title_download:
+            case R.id.text_number_download:
                 break;
             case R.id.button_folder:
             case R.id.text_title_folder:
+            case R.id.text_number_folder:
                 mNavigator.addFragmentToBackStack(R.id.frame_container,
                         LocalFragment.newInstance(mLocalTracks),
                         true, NavigateAnim.RIGHT_LEFT, null);
@@ -167,6 +175,10 @@ public class MyMusicFragment extends BaseFragment implements MyMusicContract.Vie
         mTextNumberFavorite = view.findViewById(R.id.text_number_favorite);
         mTextNumberDownload = view.findViewById(R.id.text_number_download);
         mTextNumberLocal = view.findViewById(R.id.text_number_folder);
+        mTextTitlePlaylist = view.findViewById(R.id.text_title_playlist);
+        mTextTitleFavorite = view.findViewById(R.id.text_title_favorite);
+        mTextTitleDownload = view.findViewById(R.id.text_title_download);
+        mTextTitleLocal = view.findViewById(R.id.text_title_folder);
         mButtonPlaylist = view.findViewById(R.id.button_playlist);
         mButtonFavorite = view.findViewById(R.id.button_favorite);
         mButtonDownload = view.findViewById(R.id.button_download);
@@ -183,6 +195,14 @@ public class MyMusicFragment extends BaseFragment implements MyMusicContract.Vie
         mButtonLocal.setOnClickListener(this);
         mViewSearch.setOnClickListener(this);
         mButtonVoiceSearch.setOnClickListener(this);
+        mTextNumberPlaylist.setOnClickListener(this);
+        mTextNumberFavorite.setOnClickListener(this);
+        mTextNumberDownload.setOnClickListener(this);
+        mTextNumberLocal.setOnClickListener(this);
+        mTextTitlePlaylist.setOnClickListener(this);
+        mTextTitleFavorite.setOnClickListener(this);
+        mTextTitleDownload.setOnClickListener(this);
+        mTextTitleLocal.setOnClickListener(this);
     }
 
     public interface OnPlaylistListener {
