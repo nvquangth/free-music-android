@@ -24,7 +24,7 @@ public final class Constants {
 
     public static int LOAD_LIMIT = 20;
 
-    public static int LOAD_OFFSET = 10;
+    public static int LOAD_OFFSET = 20;
 
     public static int ROUND_CORNER = 15;
 
