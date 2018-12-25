@@ -170,7 +170,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                 playlistDialogFragment.show(getSupportFragmentManager(), null);
                 break;
             case R.id.button_download:
-                downloadTrack(mTrackService.getCurrentTrack());
+//                downloadTrack(mTrackService.getCurrentTrack());
                 break;
             case R.id.button_more:
 
